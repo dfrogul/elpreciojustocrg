@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>El Precio Justo - MODO SIMULACIÓN</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <!-- Supabase JS Client v2 -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800;900&display=swap');
+    body { font-family: 'Outfit', sans-serif; background: #0f172a; color: #f8fafc; }
+    .gold-gradient { background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 50%, #d97706 100%); }
+    .gold-text { background: linear-gradient(135deg, #fef08a 0%, #f59e0b 50%, #eab308 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .glass-card { background: rgba(30, 41, 59, 0.85); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.1); }
+    .carousel-fade { transition: opacity 0.8s ease-in-out; }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between p-4 md:p-8">
+
+  <!-- ================= 1. VISTA PANTALLA PRINCIPAL (TV / PORTÁTIL) ================= -->
+  <div id="host-view" class="max-w-7xl mx-auto w-full flex-1 flex flex-col justify-between">
+    
+    <!-- Header TV -->
+    <header class="flex justify-between items-center border-b border-slate-700 pb-4">
+      <div>
+        <div class="flex items-center gap-3">
+          <h1 class="text-3xl md:text-5xl font-black tracking-tight text-red-500">EL PRECIO JUSTO</h1>
+          <span class="px-3 py-1 bg-amber-500/20 text-amber-400 border border-amber-500/30 rounded-full text-xs font-bold uppercase tracking-wider">Modo Simulación</span>
+        </div>
+        <p class="text-slate-400 text-sm md:text-base font-semibold">Ensayo de Concurso (5 Rondas + Gran Final)</p>
+      </div>
+      <div class="flex items-center gap-3">
+        <button onclick="resetGame()" class="px-3 py-1.5 bg-red-600/80 hover:bg-red-600 text-white font-bold text-xs rounded-xl border border-red-500 transition shadow">
+          🔄 Reiniciar
+        </button>
+        <div id="status-badge" class="px-4 py-2 rounded-full bg-slate-800 border border-slate-700 text-xs font-bold text-amber-400">
+          Conectando...
+        </div>
+      </div>
+    </header>
+
+    <!-- PANTALLA A: PREGUNTA / ESCAPARATE DE PRODUCTOS -->
+    <main id="screen-question" class="my-auto py-6 space-y-6">
+      <div class="glass-card p-6 md:p-8 rounded-3xl space-y-4 shadow-2xl border-2 border-slate-700">
+        <div class="flex justify-between items-center">
+          <span id="question-num" class="px-4 py-1.5 bg-red-500/20 text-red-400 border border-red-500/30 rounded-full text-base font-bold">
+            Ronda 1
+          </span>
+          <span class="text-slate-400 text-sm font-semibold">Prepara tu respuesta con tu mesa</span>
+        </div>
+        <h2 id="question-text" class="text-2xl md:text-4xl font-black leading-snug">
+          Cargando pregunta de prueba...
+        </h2>
+      </div>
+
+      <!-- Contenedor Carrusel Visual -->
+      <div class="relative w-full h-64 md:h-80 rounded-3xl overflow-hidden glass-card border-2 border-amber-500/30 shadow-2xl">
+        <img id="carousel-img" src="" alt="Producto" class="w-full h-full object-cover carousel-fade opacity-100">
+        <div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-slate-950 via-slate-950/60 to-transparent p-4 text-center">
+          <p id="carousel-caption" class="text-amber-300 font-bold text-lg md:text-xl drop-shadow">Presentación del Lote</p>
+        </div>
+      </div>
+
+      <div class="flex justify-end">
+        <button onclick="triggerAction('start-timer')" class="px-10 py-5 gold-gradient text-slate-950 font-black text-2xl rounded-2xl shadow-2xl hover:scale-105 active:scale-95 transition">
+          ⏱️ COMENZAR TIEMPO (MOSTRAR QR)
+        </button>
+      </div>
+    </main>
+
+    <!-- PANTALLA B: QR GIGANTE + CUENTA ATRÁS -->
+    <main id="screen-qr-timer" class="hidden my-auto py-6 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+      <div class="space-y-6 text-center lg:text-left">
+        <div class="inline-block px-4 py-2 bg-amber-500/10 border border-amber-500/20 rounded-full text-amber-400 font-bold text-sm">
+          ¡TIEMPO CORRIENDO!
+        </div>
+        <h2 class="text-4xl md:text-6xl font-black leading-tight">
+          Escanea y envía vuestra <span class="gold-text">Apuesta</span>
+        </h2>
+        <p class="text-slate-300 text-lg md:text-xl">
+          Selecciona tu mesa en el móvil e introduce la cifra antes de que el reloj llegue a cero.
+        </p>
+        
+        <div class="p-6 bg-slate-800/80 rounded-3xl border-2 border-amber-400 inline-block">
+          <p class="text-xs uppercase tracking-widest text-slate-400 font-bold mb-1">Tiempo Restante</p>
+          <p id="big-timer" class="text-7xl font-black text-amber-400">30s</p>
+        </div>
+      </div>
+
+      <div class="flex flex-col items-center justify-center bg-white p-8 rounded-3xl shadow-2xl border-4 border-amber-400">
+        <div id="qrcode" class="p-2"></div>
+        <p class="text-slate-900 font-black text-lg mt-4 tracking-wide uppercase">Escanear para responder</p>
+      </div>
+    </main>
+
+    <!-- PANTALLA C: RESULTADOS, GANADOR Y RANKING GENERAL -->
+    <main id="screen-results" class="hidden my-auto py-4 space-y-6">
+      <div id="reveal-banner" class="hidden glass-card p-6 rounded-3xl border-2 border-emerald-500/50 bg-emerald-950/30 text-center space-y-2">
+        <p class="text-sm font-bold text-emerald-400 uppercase tracking-widest">El Precio Justo Exacto Es:</p>
+        <p id="target-value-display" class="text-5xl font-black text-amber-400">---</p>
+        <p id="winner-announcement" class="text-2xl font-bold text-white pt-2">---</p>
+      </div>
+
+      <div>
+        <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">Apuestas de la Ronda:</h3>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4" id="bets-grid"></div>
+      </div>
+
+      <!-- RANKING DE PUNTUACIONES -->
+      <div class="glass-card p-6 rounded-3xl border-2 border-amber-500/30">
+        <div class="flex justify-between items-center mb-4">
+          <h3 class="text-lg font-black text-amber-400 uppercase tracking-wider flex items-center gap-2">
+            🏆 Clasificación General (Ranking)
+          </h3>
+          <span class="text-xs text-slate-400 font-semibold">Actualizado tras la ronda</span>
+        </div>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-3" id="leaderboard-grid"></div>
+      </div>
+
+      <div class="flex gap-4 justify-end">
+        <button id="btn-reveal" onclick="triggerAction('reveal')" class="px-8 py-4 bg-emerald-600 hover:bg-emerald-500 text-white font-black text-xl rounded-2xl shadow-xl hover:scale-105 active:scale-95 transition">
+          🏆 REVELAR CIFRA Y GANADOR
+        </button>
+        <button id="btn-next" onclick="triggerAction('next-question')" class="hidden px-8 py-4 bg-slate-700 hover:bg-slate-600 text-white font-bold text-xl rounded-2xl transition">
+          ➡️ Siguiente Ronda
+        </button>
+      </div>
+    </main>
+
+  </div>
+
+  <!-- ================= 2. VISTA MÓVIL JUGADOR (MESAS) ================= -->
+  <div id="player-view" class="hidden max-w-md mx-auto w-full flex-1 flex flex-col justify-between py-4">
+    <header class="text-center border-b border-slate-800 pb-3">
+      <h1 class="text-xl font-black text-red-500">EL PRECIO JUSTO</h1>
+      <p id="player-table-title" class="text-xs text-slate-400 font-semibold">Selecciona tu mesa</p>
+    </header>
+
+    <div id="table-selector" class="my-auto space-y-4">
+      <h2 class="text-lg font-bold text-center">¿En qué mesa estáis?</h2>
+      <div class="grid grid-cols-2 gap-3" id="tables-buttons"></div>
+    </div>
+
+    <div id="player-form" class="hidden my-auto space-y-6">
+      <div class="glass-card p-6 rounded-2xl text-center space-y-2">
+        <p class="text-xs font-bold text-amber-400 uppercase tracking-wider">Tu Apuesta</p>
+        <h3 id="player-q-text" class="text-lg font-bold">Introduce vuestra cifra:</h3>
+      </div>
+
+      <div class="space-y-2">
+        <input type="number" step="0.01" id="player-input" inputmode="decimal" placeholder="Cifra sin pasarse..." class="w-full p-4 bg-slate-800 border-2 border-slate-700 rounded-xl text-2xl font-black text-center text-amber-400 focus:border-amber-400 outline-none">
+      </div>
+
+      <button onclick="submitBid()" class="w-full py-4 gold-gradient text-slate-950 font-black text-lg rounded-xl shadow-lg active:scale-95 transition">
+        ENVIAR APUESTA
+      </button>
+
+      <p id="player-status" class="text-center text-sm font-semibold text-slate-400"></p>
+    </div>
+  </div>
+
+  <!-- ================= 3. VISTA MANDO DE CONTROL (MÓVIL PRESENTADOR) ================= -->
+  <div id="remote-view" class="hidden max-w-md mx-auto w-full flex-1 flex flex-col justify-between py-6 space-y-6">
+    <header class="text-center border-b border-slate-800 pb-4">
+      <span class="px-3 py-1 bg-amber-500/20 text-amber-400 border border-amber-500/30 rounded-full text-xs font-bold uppercase">Mando Simulación</span>
+      <h1 class="text-2xl font-black text-amber-400 mt-2">Mando de Control TV</h1>
+      <p id="remote-q-info" class="text-xs text-slate-400 mt-1">Controlando la gran pantalla...</p>
+    </header>
+
+    <div class="space-y-4 my-auto">
+      <button onclick="sendRemoteCommand('start-timer')" class="w-full py-6 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xl rounded-2xl shadow-xl active:scale-95 transition flex items-center justify-center gap-3">
+        ⏱️ LANZAR TIEMPO / QR
+      </button>
+
+      <button onclick="sendRemoteCommand('reveal')" class="w-full py-6 bg-emerald-600 hover:bg-emerald-500 text-white font-black text-xl rounded-2xl shadow-xl active:scale-95 transition flex items-center justify-center gap-3">
+        🏆 REVELAR GANADOR
+      </button>
+
+      <button onclick="sendRemoteCommand('next-question')" class="w-full py-5 bg-slate-700 hover:bg-slate-600 text-white font-bold text-lg rounded-2xl active:scale-95 transition flex items-center justify-center gap-3">
+        ➡️ SIGUIENTE RONDA
+      </button>
+    </div>
+
+    <div class="pt-4 border-t border-slate-800 flex justify-between gap-3">
+      <button onclick="sendRemoteCommand('reset')" class="w-full py-3 bg-red-950/60 border border-red-600/40 text-red-400 font-bold text-xs rounded-xl active:scale-95 transition">
+        🔄 Reiniciar Juego
+      </button>
+    </div>
+  </div>
+
+  <script>
+    const SUPABASE_URL = 'https://zsiybimuicenbejqblrp.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable_Vj0QnLFI8AoU92buxt4NIg_qehwOSUS';
+    
+    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    // Banco de Preguntas del Modo Simulación: 5 Rondas + Gran Final Cesta de Navidad
+    const questions = [
+      { 
+        q: "Ronda 1: ¿Cuántas tazas de café se consumen en la oficina en un año entero?", 
+        target: 4320, unit: "tazas", time: 30, isFinal: false,
+        images: [{ url: "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=800", caption: "El motor de la mañana" }]
+      },
+      { 
+        q: "Ronda 2: ¿Cuántos kilómetros suman en total los coches de empresa este año?", 
+        target: 125000, unit: "km", time: 30, isFinal: false,
+        images: [{ url: "https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?w=800", caption: "Flota y trayectos de empresa" }]
+      },
+      { 
+        q: "Ronda 3: ¿Cuántos folios y documentos se han impreso en la oficina durante 2026?", 
+        target: 38500, unit: "folios", time: 30, isFinal: false,
+        images: [{ url: "https://images.unsplash.com/photo-1586075010923-2dd4570fb338?w=800", caption: "Consumo de papelería" }]
+      },
+      { 
+        q: "Ronda 4: ¿Cuántas reuniones virtuales / llamadas Teams se han realizado en total?", 
+        target: 1840, unit: "reuniones", time: 30, isFinal: false,
+        images: [{ url: "https://images.unsplash.com/photo-1588196749597-9ff075ee6b5b?w=800", caption: "Horas de videoconferencia" }]
+      },
+      { 
+        q: "Ronda 5: ¿Cuántos correos electrónicos ha recibido el dominio principal este año?", 
+        target: 92400, unit: "emails", time: 30, isFinal: false,
+        images: [{ url: "https://images.unsplash.com/photo-1557200134-90327ee9fafa?w=800", caption: "Tráfico de correo de la compañía" }]
+      },
+      { 
+        q: "💥 GRAN FINAL 💥: ¿Cuál es el PRECIO JUSTO EXACTO del ticket total de la Cesta de Navidad (8-9 productos)?", 
+        target: 234.85, unit: "€", time: 45, isFinal: true, margin: 3.0,
+        images: [
+          { url: "https://images.unsplash.com/photo-1544025162-d76694265947?w=800", caption: "Producto 1: Lote de Ibéricos y Embutidos" },
+          { url: "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=800", caption: "Producto 2: Vinos y Licor Tradicional" },
+          { url: "https://images.unsplash.com/photo-1559181567-c3190ca9959b?w=800", caption: "Producto 3: Turrones y Conservas Gourmet" },
+          { url: "https://images.unsplash.com/photo-1513201099705-a9746e1e201f?w=800", caption: "¡Cesta Completa para repartir en la Mesa Ganadora!" }
+        ]
+      }
+    ];
+
+    let currentQ = 0;
+    let selectedTable = null;
+    let timerInterval = null;
+    let carouselInterval = null;
+    let carouselIdx = 0;
+    const TOTAL_TABLES = 8;
+    let bidsData = {};
+    let scores = {};
+    let realtimeChannel = null;
+
+    for(let i = 1; i <= TOTAL_TABLES; i++) scores[i] = 0;
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const mode = urlParams.get('mode');
+
+    window.onload = () => {
+      realtimeChannel = supabaseClient.channel('room-simulacion-precio-justo', {
+        config: { broadcast: { self: true, ack: false } }
+      });
+
+      if (mode === 'player') {
+        document.getElementById('host-view').classList.add('hidden');
+        document.getElementById('player-view').classList.remove('hidden');
+        initPlayerUI();
+        realtimeChannel.subscribe();
+      } else if (mode === 'remote') {
+        document.getElementById('host-view').classList.add('hidden');
+        document.getElementById('remote-view').classList.remove('hidden');
+        realtimeChannel.subscribe();
+      } else {
+        initHostUI();
+      }
+    };
+
+    function initHostUI() {
+      const currentUrl = window.location.href.split('?')[0];
+      const playerUrl = `${currentUrl}?mode=player`;
+
+      document.getElementById("qrcode").innerHTML = "";
+      new QRCode(document.getElementById("qrcode"), {
+        text: playerUrl, width: 280, height: 280,
+        colorDark: "#0f172a", colorLight: "#ffffff",
+        correctLevel: QRCode.CorrectLevel.H
+      });
+
+      loadQuestion(0);
+      listenToSupabaseEvents();
+    }
+
+    function loadQuestion(idx) {
+      currentQ = idx;
+      bidsData = {};
+      
+      document.getElementById('screen-qr-timer').classList.add('hidden');
+      document.getElementById('screen-results').classList.add('hidden');
+      document.getElementById('screen-question').classList.remove('hidden');
+
+      document.getElementById('reveal-banner').classList.add('hidden');
+      document.getElementById('btn-reveal').classList.remove('hidden');
+      document.getElementById('btn-next').classList.add('hidden');
+
+      const q = questions[idx];
+      document.getElementById('question-num').innerText = q.isFinal ? "💥 GRAN FINAL 💥" : `Ronda ${idx + 1} de 5`;
+      document.getElementById('question-text').innerText = q.q;
+      document.getElementById('big-timer').innerText = `${q.time}s`;
+
+      startCarousel(q.images);
+      renderBetsGrid();
+      renderLeaderboard();
+    }
+
+    function startCarousel(imgList) {
+      clearInterval(carouselInterval);
+      if (!imgList || imgList.length === 0) return;
+
+      carouselIdx = 0;
+      const imgEl = document.getElementById('carousel-img');
+      const capEl = document.getElementById('carousel-caption');
+
+      const updateImg = () => {
+        imgEl.style.opacity = '0';
+        setTimeout(() => {
+          imgEl.src = imgList[carouselIdx].url;
+          capEl.innerText = imgList[carouselIdx].caption;
+          imgEl.style.opacity = '1';
+          carouselIdx = (carouselIdx + 1) % imgList.length;
+        }, 300);
+      };
+
+      updateImg();
+      if (imgList.length > 1) {
+        carouselInterval = setInterval(updateImg, 3500);
+      }
+    }
+
+    function startTimerAndShowQR() {
+      document.getElementById('screen-question').classList.add('hidden');
+      document.getElementById('screen-qr-timer').classList.remove('hidden');
+
+      let timeLeft = questions[currentQ].time;
+      document.getElementById('big-timer').innerText = `${timeLeft}s`;
+
+      clearInterval(timerInterval);
+      timerInterval = setInterval(() => {
+        timeLeft--;
+        document.getElementById('big-timer').innerText = `${timeLeft}s`;
+
+        if (timeLeft <= 0) {
+          clearInterval(timerInterval);
+          document.getElementById('screen-qr-timer').classList.add('hidden');
+          document.getElementById('screen-results').classList.remove('hidden');
+          renderBetsGrid();
+        }
+      }, 1000);
+    }
+
+    function renderBetsGrid(winningTable = null) {
+      const grid = document.getElementById('bets-grid');
+      grid.innerHTML = '';
+      for (let i = 1; i <= TOTAL_TABLES; i++) {
+        const val = bidsData[i] !== undefined ? bidsData[i] : '---';
+        const isSet = bidsData[i] !== undefined;
+        const isWinner = winningTable === i;
+
+        grid.innerHTML += `
+          <div id="card-mesa-${i}" class="glass-card p-4 rounded-2xl text-center space-y-1 border ${
+            isWinner 
+              ? 'border-emerald-400 bg-emerald-500/20 shadow-xl scale-105 ring-2 ring-emerald-400' 
+              : isSet ? 'border-amber-400/50 bg-amber-500/10' : 'border-slate-700'
+          } transition duration-300">
+            <p class="text-xs text-slate-400 font-bold uppercase">Mesa ${i} ${isWinner ? '🏆' : ''}</p>
+            <p id="val-mesa-${i}" class="text-2xl font-black ${isWinner ? 'text-emerald-400' : isSet ? 'text-amber-400' : 'text-slate-500'}">${val}</p>
+          </div>
+        `;
+      }
+    }
+
+    // RENDERIZADO DEL RANKING REORDENADO DE MAYOR A MENOR PUNTUACIÓN
+    function renderLeaderboard() {
+      const grid = document.getElementById('leaderboard-grid');
+      grid.innerHTML = '';
+
+      // Crear array ordenado por puntos
+      const sortedTables = Object.keys(scores)
+        .map(t => ({ table: parseInt(t), pts: scores[t] }))
+        .sort((a, b) => b.pts - a.pts);
+
+      sortedTables.forEach((item, index) => {
+        let badge = `#${index + 1}`;
+        let bgStyle = "bg-slate-800/80 border-slate-700";
+
+        if (index === 0 && item.pts > 0) {
+          badge = "🥇 1º";
+          bgStyle = "bg-amber-500/20 border-amber-400 ring-1 ring-amber-400/50";
+        } else if (index === 1 && item.pts > 0) {
+          badge = "🥈 2º";
+          bgStyle = "bg-slate-300/20 border-slate-300";
+        } else if (index === 2 && item.pts > 0) {
+          badge = "🥉 3º";
+          bgStyle = "bg-amber-700/20 border-amber-600";
+        }
+
+        grid.innerHTML += `
+          <div class="${bgStyle} p-3 rounded-2xl border text-center transition-all duration-300">
+            <span class="text-xs font-black text-slate-400 uppercase tracking-widest block">${badge}</span>
+            <p class="text-base font-bold text-white mt-0.5">Mesa ${item.table}</p>
+            <p class="text-xl font-black text-amber-400 mt-1">${item.pts} <span class="text-xs text-slate-400">pts</span></p>
+          </div>
+        `;
+      });
+    }
+
+    function revealWinner() {
+      const q = questions[currentQ];
+      const target = q.target;
+      const unit = q.unit;
+
+      let winnerTable = null;
+      let closestDiff = Infinity;
+
+      Object.keys(bidsData).forEach(tableNum => {
+        const val = bidsData[tableNum];
+        if (q.isFinal) {
+          // Gran Final: Margen +-3€
+          const diff = Math.abs(target - val);
+          if (diff <= (q.margin || 3.0) && diff < closestDiff) {
+            closestDiff = diff;
+            winnerTable = parseInt(tableNum);
+          }
+        } else {
+          // Rondas Normales: Sin pasarse
+          if (val <= target) {
+            const diff = target - val;
+            if (diff < closestDiff) {
+              closestDiff = diff;
+              winnerTable = parseInt(tableNum);
+            }
+          }
+        }
+      });
+
+      document.getElementById('target-value-display').innerText = `${target.toLocaleString()} ${unit}`;
+      
+      if (winnerTable !== null) {
+        const ptsAwarded = q.isFinal ? 500 : 100;
+        scores[winnerTable] += ptsAwarded;
+        document.getElementById('winner-announcement').innerText = `🎉 ¡Ganador Ronda: Mesa ${winnerTable} con ${bidsData[winnerTable]}! (+${ptsAwarded} pts)`;
+        confetti({ particleCount: 200, spread: 100, origin: { y: 0.5 } });
+      } else {
+        document.getElementById('winner-announcement').innerText = q.isFinal 
+          ? `💥 Ninguna mesa ha entrado en el margen de ±${q.margin}€. ¡Cláusula de flexibilidad del presentador!` 
+          : `💥 ¡Todas las mesas se han pasado! Nadie suma puntos en esta ronda.`;
+      }
+
+      renderBetsGrid(winnerTable);
+      renderLeaderboard();
+
+      document.getElementById('reveal-banner').classList.remove('hidden');
+      document.getElementById('btn-reveal').classList.add('hidden');
+      document.getElementById('btn-next').classList.remove('hidden');
+    }
+
+    function nextQuestion() {
+      if (currentQ + 1 < questions.length) {
+        loadQuestion(currentQ + 1);
+      } else {
+        alert("¡Has completado el concurso de simulación!");
+      }
+    }
+
+    function resetGame() {
+      clearInterval(timerInterval);
+      clearInterval(carouselInterval);
+      bidsData = {};
+      for(let i = 1; i <= TOTAL_TABLES; i++) scores[i] = 0;
+      loadQuestion(0);
+    }
+
+    function listenToSupabaseEvents() {
+      realtimeChannel
+        .on('broadcast', { event: 'new-bid' }, (payload) => {
+          if (payload && payload.payload) {
+            const { table, value } = payload.payload;
+            bidsData[table] = value;
+            renderBetsGrid();
+          }
+        })
+        .on('broadcast', { event: 'remote-cmd' }, (payload) => {
+          if (!payload || !payload.payload) return;
+          const cmd = payload.payload.cmd;
+          if (cmd === 'start-timer') startTimerAndShowQR();
+          if (cmd === 'reveal') revealWinner();
+          if (cmd === 'next-question') nextQuestion();
+          if (cmd === 'reset') resetGame();
+        })
+        .subscribe((status) => {
+          if (status === 'SUBSCRIBED') {
+            document.getElementById('status-badge').innerText = 'Conectado';
+            document.getElementById('status-badge').className = "px-4 py-2 rounded-full bg-emerald-950/60 border border-emerald-500/40 text-xs font-bold text-emerald-400";
+          }
+        });
+    }
+
+    function triggerAction(actionName) {
+      if (actionName === 'start-timer') startTimerAndShowQR();
+      if (actionName === 'reveal') revealWinner();
+      if (actionName === 'next-question') nextQuestion();
+    }
+
+    async function sendRemoteCommand(cmd) {
+      if (!realtimeChannel) return;
+      await realtimeChannel.send({
+        type: 'broadcast',
+        event: 'remote-cmd',
+        payload: { cmd: cmd }
+      });
+    }
+
+    function initPlayerUI() {
+      const container = document.getElementById('tables-buttons');
+      container.innerHTML = '';
+      for (let i = 1; i <= TOTAL_TABLES; i++) {
+        const btn = document.createElement('button');
+        btn.className = 'p-4 bg-slate-800 border border-slate-700 rounded-xl font-bold text-lg hover:border-amber-400 active:bg-amber-400 active:text-slate-950 transition';
+        btn.innerText = `Mesa ${i}`;
+        btn.onclick = () => selectTable(i);
+        container.appendChild(btn);
+      }
+    }
+
+    function selectTable(num) {
+      selectedTable = num;
+      document.getElementById('table-selector').classList.add('hidden');
+      document.getElementById('player-form').classList.remove('hidden');
+      document.getElementById('player-table-title').innerText = `Registrado como: Mesa ${num}`;
+    }
+
+    async function submitBid() {
+      const valInput = document.getElementById('player-input');
+      const val = valInput.value;
+      if (!val || !selectedTable) return;
+
+      await realtimeChannel.send({
+        type: 'broadcast',
+        event: 'new-bid',
+        payload: { table: selectedTable, value: parseFloat(val) }
+      });
+
+      document.getElementById('player-status').innerText = `✓ Enviado: ${val} para Mesa ${selectedTable}`;
+      document.getElementById('player-status').className = "text-center text-sm font-semibold text-emerald-400";
+      valInput.value = '';
+    }
+  </script>
+</body>
+</html>
