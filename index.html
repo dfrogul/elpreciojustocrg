@@ -7,7 +7,7 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-  <!-- Supabase JS Client -->
+  <!-- Supabase JS Client v2 -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800;900&display=swap');
@@ -28,8 +28,13 @@
         <h1 class="text-3xl md:text-5xl font-black tracking-tight text-red-500">EL PRECIO JUSTO</h1>
         <p class="text-slate-400 text-sm md:text-base font-semibold">Cena de Empresa 2026</p>
       </div>
-      <div id="status-badge" class="px-4 py-2 rounded-full bg-slate-800 border border-slate-700 text-xs font-bold text-amber-400">
-        Conectando a Supabase...
+      <div class="flex items-center gap-3">
+        <button onclick="resetGame()" class="px-3 py-1.5 bg-red-600/80 hover:bg-red-600 text-white font-bold text-xs rounded-xl border border-red-500 transition shadow">
+          🔄 Reiniciar Juego
+        </button>
+        <div id="status-badge" class="px-4 py-2 rounded-full bg-slate-800 border border-slate-700 text-xs font-bold text-amber-400">
+          Conectando a Supabase...
+        </div>
       </div>
     </header>
 
@@ -55,7 +60,7 @@
         </div>
       </div>
 
-      <div class="flex gap-4 justify-end">
+      <div class="flex flex-wrap gap-4 justify-end">
         <button onclick="startTimerAndShowQR()" class="px-8 py-4 gold-gradient text-slate-950 font-black text-xl rounded-2xl shadow-xl hover:brightness-110 active:scale-95 transition">
           ⏱️ COMENZAR TIEMPO (MOSTRAR QR)
         </button>
@@ -133,7 +138,8 @@
 
   <script>
     // CREDENCIALES DE SUPABASE
-    const SUPABASE_URL = 'https://elpreciojusto.supabase.co'; // Sustituye si tu URL de proyecto difiere
+    // NOTA: Recuerda reemplazar esta URL por la URL especifica de tu proyecto Supabase (ej: https://xxxx.supabase.co)
+    const SUPABASE_URL = 'https://elpreciojusto.supabase.co'; 
     const SUPABASE_KEY = 'sb_publishable_Vj0QnLFI8AoU92buxt4NIg_qehwOSUS';
     
     const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
@@ -155,7 +161,12 @@
     const isPlayer = urlParams.get('mode') === 'player';
 
     window.onload = () => {
-      realtimeChannel = supabaseClient.channel('room-precio-justo');
+      // Inicializar canal con configuración de broadcast habilitada para envío sin restricciones
+      realtimeChannel = supabaseClient.channel('room-precio-justo', {
+        config: {
+          broadcast: { self: true, ack: false }
+        }
+      });
 
       if (isPlayer) {
         document.getElementById('host-view').classList.add('hidden');
@@ -170,6 +181,9 @@
     function initHostUI() {
       const currentUrl = window.location.href.split('?')[0];
       const playerUrl = `${currentUrl}?mode=player`;
+
+      // Limpiar contenedor de QR previo si existe
+      document.getElementById("qrcode").innerHTML = "";
 
       new QRCode(document.getElementById("qrcode"), {
         text: playerUrl,
@@ -233,8 +247,14 @@
     function listenToSupabaseBids() {
       realtimeChannel
         .on('broadcast', { event: 'new-bid' }, (payload) => {
-          const { table, value } = payload.payload;
-          bidsData[table] = value;
+          if (payload && payload.payload) {
+            const { table, value } = payload.payload;
+            bidsData[table] = value;
+            renderBetsGrid();
+          }
+        })
+        .on('broadcast', { event: 'reset-game' }, () => {
+          bidsData = {};
           renderBetsGrid();
         })
         .subscribe((status) => {
@@ -258,7 +278,28 @@
       }
     }
 
-    // LÓGICA MÓVIL
+    // FUNCIÓN PARA REINICIAR EL JUEGO DESDE LA PANTALLA PRINCIPAL
+    async function resetGame() {
+      if (!confirm("¿Seguro que quieres reiniciar el juego de cero? Se borrarán todas las apuestas enviadas.")) return;
+      
+      clearInterval(timerInterval);
+      bidsData = {};
+      loadQuestion(0);
+      
+      document.getElementById('screen-qr-timer').classList.add('hidden');
+      document.getElementById('screen-question').classList.remove('hidden');
+
+      // Notificar reinicio por broadcast
+      if (realtimeChannel) {
+        await realtimeChannel.send({
+          type: 'broadcast',
+          event: 'reset-game',
+          payload: {}
+        });
+      }
+    }
+
+    // LÓGICA MÓVIL (JUGADOR)
     function initPlayerUI() {
       const container = document.getElementById('tables-buttons');
       container.innerHTML = '';
