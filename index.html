@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>El Precio Justo - Cena Navideña</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800;900&display=swap');
+    body { font-family: 'Outfit', sans-serif; background: #0f172a; color: #f8fafc; }
+    .gold-gradient { background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 50%, #d97706 100%); }
+    .gold-text { background: linear-gradient(135deg, #fef08a 0%, #f59e0b 50%, #eab308 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .glass-card { background: rgba(30, 41, 59, 0.85); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.1); }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between p-4 md:p-8">
+
+  <!-- ================= VISTA PANTALLA PRINCIPAL (TV) ================= -->
+  <div id="host-view" class="max-w-7xl mx-auto w-full flex-1 flex flex-col justify-between">
+    
+    <!-- Header TV -->
+    <header class="flex justify-between items-center border-b border-slate-700 pb-4">
+      <div>
+        <h1 class="text-3xl md:text-5xl font-black tracking-tight text-red-500">EL PRECIO JUSTO</h1>
+        <p class="text-slate-400 text-sm md:text-base font-semibold">Cena de Empresa 2026</p>
+      </div>
+      <div id="status-badge" class="px-4 py-2 rounded-full bg-slate-800 border border-slate-700 text-xs font-bold text-amber-400">
+        GitHub Pages Conectado
+      </div>
+    </header>
+
+    <!-- 1. PANTALLA DE PREGUNTA EN TV -->
+    <main id="screen-question" class="my-auto py-6 space-y-8">
+      <div class="glass-card p-8 rounded-3xl space-y-4 shadow-2xl">
+        <div class="flex justify-between items-center">
+          <span id="question-num" class="px-4 py-1.5 bg-red-500/20 text-red-400 border border-red-500/30 rounded-full text-base font-bold">
+            Pregunta 1
+          </span>
+          <span class="text-slate-400 text-sm font-semibold">Prepara tu respuesta</span>
+        </div>
+        <h2 id="question-text" class="text-3xl md:text-5xl font-black leading-snug">
+          Cargando pregunta...
+        </h2>
+      </div>
+
+      <!-- Grid de respuestas recibidas de las mesas -->
+      <div>
+        <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">Apuestas Registradas:</h3>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4" id="bets-grid">
+          <!-- Generado dinámicamente -->
+        </div>
+      </div>
+
+      <div class="flex gap-4 justify-end">
+        <button onclick="startTimerAndShowQR()" class="px-8 py-4 gold-gradient text-slate-950 font-black text-xl rounded-2xl shadow-xl hover:brightness-110 active:scale-95 transition">
+          ⏱️ COMENZAR TIEMPO (MOSTRAR QR)
+        </button>
+        <button onclick="revealAnswer()" class="px-6 py-4 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-2xl transition">
+          🏆 Revelar Cifra
+        </button>
+        <button onclick="nextQuestion()" class="px-6 py-4 bg-slate-700 hover:bg-slate-600 text-white font-bold rounded-2xl transition">
+          ➡️ Siguiente Pregunta
+        </button>
+      </div>
+    </main>
+
+    <!-- 2. PANTALLA QR GIGANTE + CUENTA ATRÁS -->
+    <main id="screen-qr-timer" class="hidden my-auto py-6 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+      <div class="space-y-6 text-center lg:text-left">
+        <div class="inline-block px-4 py-2 bg-amber-500/10 border border-amber-500/20 rounded-full text-amber-400 font-bold text-sm">
+          ¡TIEMPO CORRIENDO!
+        </div>
+        <h2 class="text-4xl md:text-6xl font-black leading-tight">
+          Escanea y envía vuestra <span class="gold-text">Apuesta</span>
+        </h2>
+        <p class="text-slate-300 text-lg md:text-xl">
+          Selecciona tu mesa en el móvil e introduce la cifra antes de que el reloj llegue a cero.
+        </p>
+        
+        <!-- Temporizador Gigante -->
+        <div class="p-6 bg-slate-800/80 rounded-3xl border-2 border-amber-400 inline-block">
+          <p class="text-xs uppercase tracking-widest text-slate-400 font-bold mb-1">Tiempo Restante</p>
+          <p id="big-timer" class="text-7xl font-black text-amber-400">30s</p>
+        </div>
+      </div>
+
+      <!-- QR Gigante -->
+      <div class="flex flex-col items-center justify-center bg-white p-8 rounded-3xl shadow-2xl border-4 border-amber-400">
+        <div id="qrcode" class="p-2"></div>
+        <p class="text-slate-900 font-black text-lg mt-4 tracking-wide uppercase">Escanear para responder</p>
+      </div>
+    </main>
+
+  </div>
+
+  <!-- ================= VISTA MÓVIL (JUGADOR / MESAS) ================= -->
+  <div id="player-view" class="hidden max-w-md mx-auto w-full flex-1 flex flex-col justify-between py-4">
+    <header class="text-center border-b border-slate-800 pb-3">
+      <h1 class="text-xl font-black text-red-500">EL PRECIO JUSTO</h1>
+      <p id="player-table-title" class="text-xs text-slate-400 font-semibold">Selecciona tu mesa</p>
+    </header>
+
+    <!-- Selector de Mesa -->
+    <div id="table-selector" class="my-auto space-y-4">
+      <h2 class="text-lg font-bold text-center">¿En qué mesa estáis?</h2>
+      <div class="grid grid-cols-2 gap-3" id="tables-buttons">
+        <!-- Botones Mesa 1 a 8 -->
+      </div>
+    </div>
+
+    <!-- Formulario Apuesta -->
+    <div id="player-form" class="hidden my-auto space-y-6">
+      <div class="glass-card p-6 rounded-2xl text-center space-y-2">
+        <p class="text-xs font-bold text-amber-400 uppercase tracking-wider">Tu Apuesta</p>
+        <h3 id="player-q-text" class="text-lg font-bold">Introduce vuestra cifra:</h3>
+      </div>
+
+      <div class="space-y-2">
+        <input type="number" id="player-input" inputmode="numeric" placeholder="Cifra sin pasarse..." class="w-full p-4 bg-slate-800 border-2 border-slate-700 rounded-xl text-2xl font-black text-center text-amber-400 focus:border-amber-400 outline-none">
+      </div>
+
+      <button onclick="submitBid()" class="w-full py-4 gold-gradient text-slate-950 font-black text-lg rounded-xl shadow-lg active:scale-95 transition">
+        ENVIAR APUESTA
+      </button>
+
+      <p id="player-status" class="text-center text-sm font-semibold text-slate-400"></p>
+    </div>
+  </div>
+
+  <script>
+    // Configuración Firebase (Opcional si usas Realtime DB)
+    const firebaseConfig = {
+      databaseURL: "https://precio-justo-cena-default-rtdb.europe-west1.firebasedatabase.app"
+    };
+
+    let app, db;
+    try {
+      app = firebase.initializeApp(firebaseConfig);
+      db = firebase.database();
+    } catch(e) {}
+
+    const questions = [
+      { q: "¿Cuántas tazas de café se han consumido en la oficina durante este año 2026?", target: 4320, unit: "tazas", time: 30 },
+      { q: "¿Cuántos kilómetros totales han recorrido los coches de empresa este año?", target: 125000, unit: "km", time: 45 },
+      { q: "¿Cuántos folios/páginas se han impreso en total durante 2026?", target: 38500, unit: "folios", time: 30 }
+    ];
+
+    let currentQ = 0;
+    let selectedTable = null;
+    let timerInterval = null;
+    const TOTAL_TABLES = 8;
+    let bidsData = {};
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const isPlayer = urlParams.get('mode') === 'player';
+
+    window.onload = () => {
+      if (isPlayer) {
+        document.getElementById('host-view').classList.add('hidden');
+        document.getElementById('player-view').classList.remove('hidden');
+        initPlayerUI();
+      } else {
+        initHostUI();
+      }
+    };
+
+    function initHostUI() {
+      // Generar URL del jugador con ?mode=player
+      const currentUrl = window.location.href.split('?')[0];
+      const playerUrl = `${currentUrl}?mode=player`;
+
+      // QR Gigante para la pantalla de tiempo
+      new QRCode(document.getElementById("qrcode"), {
+        text: playerUrl,
+        width: 280,
+        height: 280,
+        colorDark: "#0f172a",
+        colorLight: "#ffffff",
+        correctLevel: QRCode.CorrectLevel.H
+      });
+
+      renderBetsGrid();
+      loadQuestion(0);
+      listenToFirebaseBids();
+    }
+
+    function loadQuestion(idx) {
+      currentQ = idx;
+      bidsData = {};
+      renderBetsGrid();
+      const q = questions[idx];
+      document.getElementById('question-num').innerText = `Pregunta ${idx + 1} de ${questions.length}`;
+      document.getElementById('question-text').innerText = q.q;
+      document.getElementById('big-timer').innerText = `${q.time}s`;
+    }
+
+    function startTimerAndShowQR() {
+      // Cambiar a pantalla QR
+      document.getElementById('screen-question').classList.add('hidden');
+      document.getElementById('screen-qr-timer').classList.remove('hidden');
+
+      let timeLeft = questions[currentQ].time;
+      document.getElementById('big-timer').innerText = `${timeLeft}s`;
+
+      clearInterval(timerInterval);
+      timerInterval = setInterval(() => {
+        timeLeft--;
+        document.getElementById('big-timer').innerText = `${timeLeft}s`;
+
+        if (timeLeft <= 0) {
+          clearInterval(timerInterval);
+          // VOLVER AUTOMÁTICAMENTE A LA PANTALLA DE PREGUNTA
+          document.getElementById('screen-qr-timer').classList.add('hidden');
+          document.getElementById('screen-question').classList.remove('hidden');
+        }
+      }, 1000);
+    }
+
+    function renderBetsGrid() {
+      const grid = document.getElementById('bets-grid');
+      grid.innerHTML = '';
+      for (let i = 1; i <= TOTAL_TABLES; i++) {
+        const val = bidsData[i] !== undefined ? bidsData[i] : '---';
+        const isSet = bidsData[i] !== undefined;
+        grid.innerHTML += `
+          <div id="card-mesa-${i}" class="glass-card p-4 rounded-2xl text-center space-y-1 border ${isSet ? 'border-amber-400 bg-amber-500/10' : 'border-slate-700'} transition">
+            <p class="text-xs text-slate-400 font-bold uppercase">Mesa ${i}</p>
+            <p id="val-mesa-${i}" class="text-2xl font-black ${isSet ? 'text-amber-400' : 'text-slate-500'}">${val}</p>
+          </div>
+        `;
+      }
+    }
+
+    function listenToFirebaseBids() {
+      if (!db) return;
+      db.ref('bids').on('value', (snapshot) => {
+        const data = snapshot.val();
+        if (data) {
+          Object.values(data).forEach(bid => {
+            bidsData[bid.table] = bid.value;
+          });
+          renderBetsGrid();
+        }
+      });
+    }
+
+    function revealAnswer() {
+      const target = questions[currentQ].target;
+      confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 } });
+      alert(`El Precio Justo exacto es: ${target} ${questions[currentQ].unit}`);
+    }
+
+    function nextQuestion() {
+      if (currentQ + 1 < questions.length) {
+        if (db) db.ref('bids').remove();
+        loadQuestion(currentQ + 1);
+      } else {
+        alert("¡Has completado todas las preguntas!");
+      }
+    }
+
+    // LÓGICA MÓVIL
+    function initPlayerUI() {
+      const container = document.getElementById('tables-buttons');
+      container.innerHTML = '';
+      for (let i = 1; i <= TOTAL_TABLES; i++) {
+        const btn = document.createElement('button');
+        btn.className = 'p-4 bg-slate-800 border border-slate-700 rounded-xl font-bold text-lg hover:border-amber-400 active:bg-amber-400 active:text-slate-950 transition';
+        btn.innerText = `Mesa ${i}`;
+        btn.onclick = () => selectTable(i);
+        container.appendChild(btn);
+      }
+    }
+
+    function selectTable(num) {
+      selectedTable = num;
+      document.getElementById('table-selector').classList.add('hidden');
+      document.getElementById('player-form').classList.remove('hidden');
+      document.getElementById('player-table-title').innerText = `Registrado como: Mesa ${num}`;
+    }
+
+    function submitBid() {
+      const val = document.getElementById('player-input').value;
+      if (!val) return;
+
+      document.getElementById('player-status').innerText = `✓ Enviado: ${val} para Mesa ${selectedTable}`;
+      document.getElementById('player-status').className = "text-center text-sm font-semibold text-emerald-400";
+
+      if (db) {
+        db.ref(`bids/mesa_${selectedTable}`).set({
+          value: parseFloat(val),
+          table: selectedTable
+        });
+      }
+    }
+  </script>
+</body>
+</html>
