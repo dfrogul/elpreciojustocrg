@@ -19,7 +19,7 @@
 </head>
 <body class="min-h-screen flex flex-col justify-between p-4 md:p-8">
 
-  <!-- ================= VISTA PANTALLA PRINCIPAL (TV) ================= -->
+  <!-- ================= VISTA PANTALLA PRINCIPAL (TV 50") ================= -->
   <div id="host-view" class="max-w-7xl mx-auto w-full flex-1 flex flex-col justify-between">
     
     <!-- Header TV -->
@@ -38,9 +38,9 @@
       </div>
     </header>
 
-    <!-- 1. PANTALLA DE PREGUNTA EN TV -->
+    <!-- PANTALLA 1: PREGUNTA (TV) -->
     <main id="screen-question" class="my-auto py-6 space-y-8">
-      <div class="glass-card p-8 rounded-3xl space-y-4 shadow-2xl">
+      <div class="glass-card p-8 rounded-3xl space-y-4 shadow-2xl border-2 border-slate-700">
         <div class="flex justify-between items-center">
           <span id="question-num" class="px-4 py-1.5 bg-red-500/20 text-red-400 border border-red-500/30 rounded-full text-base font-bold">
             Pregunta 1
@@ -52,28 +52,14 @@
         </h2>
       </div>
 
-      <!-- Grid de respuestas recibidas de las mesas -->
-      <div>
-        <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">Apuestas Registradas:</h3>
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4" id="bets-grid">
-          <!-- Generado dinámicamente -->
-        </div>
-      </div>
-
-      <div class="flex flex-wrap gap-4 justify-end">
-        <button onclick="startTimerAndShowQR()" class="px-8 py-4 gold-gradient text-slate-950 font-black text-xl rounded-2xl shadow-xl hover:brightness-110 active:scale-95 transition">
+      <div class="flex justify-end">
+        <button onclick="startTimerAndShowQR()" class="px-10 py-5 gold-gradient text-slate-950 font-black text-2xl rounded-2xl shadow-2xl hover:scale-105 active:scale-95 transition">
           ⏱️ COMENZAR TIEMPO (MOSTRAR QR)
-        </button>
-        <button onclick="revealAnswer()" class="px-6 py-4 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-2xl transition">
-          🏆 Revelar Cifra
-        </button>
-        <button onclick="nextQuestion()" class="px-6 py-4 bg-slate-700 hover:bg-slate-600 text-white font-bold rounded-2xl transition">
-          ➡️ Siguiente Pregunta
         </button>
       </div>
     </main>
 
-    <!-- 2. PANTALLA QR GIGANTE + CUENTA ATRÁS -->
+    <!-- PANTALLA 2: QR GIGANTE + CUENTA ATRÁS -->
     <main id="screen-qr-timer" class="hidden my-auto py-6 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
       <div class="space-y-6 text-center lg:text-left">
         <div class="inline-block px-4 py-2 bg-amber-500/10 border border-amber-500/20 rounded-full text-amber-400 font-bold text-sm">
@@ -97,6 +83,43 @@
       <div class="flex flex-col items-center justify-center bg-white p-8 rounded-3xl shadow-2xl border-4 border-amber-400">
         <div id="qrcode" class="p-2"></div>
         <p class="text-slate-900 font-black text-lg mt-4 tracking-wide uppercase">Escanear para responder</p>
+      </div>
+    </main>
+
+    <!-- PANTALLA 3: RESULTADOS, GANADOR Y CLASIFICACIÓN -->
+    <main id="screen-results" class="hidden my-auto py-4 space-y-6">
+      
+      <!-- Banner Cifra Real & Ganador -->
+      <div id="reveal-banner" class="hidden glass-card p-6 rounded-3xl border-2 border-emerald-500/50 bg-emerald-950/30 text-center space-y-2">
+        <p class="text-sm font-bold text-emerald-400 uppercase tracking-widest">El Precio Justo Exacto Es:</p>
+        <p id="target-value-display" class="text-5xl font-black text-amber-400">---</p>
+        <p id="winner-announcement" class="text-2xl font-bold text-white pt-2">---</p>
+      </div>
+
+      <!-- Apuestas Recibidas en la Ronda -->
+      <div>
+        <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">Apuestas de las Mesas:</h3>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4" id="bets-grid">
+          <!-- Generado dinámicamente -->
+        </div>
+      </div>
+
+      <!-- Clasificación a tiempo real -->
+      <div class="glass-card p-4 rounded-2xl border border-slate-700">
+        <h3 class="text-xs font-bold text-amber-400 uppercase tracking-widest mb-2">🏆 Clasificación General (Puntos):</h3>
+        <div class="grid grid-cols-4 md:grid-cols-8 gap-2 text-center text-sm" id="leaderboard-grid">
+          <!-- Puntuaciones por mesa -->
+        </div>
+      </div>
+
+      <!-- Acciones principales -->
+      <div class="flex gap-4 justify-end">
+        <button id="btn-reveal" onclick="revealWinner()" class="px-8 py-4 bg-emerald-600 hover:bg-emerald-500 text-white font-black text-xl rounded-2xl shadow-xl hover:scale-105 active:scale-95 transition">
+          🏆 REVELAR CIFRA Y GANADOR
+        </button>
+        <button id="btn-next" onclick="nextQuestion()" class="hidden px-8 py-4 bg-slate-700 hover:bg-slate-600 text-white font-bold text-xl rounded-2xl transition">
+          ➡️ Siguiente Pregunta
+        </button>
       </div>
     </main>
 
@@ -137,13 +160,11 @@
   </div>
 
   <script>
-    // CREDENCIALES DE SUPABASE
-    // NOTA: Recuerda reemplazar esta URL por la URL especifica de tu proyecto Supabase (ej: https://xxxx.supabase.co)
- 
-const SUPABASE_URL = 'https://zsiybimuicenbejqblrp.supabase.co';
-const SUPABASE_KEY = 'sb_publishable_Vj0QnLFI8AoU92buxt4NIg_qehwOSUS';
-
-const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    // CREDENCIALES REALES
+    const SUPABASE_URL = 'https://zsiybimuicenbejqblrp.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable_Vj0QnLFI8AoU92buxt4NIg_qehwOSUS';
+    
+    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
     const questions = [
       { q: "¿Cuántas tazas de café se han consumido en la oficina durante este año 2026?", target: 4320, unit: "tazas", time: 30 },
@@ -156,17 +177,18 @@ const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
     let timerInterval = null;
     const TOTAL_TABLES = 8;
     let bidsData = {};
+    let scores = {};
     let realtimeChannel = null;
+
+    // Inicializar puntuaciones a 0
+    for(let i = 1; i <= TOTAL_TABLES; i++) scores[i] = 0;
 
     const urlParams = new URLSearchParams(window.location.search);
     const isPlayer = urlParams.get('mode') === 'player';
 
     window.onload = () => {
-      // Inicializar canal con configuración de broadcast habilitada para envío sin restricciones
       realtimeChannel = supabaseClient.channel('room-precio-justo', {
-        config: {
-          broadcast: { self: true, ack: false }
-        }
+        config: { broadcast: { self: true, ack: false } }
       });
 
       if (isPlayer) {
@@ -183,9 +205,7 @@ const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
       const currentUrl = window.location.href.split('?')[0];
       const playerUrl = `${currentUrl}?mode=player`;
 
-      // Limpiar contenedor de QR previo si existe
       document.getElementById("qrcode").innerHTML = "";
-
       new QRCode(document.getElementById("qrcode"), {
         text: playerUrl,
         width: 280,
@@ -195,7 +215,6 @@ const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
         correctLevel: QRCode.CorrectLevel.H
       });
 
-      renderBetsGrid();
       loadQuestion(0);
       listenToSupabaseBids();
     }
@@ -203,11 +222,24 @@ const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
     function loadQuestion(idx) {
       currentQ = idx;
       bidsData = {};
-      renderBetsGrid();
+      
+      // Ocultar vistas secundarias y mostrar Pantalla 1
+      document.getElementById('screen-qr-timer').classList.add('hidden');
+      document.getElementById('screen-results').classList.add('hidden');
+      document.getElementById('screen-question').classList.remove('hidden');
+
+      // Reset de controles de revelación
+      document.getElementById('reveal-banner').classList.add('hidden');
+      document.getElementById('btn-reveal').classList.remove('hidden');
+      document.getElementById('btn-next').classList.add('hidden');
+
       const q = questions[idx];
       document.getElementById('question-num').innerText = `Pregunta ${idx + 1} de ${questions.length}`;
       document.getElementById('question-text').innerText = q.q;
       document.getElementById('big-timer').innerText = `${q.time}s`;
+
+      renderBetsGrid();
+      renderLeaderboard();
     }
 
     function startTimerAndShowQR() {
@@ -224,22 +256,43 @@ const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
         if (timeLeft <= 0) {
           clearInterval(timerInterval);
+          // PASO AUTOMÁTICO A PANTALLA 3 (RESULTADOS)
           document.getElementById('screen-qr-timer').classList.add('hidden');
-          document.getElementById('screen-question').classList.remove('hidden');
+          document.getElementById('screen-results').classList.remove('hidden');
+          renderBetsGrid();
         }
       }, 1000);
     }
 
-    function renderBetsGrid() {
+    function renderBetsGrid(winningTable = null) {
       const grid = document.getElementById('bets-grid');
       grid.innerHTML = '';
       for (let i = 1; i <= TOTAL_TABLES; i++) {
         const val = bidsData[i] !== undefined ? bidsData[i] : '---';
         const isSet = bidsData[i] !== undefined;
+        const isWinner = winningTable === i;
+
         grid.innerHTML += `
-          <div id="card-mesa-${i}" class="glass-card p-4 rounded-2xl text-center space-y-1 border ${isSet ? 'border-amber-400 bg-amber-500/10' : 'border-slate-700'} transition">
-            <p class="text-xs text-slate-400 font-bold uppercase">Mesa ${i}</p>
-            <p id="val-mesa-${i}" class="text-2xl font-black ${isSet ? 'text-amber-400' : 'text-slate-500'}">${val}</p>
+          <div id="card-mesa-${i}" class="glass-card p-4 rounded-2xl text-center space-y-1 border ${
+            isWinner 
+              ? 'border-emerald-400 bg-emerald-500/20 shadow-xl scale-105 ring-2 ring-emerald-400' 
+              : isSet ? 'border-amber-400/50 bg-amber-500/10' : 'border-slate-700'
+          } transition duration-300">
+            <p class="text-xs text-slate-400 font-bold uppercase">Mesa ${i} ${isWinner ? '🏆' : ''}</p>
+            <p id="val-mesa-${i}" class="text-2xl font-black ${isWinner ? 'text-emerald-400' : isSet ? 'text-amber-400' : 'text-slate-500'}">${val}</p>
+          </div>
+        `;
+      }
+    }
+
+    function renderLeaderboard() {
+      const grid = document.getElementById('leaderboard-grid');
+      grid.innerHTML = '';
+      for (let i = 1; i <= TOTAL_TABLES; i++) {
+        grid.innerHTML += `
+          <div class="bg-slate-800/80 p-2 rounded-xl border border-slate-700">
+            <p class="text-xs text-slate-400 font-bold">Mesa ${i}</p>
+            <p class="text-lg font-black text-amber-400">${scores[i]} pts</p>
           </div>
         `;
       }
@@ -256,41 +309,71 @@ const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
         })
         .on('broadcast', { event: 'reset-game' }, () => {
           bidsData = {};
-          renderBetsGrid();
+          for(let i = 1; i <= TOTAL_TABLES; i++) scores[i] = 0;
+          loadQuestion(0);
         })
         .subscribe((status) => {
           if (status === 'SUBSCRIBED') {
             document.getElementById('status-badge').innerText = 'Supabase Conectado';
+            document.getElementById('status-badge').className = "px-4 py-2 rounded-full bg-emerald-950/60 border border-emerald-500/40 text-xs font-bold text-emerald-400";
           }
         });
     }
 
-    function revealAnswer() {
+    function revealWinner() {
       const target = questions[currentQ].target;
-      confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 } });
-      alert(`El Precio Justo exacto es: ${target} ${questions[currentQ].unit}`);
+      const unit = questions[currentQ].unit;
+
+      let winnerTable = null;
+      let closestDiff = Infinity;
+
+      // Calcular la mesa más cercana SIN pasarse
+      Object.keys(bidsData).forEach(tableNum => {
+        const val = bidsData[tableNum];
+        if (val <= target) {
+          const diff = target - val;
+          if (diff < closestDiff) {
+            closestDiff = diff;
+            winnerTable = parseInt(tableNum);
+          }
+        }
+      });
+
+      // Mostrar banner de solución
+      document.getElementById('target-value-display').innerText = `${target.toLocaleString()} ${unit}`;
+      
+      if (winnerTable !== null) {
+        scores[winnerTable] += 100; // Sumar 100 puntos
+        document.getElementById('winner-announcement').innerText = `🎉 ¡Ganador: Mesa ${winnerTable} con una apuesta de ${bidsData[winnerTable]}!`;
+        confetti({ particleCount: 150, spread: 90, origin: { y: 0.5 } });
+      } else {
+        document.getElementById('winner-announcement').innerText = `💥 ¡Todas las mesas se han pasado! Nadie suma puntos.`;
+      }
+
+      renderBetsGrid(winnerTable);
+      renderLeaderboard();
+
+      document.getElementById('reveal-banner').classList.remove('hidden');
+      document.getElementById('btn-reveal').classList.add('hidden');
+      document.getElementById('btn-next').classList.remove('hidden');
     }
 
     function nextQuestion() {
       if (currentQ + 1 < questions.length) {
         loadQuestion(currentQ + 1);
       } else {
-        alert("¡Has completado todas las preguntas!");
+        alert("¡Has completado todas las preguntas del juego!");
       }
     }
 
-    // FUNCIÓN PARA REINICIAR EL JUEGO DESDE LA PANTALLA PRINCIPAL
     async function resetGame() {
-      if (!confirm("¿Seguro que quieres reiniciar el juego de cero? Se borrarán todas las apuestas enviadas.")) return;
+      if (!confirm("¿Seguro que quieres reiniciar el juego? Se borrarán puntuaciones y apuestas.")) return;
       
       clearInterval(timerInterval);
       bidsData = {};
+      for(let i = 1; i <= TOTAL_TABLES; i++) scores[i] = 0;
       loadQuestion(0);
-      
-      document.getElementById('screen-qr-timer').classList.add('hidden');
-      document.getElementById('screen-question').classList.remove('hidden');
 
-      // Notificar reinicio por broadcast
       if (realtimeChannel) {
         await realtimeChannel.send({
           type: 'broadcast',
