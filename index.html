@@ -7,8 +7,8 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+  <!-- Supabase JS Client -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800;900&display=swap');
     body { font-family: 'Outfit', sans-serif; background: #0f172a; color: #f8fafc; }
@@ -29,7 +29,7 @@
         <p class="text-slate-400 text-sm md:text-base font-semibold">Cena de Empresa 2026</p>
       </div>
       <div id="status-badge" class="px-4 py-2 rounded-full bg-slate-800 border border-slate-700 text-xs font-bold text-amber-400">
-        GitHub Pages Conectado
+        Conectando a Supabase...
       </div>
     </header>
 
@@ -132,16 +132,11 @@
   </div>
 
   <script>
-    // Configuración Firebase (Opcional si usas Realtime DB)
-    const firebaseConfig = {
-      databaseURL: "https://precio-justo-cena-default-rtdb.europe-west1.firebasedatabase.app"
-    };
-
-    let app, db;
-    try {
-      app = firebase.initializeApp(firebaseConfig);
-      db = firebase.database();
-    } catch(e) {}
+    // CREDENCIALES DE SUPABASE
+    const SUPABASE_URL = 'https://elpreciojusto.supabase.co'; // Sustituye si tu URL de proyecto difiere
+    const SUPABASE_KEY = 'sb_publishable_Vj0QnLFI8AoU92buxt4NIg_qehwOSUS';
+    
+    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
     const questions = [
       { q: "¿Cuántas tazas de café se han consumido en la oficina durante este año 2026?", target: 4320, unit: "tazas", time: 30 },
@@ -154,26 +149,28 @@
     let timerInterval = null;
     const TOTAL_TABLES = 8;
     let bidsData = {};
+    let realtimeChannel = null;
 
     const urlParams = new URLSearchParams(window.location.search);
     const isPlayer = urlParams.get('mode') === 'player';
 
     window.onload = () => {
+      realtimeChannel = supabaseClient.channel('room-precio-justo');
+
       if (isPlayer) {
         document.getElementById('host-view').classList.add('hidden');
         document.getElementById('player-view').classList.remove('hidden');
         initPlayerUI();
+        realtimeChannel.subscribe();
       } else {
         initHostUI();
       }
     };
 
     function initHostUI() {
-      // Generar URL del jugador con ?mode=player
       const currentUrl = window.location.href.split('?')[0];
       const playerUrl = `${currentUrl}?mode=player`;
 
-      // QR Gigante para la pantalla de tiempo
       new QRCode(document.getElementById("qrcode"), {
         text: playerUrl,
         width: 280,
@@ -185,7 +182,7 @@
 
       renderBetsGrid();
       loadQuestion(0);
-      listenToFirebaseBids();
+      listenToSupabaseBids();
     }
 
     function loadQuestion(idx) {
@@ -199,7 +196,6 @@
     }
 
     function startTimerAndShowQR() {
-      // Cambiar a pantalla QR
       document.getElementById('screen-question').classList.add('hidden');
       document.getElementById('screen-qr-timer').classList.remove('hidden');
 
@@ -213,7 +209,6 @@
 
         if (timeLeft <= 0) {
           clearInterval(timerInterval);
-          // VOLVER AUTOMÁTICAMENTE A LA PANTALLA DE PREGUNTA
           document.getElementById('screen-qr-timer').classList.add('hidden');
           document.getElementById('screen-question').classList.remove('hidden');
         }
@@ -235,17 +230,18 @@
       }
     }
 
-    function listenToFirebaseBids() {
-      if (!db) return;
-      db.ref('bids').on('value', (snapshot) => {
-        const data = snapshot.val();
-        if (data) {
-          Object.values(data).forEach(bid => {
-            bidsData[bid.table] = bid.value;
-          });
+    function listenToSupabaseBids() {
+      realtimeChannel
+        .on('broadcast', { event: 'new-bid' }, (payload) => {
+          const { table, value } = payload.payload;
+          bidsData[table] = value;
           renderBetsGrid();
-        }
-      });
+        })
+        .subscribe((status) => {
+          if (status === 'SUBSCRIBED') {
+            document.getElementById('status-badge').innerText = 'Supabase Conectado';
+          }
+        });
     }
 
     function revealAnswer() {
@@ -256,7 +252,6 @@
 
     function nextQuestion() {
       if (currentQ + 1 < questions.length) {
-        if (db) db.ref('bids').remove();
         loadQuestion(currentQ + 1);
       } else {
         alert("¡Has completado todas las preguntas!");
@@ -283,19 +278,20 @@
       document.getElementById('player-table-title').innerText = `Registrado como: Mesa ${num}`;
     }
 
-    function submitBid() {
-      const val = document.getElementById('player-input').value;
-      if (!val) return;
+    async function submitBid() {
+      const valInput = document.getElementById('player-input');
+      const val = valInput.value;
+      if (!val || !selectedTable) return;
+
+      await realtimeChannel.send({
+        type: 'broadcast',
+        event: 'new-bid',
+        payload: { table: selectedTable, value: parseFloat(val) }
+      });
 
       document.getElementById('player-status').innerText = `✓ Enviado: ${val} para Mesa ${selectedTable}`;
       document.getElementById('player-status').className = "text-center text-sm font-semibold text-emerald-400";
-
-      if (db) {
-        db.ref(`bids/mesa_${selectedTable}`).set({
-          value: parseFloat(val),
-          table: selectedTable
-        });
-      }
+      valInput.value = '';
     }
   </script>
 </body>
