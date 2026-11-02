@@ -18,19 +18,16 @@
     .carousel-fade { transition: opacity 0.8s ease-in-out; }
   </style>
 </head>
-<body class="min-h-screen flex flex-col justify-between p-4 md:p-8">
+<body class="min-h-screen flex flex-col justify-between p-4 md:p-6">
 
   <!-- ================= 1. VISTA PANTALLA PRINCIPAL (TV / PORTÁTIL) ================= -->
-  <div id="host-view" class="max-w-7xl mx-auto w-full flex-1 flex flex-col justify-between">
+  <div id="host-view" class="max-w-[1600px] mx-auto w-full flex-1 flex flex-col justify-between gap-4">
     
     <!-- Header TV -->
-    <header class="flex justify-between items-center border-b border-slate-700 pb-4">
-      <div>
-        <div class="flex items-center gap-3">
-          <h1 class="text-3xl md:text-5xl font-black tracking-tight text-red-500">EL PRECIO JUSTO</h1>
-          <span class="px-3 py-1 bg-amber-500/20 text-amber-400 border border-amber-500/30 rounded-full text-xs font-bold uppercase tracking-wider">Modo Simulación</span>
-        </div>
-        <p class="text-slate-400 text-sm md:text-base font-semibold">Ensayo de Concurso (5 Rondas + Gran Final)</p>
+    <header class="flex justify-between items-center border-b border-slate-700 pb-3">
+      <div class="flex items-center gap-3">
+        <h1 class="text-3xl md:text-4xl font-black tracking-tight text-red-500">EL PRECIO JUSTO</h1>
+        <span class="px-3 py-1 bg-amber-500/20 text-amber-400 border border-amber-500/30 rounded-full text-xs font-bold uppercase tracking-wider">Simulación</span>
       </div>
       <div class="flex items-center gap-3">
         <button onclick="resetGame()" class="px-3 py-1.5 bg-red-600/80 hover:bg-red-600 text-white font-bold text-xs rounded-xl border border-red-500 transition shadow">
@@ -42,93 +39,111 @@
       </div>
     </header>
 
-    <!-- PANTALLA A: PREGUNTA / ESCAPARATE DE PRODUCTOS -->
-    <main id="screen-question" class="my-auto py-6 space-y-6">
-      <div class="glass-card p-6 md:p-8 rounded-3xl space-y-4 shadow-2xl border-2 border-slate-700">
-        <div class="flex justify-between items-center">
-          <span id="question-num" class="px-4 py-1.5 bg-red-500/20 text-red-400 border border-red-500/30 rounded-full text-base font-bold">
-            Ronda 1
-          </span>
-          <span class="text-slate-400 text-sm font-semibold">Prepara tu respuesta con tu mesa</span>
+    <!-- LAYOUT PRINCIPAL: IZQUIERDA JUEGO (75%) | DERECHA RANKING VERTICAL (25%) -->
+    <div class="grid grid-cols-1 lg:grid-cols-4 gap-6 my-auto items-start">
+      
+      <!-- COLUMNA IZQUIERDA: PANTALLAS DEL CONCURSO (3 COLS) -->
+      <div class="lg:col-span-3 space-y-6">
+
+        <!-- PANTALLA A: PREGUNTA / ESCAPARATE -->
+        <main id="screen-question" class="space-y-6">
+          <div class="glass-card p-6 rounded-3xl space-y-3 shadow-2xl border-2 border-slate-700">
+            <div class="flex justify-between items-center">
+              <span id="question-num" class="px-4 py-1.5 bg-red-500/20 text-red-400 border border-red-500/30 rounded-full text-sm font-bold">
+                Ronda 1
+              </span>
+              <span id="final-qualified-tag" class="hidden px-3 py-1 bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 rounded-full text-xs font-bold">
+                🎯 Solo juega la Mesa 1ª Clasificada
+              </span>
+            </div>
+            <h2 id="question-text" class="text-2xl md:text-3xl font-black leading-snug">
+              Cargando pregunta...
+            </h2>
+          </div>
+
+          <!-- Carrusel Visual -->
+          <div class="relative w-full h-64 md:h-72 rounded-3xl overflow-hidden glass-card border-2 border-amber-500/30 shadow-2xl">
+            <img id="carousel-img" src="" alt="Producto" class="w-full h-full object-cover carousel-fade opacity-100">
+            <div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-slate-950 via-slate-950/60 to-transparent p-4 text-center">
+              <p id="carousel-caption" class="text-amber-300 font-bold text-base md:text-lg drop-shadow">Presentación del Lote</p>
+            </div>
+          </div>
+
+          <div class="flex justify-end">
+            <button onclick="triggerAction('start-timer')" class="px-8 py-4 gold-gradient text-slate-950 font-black text-xl rounded-2xl shadow-2xl hover:scale-105 active:scale-95 transition">
+              ⏱️ COMENZAR TIEMPO (MOSTRAR QR)
+            </button>
+          </div>
+        </main>
+
+        <!-- PANTALLA B: QR GIGANTE + CUENTA ATRÁS -->
+        <main id="screen-qr-timer" class="hidden py-4 grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+          <div class="space-y-4 text-center md:text-left">
+            <div class="inline-block px-4 py-1.5 bg-amber-500/10 border border-amber-500/20 rounded-full text-amber-400 font-bold text-xs">
+              ¡TIEMPO CORRIENDO!
+            </div>
+            <h2 class="text-3xl md:text-5xl font-black leading-tight">
+              Envía vuestra <span class="gold-text">Apuesta</span>
+            </h2>
+            <div class="p-6 bg-slate-800/80 rounded-3xl border-2 border-amber-400 inline-block">
+              <p class="text-xs uppercase tracking-widest text-slate-400 font-bold mb-1">Tiempo Restante</p>
+              <p id="big-timer" class="text-6xl font-black text-amber-400">30s</p>
+            </div>
+          </div>
+
+          <div class="flex flex-col items-center justify-center bg-white p-6 rounded-3xl shadow-2xl border-4 border-amber-400">
+            <div id="qrcode" class="p-1"></div>
+            <p class="text-slate-900 font-black text-sm mt-3 tracking-wide uppercase">Escanear para responder</p>
+          </div>
+        </main>
+
+        <!-- PANTALLA C: RESULTADOS DE LA RONDA -->
+        <main id="screen-results" class="hidden space-y-6">
+          <div id="reveal-banner" class="hidden glass-card p-6 rounded-3xl border-2 border-emerald-500/50 bg-emerald-950/30 text-center space-y-2">
+            <p class="text-xs font-bold text-emerald-400 uppercase tracking-widest">El Precio Justo Exacto Es:</p>
+            <p id="target-value-display" class="text-4xl font-black text-amber-400">---</p>
+            <p id="winner-announcement" class="text-xl font-bold text-white pt-1">---</p>
+          </div>
+
+          <div>
+            <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">Apuestas de la Ronda:</h3>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-3" id="bets-grid"></div>
+          </div>
+
+          <div class="flex gap-4 justify-end">
+            <button id="btn-reveal" onclick="triggerAction('reveal')" class="px-8 py-4 bg-emerald-600 hover:bg-emerald-500 text-white font-black text-xl rounded-2xl shadow-xl hover:scale-105 active:scale-95 transition">
+              🏆 REVELAR CIFRA Y GANADOR
+            </button>
+            <button id="btn-next" onclick="triggerAction('next-question')" class="hidden px-8 py-4 bg-slate-700 hover:bg-slate-600 text-white font-bold text-xl rounded-2xl transition">
+              ➡️ Siguiente Fase
+            </button>
+          </div>
+        </main>
+
+      </div>
+
+      <!-- COLUMNA DERECHA: RANKING VERTICAL PERMANENTE (1 COL) -->
+      <aside class="lg:col-span-1 glass-card p-5 rounded-3xl border-2 border-amber-500/30 flex flex-col justify-between space-y-4">
+        <div>
+          <div class="border-b border-slate-700 pb-3 mb-4 flex items-center justify-between">
+            <h3 class="text-lg font-black text-amber-400 uppercase tracking-wider flex items-center gap-2">
+              🏆 Ranking
+            </h3>
+            <span class="text-[10px] text-slate-400 font-semibold uppercase">Acumulado</span>
+          </div>
+          
+          <!-- Lista Vertical de Mesas Ordenadas -->
+          <div class="space-y-2.5 max-h-[500px] overflow-y-auto pr-1" id="leaderboard-vertical"></div>
         </div>
-        <h2 id="question-text" class="text-2xl md:text-4xl font-black leading-snug">
-          Cargando pregunta de prueba...
-        </h2>
-      </div>
 
-      <!-- Contenedor Carrusel Visual -->
-      <div class="relative w-full h-64 md:h-80 rounded-3xl overflow-hidden glass-card border-2 border-amber-500/30 shadow-2xl">
-        <img id="carousel-img" src="" alt="Producto" class="w-full h-full object-cover carousel-fade opacity-100">
-        <div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-slate-950 via-slate-950/60 to-transparent p-4 text-center">
-          <p id="carousel-caption" class="text-amber-300 font-bold text-lg md:text-xl drop-shadow">Presentación del Lote</p>
+        <div class="p-3 bg-slate-900/60 rounded-2xl border border-slate-800 text-center">
+          <p class="text-[11px] text-slate-400 font-semibold">
+            Solo la <span class="text-amber-400 font-bold">Mesa 1ª Clasificada</span> pasa a la Gran Final de la Cesta.
+          </p>
         </div>
-      </div>
+      </aside>
 
-      <div class="flex justify-end">
-        <button onclick="triggerAction('start-timer')" class="px-10 py-5 gold-gradient text-slate-950 font-black text-2xl rounded-2xl shadow-2xl hover:scale-105 active:scale-95 transition">
-          ⏱️ COMENZAR TIEMPO (MOSTRAR QR)
-        </button>
-      </div>
-    </main>
-
-    <!-- PANTALLA B: QR GIGANTE + CUENTA ATRÁS -->
-    <main id="screen-qr-timer" class="hidden my-auto py-6 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-      <div class="space-y-6 text-center lg:text-left">
-        <div class="inline-block px-4 py-2 bg-amber-500/10 border border-amber-500/20 rounded-full text-amber-400 font-bold text-sm">
-          ¡TIEMPO CORRIENDO!
-        </div>
-        <h2 class="text-4xl md:text-6xl font-black leading-tight">
-          Escanea y envía vuestra <span class="gold-text">Apuesta</span>
-        </h2>
-        <p class="text-slate-300 text-lg md:text-xl">
-          Selecciona tu mesa en el móvil e introduce la cifra antes de que el reloj llegue a cero.
-        </p>
-        
-        <div class="p-6 bg-slate-800/80 rounded-3xl border-2 border-amber-400 inline-block">
-          <p class="text-xs uppercase tracking-widest text-slate-400 font-bold mb-1">Tiempo Restante</p>
-          <p id="big-timer" class="text-7xl font-black text-amber-400">30s</p>
-        </div>
-      </div>
-
-      <div class="flex flex-col items-center justify-center bg-white p-8 rounded-3xl shadow-2xl border-4 border-amber-400">
-        <div id="qrcode" class="p-2"></div>
-        <p class="text-slate-900 font-black text-lg mt-4 tracking-wide uppercase">Escanear para responder</p>
-      </div>
-    </main>
-
-    <!-- PANTALLA C: RESULTADOS, GANADOR Y RANKING GENERAL -->
-    <main id="screen-results" class="hidden my-auto py-4 space-y-6">
-      <div id="reveal-banner" class="hidden glass-card p-6 rounded-3xl border-2 border-emerald-500/50 bg-emerald-950/30 text-center space-y-2">
-        <p class="text-sm font-bold text-emerald-400 uppercase tracking-widest">El Precio Justo Exacto Es:</p>
-        <p id="target-value-display" class="text-5xl font-black text-amber-400">---</p>
-        <p id="winner-announcement" class="text-2xl font-bold text-white pt-2">---</p>
-      </div>
-
-      <div>
-        <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">Apuestas de la Ronda:</h3>
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4" id="bets-grid"></div>
-      </div>
-
-      <!-- RANKING DE PUNTUACIONES -->
-      <div class="glass-card p-6 rounded-3xl border-2 border-amber-500/30">
-        <div class="flex justify-between items-center mb-4">
-          <h3 class="text-lg font-black text-amber-400 uppercase tracking-wider flex items-center gap-2">
-            🏆 Clasificación General (Ranking)
-          </h3>
-          <span class="text-xs text-slate-400 font-semibold">Actualizado tras la ronda</span>
-        </div>
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-3" id="leaderboard-grid"></div>
-      </div>
-
-      <div class="flex gap-4 justify-end">
-        <button id="btn-reveal" onclick="triggerAction('reveal')" class="px-8 py-4 bg-emerald-600 hover:bg-emerald-500 text-white font-black text-xl rounded-2xl shadow-xl hover:scale-105 active:scale-95 transition">
-          🏆 REVELAR CIFRA Y GANADOR
-        </button>
-        <button id="btn-next" onclick="triggerAction('next-question')" class="hidden px-8 py-4 bg-slate-700 hover:bg-slate-600 text-white font-bold text-xl rounded-2xl transition">
-          ➡️ Siguiente Ronda
-        </button>
-      </div>
-    </main>
+    </div>
 
   </div>
 
@@ -180,7 +195,7 @@
       </button>
 
       <button onclick="sendRemoteCommand('next-question')" class="w-full py-5 bg-slate-700 hover:bg-slate-600 text-white font-bold text-lg rounded-2xl active:scale-95 transition flex items-center justify-center gap-3">
-        ➡️ SIGUIENTE RONDA
+        ➡️ SIGUIENTE FASE
       </button>
     </div>
 
@@ -197,46 +212,31 @@
     
     const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-    // Banco de Preguntas del Modo Simulación: 5 Rondas + Gran Final Cesta de Navidad
+    // Banco de Preguntas (5 rondas + Desempate opcional + Gran Final)
     const questions = [
-      { 
-        q: "Ronda 1: ¿Cuántas tazas de café se consumen en la oficina en un año entero?", 
-        target: 4320, unit: "tazas", time: 30, isFinal: false,
-        images: [{ url: "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=800", caption: "El motor de la mañana" }]
-      },
-      { 
-        q: "Ronda 2: ¿Cuántos kilómetros suman en total los coches de empresa este año?", 
-        target: 125000, unit: "km", time: 30, isFinal: false,
-        images: [{ url: "https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?w=800", caption: "Flota y trayectos de empresa" }]
-      },
-      { 
-        q: "Ronda 3: ¿Cuántos folios y documentos se han impreso en la oficina durante 2026?", 
-        target: 38500, unit: "folios", time: 30, isFinal: false,
-        images: [{ url: "https://images.unsplash.com/photo-1586075010923-2dd4570fb338?w=800", caption: "Consumo de papelería" }]
-      },
-      { 
-        q: "Ronda 4: ¿Cuántas reuniones virtuales / llamadas Teams se han realizado en total?", 
-        target: 1840, unit: "reuniones", time: 30, isFinal: false,
-        images: [{ url: "https://images.unsplash.com/photo-1588196749597-9ff075ee6b5b?w=800", caption: "Horas de videoconferencia" }]
-      },
-      { 
-        q: "Ronda 5: ¿Cuántos correos electrónicos ha recibido el dominio principal este año?", 
-        target: 92400, unit: "emails", time: 30, isFinal: false,
-        images: [{ url: "https://images.unsplash.com/photo-1557200134-90327ee9fafa?w=800", caption: "Tráfico de correo de la compañía" }]
-      },
-      { 
-        q: "💥 GRAN FINAL 💥: ¿Cuál es el PRECIO JUSTO EXACTO del ticket total de la Cesta de Navidad (8-9 productos)?", 
-        target: 234.85, unit: "€", time: 45, isFinal: true, margin: 3.0,
-        images: [
-          { url: "https://images.unsplash.com/photo-1544025162-d76694265947?w=800", caption: "Producto 1: Lote de Ibéricos y Embutidos" },
-          { url: "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=800", caption: "Producto 2: Vinos y Licor Tradicional" },
-          { url: "https://images.unsplash.com/photo-1559181567-c3190ca9959b?w=800", caption: "Producto 3: Turrones y Conservas Gourmet" },
-          { url: "https://images.unsplash.com/photo-1513201099705-a9746e1e201f?w=800", caption: "¡Cesta Completa para repartir en la Mesa Ganadora!" }
-        ]
-      }
+      { id: 1, type: 'normal', q: "Ronda 1: ¿Cuántas tazas de café se consumen en la oficina en un año entero?", target: 4320, unit: "tazas", time: 30, images: [{ url: "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=800", caption: "El motor de la mañana" }] },
+      { id: 2, type: 'normal', q: "Ronda 2: ¿Cuántos kilómetros suman en total los coches de empresa este año?", target: 125000, unit: "km", time: 30, images: [{ url: "https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?w=800", caption: "Flota y trayectos de empresa" }] },
+      { id: 3, type: 'normal', q: "Ronda 3: ¿Cuántos folios y documentos se han impreso en la oficina durante 2026?", target: 38500, unit: "folios", time: 30, images: [{ url: "https://images.unsplash.com/photo-1586075010923-2dd4570fb338?w=800", caption: "Consumo de papelería" }] },
+      { id: 4, type: 'normal', q: "Ronda 4: ¿Cuántas reuniones virtuales / llamadas Teams se han realizado en total?", target: 1840, unit: "reuniones", time: 30, images: [{ url: "https://images.unsplash.com/photo-1588196749597-9ff075ee6b5b?w=800", caption: "Horas de videoconferencia" }] },
+      { id: 5, type: 'normal', q: "Ronda 5: ¿Cuántos correos electrónicos ha recibido el dominio principal este año?", target: 92400, unit: "emails", time: 30, images: [{ url: "https://images.unsplash.com/photo-1557200134-90327ee9fafa?w=800", caption: "Tráfico de correo de la compañía" }] }
     ];
 
-    let currentQ = 0;
+    const tieBreakerQuestion = {
+      id: 'tie', type: 'tiebreaker', q: "⚡ RONDA DE DESEMPATE ⚡: ¿En qué año exacto se fundó la primera sede principal de la entidad?", target: 1966, unit: "año", time: 20, images: [{ url: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800", caption: "Pregunta rápida de desempate" }]
+    };
+
+    const finalBasketQuestion = {
+      id: 'final', type: 'final', q: "💥 GRAN FINAL 💥: ¿Cuál es el PRECIO JUSTO EXACTO del ticket de la Cesta de Navidad (8-9 productos)?", target: 234.85, unit: "€", time: 45, margin: 3.0,
+      images: [
+        { url: "https://images.unsplash.com/photo-1544025162-d76694265947?w=800", caption: "Producto 1: Lote de Ibéricos y Embutidos" },
+        { url: "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=800", caption: "Producto 2: Vinos y Licor Tradicional" },
+        { url: "https://images.unsplash.com/photo-1559181567-c3190ca9959b?w=800", caption: "Producto 3: Turrones y Conservas Gourmet" },
+        { url: "https://images.unsplash.com/photo-1513201099705-a9746e1e201f?w=800", caption: "¡Cesta Completa para la Mesa Clasificada!" }
+      ]
+    };
+
+    let activeQuestionList = [...questions];
+    let currentQIdx = 0;
     let selectedTable = null;
     let timerInterval = null;
     let carouselInterval = null;
@@ -244,6 +244,7 @@
     const TOTAL_TABLES = 8;
     let bidsData = {};
     let scores = {};
+    let finalQualifiedTable = null;
     let realtimeChannel = null;
 
     for(let i = 1; i <= TOTAL_TABLES; i++) scores[i] = 0;
@@ -252,7 +253,7 @@
     const mode = urlParams.get('mode');
 
     window.onload = () => {
-      realtimeChannel = supabaseClient.channel('room-simulacion-precio-justo', {
+      realtimeChannel = supabaseClient.channel('room-simulacion-precio-justo-v2', {
         config: { broadcast: { self: true, ack: false } }
       });
 
@@ -276,7 +277,7 @@
 
       document.getElementById("qrcode").innerHTML = "";
       new QRCode(document.getElementById("qrcode"), {
-        text: playerUrl, width: 280, height: 280,
+        text: playerUrl, width: 240, height: 240,
         colorDark: "#0f172a", colorLight: "#ffffff",
         correctLevel: QRCode.CorrectLevel.H
       });
@@ -286,7 +287,7 @@
     }
 
     function loadQuestion(idx) {
-      currentQ = idx;
+      currentQIdx = idx;
       bidsData = {};
       
       document.getElementById('screen-qr-timer').classList.add('hidden');
@@ -297,14 +298,26 @@
       document.getElementById('btn-reveal').classList.remove('hidden');
       document.getElementById('btn-next').classList.add('hidden');
 
-      const q = questions[idx];
-      document.getElementById('question-num').innerText = q.isFinal ? "💥 GRAN FINAL 💥" : `Ronda ${idx + 1} de 5`;
+      const q = activeQuestionList[idx];
+      
+      if (q.type === 'final') {
+        document.getElementById('question-num').innerText = "💥 GRAN FINAL 💥";
+        document.getElementById('final-qualified-tag').classList.remove('hidden');
+        document.getElementById('final-qualified-tag').innerText = `🎯 Juega en exclusiva: Mesa ${finalQualifiedTable}`;
+      } else if (q.type === 'tiebreaker') {
+        document.getElementById('question-num').innerText = "⚡ DESEMPATE ⚡";
+        document.getElementById('final-qualified-tag').classList.add('hidden');
+      } else {
+        document.getElementById('question-num').innerText = `Ronda ${idx + 1} de 5`;
+        document.getElementById('final-qualified-tag').classList.add('hidden');
+      }
+
       document.getElementById('question-text').innerText = q.q;
       document.getElementById('big-timer').innerText = `${q.time}s`;
 
       startCarousel(q.images);
       renderBetsGrid();
-      renderLeaderboard();
+      renderLeaderboardVertical();
     }
 
     function startCarousel(imgList) {
@@ -335,7 +348,7 @@
       document.getElementById('screen-question').classList.add('hidden');
       document.getElementById('screen-qr-timer').classList.remove('hidden');
 
-      let timeLeft = questions[currentQ].time;
+      let timeLeft = activeQuestionList[currentQIdx].time;
       document.getElementById('big-timer').innerText = `${timeLeft}s`;
 
       clearInterval(timerInterval);
@@ -355,7 +368,13 @@
     function renderBetsGrid(winningTable = null) {
       const grid = document.getElementById('bets-grid');
       grid.innerHTML = '';
+      
+      const currentQ = activeQuestionList[currentQIdx];
+
       for (let i = 1; i <= TOTAL_TABLES; i++) {
+        // En la final, solo mostramos la mesa clasificada
+        if (currentQ.type === 'final' && i !== finalQualifiedTable) continue;
+
         const val = bidsData[i] !== undefined ? bidsData[i] : '---';
         const isSet = bidsData[i] !== undefined;
         const isWinner = winningTable === i;
@@ -373,43 +392,49 @@
       }
     }
 
-    // RENDERIZADO DEL RANKING REORDENADO DE MAYOR A MENOR PUNTUACIÓN
-    function renderLeaderboard() {
-      const grid = document.getElementById('leaderboard-grid');
-      grid.innerHTML = '';
+    // DIBUJA EL RANKING VERTICAL ORDENADO EN LA COLUMNA DERECHA
+    function renderLeaderboardVertical() {
+      const container = document.getElementById('leaderboard-vertical');
+      container.innerHTML = '';
 
-      // Crear array ordenado por puntos
       const sortedTables = Object.keys(scores)
         .map(t => ({ table: parseInt(t), pts: scores[t] }))
         .sort((a, b) => b.pts - a.pts);
 
       sortedTables.forEach((item, index) => {
         let badge = `#${index + 1}`;
-        let bgStyle = "bg-slate-800/80 border-slate-700";
+        let bgStyle = "bg-slate-800/80 border-slate-700/80";
 
-        if (index === 0 && item.pts > 0) {
+        if (index === 0) {
           badge = "🥇 1º";
-          bgStyle = "bg-amber-500/20 border-amber-400 ring-1 ring-amber-400/50";
-        } else if (index === 1 && item.pts > 0) {
+          bgStyle = "bg-amber-500/20 border-amber-400 ring-1 ring-amber-400/40";
+        } else if (index === 1) {
           badge = "🥈 2º";
-          bgStyle = "bg-slate-300/20 border-slate-300";
-        } else if (index === 2 && item.pts > 0) {
+          bgStyle = "bg-slate-300/10 border-slate-400/50";
+        } else if (index === 2) {
           badge = "🥉 3º";
-          bgStyle = "bg-amber-700/20 border-amber-600";
+          bgStyle = "bg-amber-700/20 border-amber-600/50";
         }
 
-        grid.innerHTML += `
-          <div class="${bgStyle} p-3 rounded-2xl border text-center transition-all duration-300">
-            <span class="text-xs font-black text-slate-400 uppercase tracking-widest block">${badge}</span>
-            <p class="text-base font-bold text-white mt-0.5">Mesa ${item.table}</p>
-            <p class="text-xl font-black text-amber-400 mt-1">${item.pts} <span class="text-xs text-slate-400">pts</span></p>
+        const isQualified = finalQualifiedTable === item.table;
+
+        container.innerHTML += `
+          <div class="${bgStyle} p-3 rounded-2xl border flex items-center justify-between transition-all duration-300">
+            <div class="flex items-center gap-3">
+              <span class="text-xs font-black text-amber-400 w-8 text-center">${badge}</span>
+              <div>
+                <p class="text-sm font-bold text-white leading-tight">Mesa ${item.table}</p>
+                ${isQualified ? '<span class="text-[10px] text-emerald-400 font-extrabold uppercase">Finalista</span>' : ''}
+              </div>
+            </div>
+            <p class="text-base font-black text-amber-400">${item.pts} <span class="text-[10px] text-slate-400">pts</span></p>
           </div>
         `;
       });
     }
 
     function revealWinner() {
-      const q = questions[currentQ];
+      const q = activeQuestionList[currentQIdx];
       const target = q.target;
       const unit = q.unit;
 
@@ -418,20 +443,25 @@
 
       Object.keys(bidsData).forEach(tableNum => {
         const val = bidsData[tableNum];
-        if (q.isFinal) {
-          // Gran Final: Margen +-3€
+        const tNum = parseInt(tableNum);
+
+        // En la final, solo evaluar la mesa clasificada
+        if (q.type === 'final' && tNum !== finalQualifiedTable) return;
+
+        if (q.type === 'final') {
+          // Final: Margen +-3€
           const diff = Math.abs(target - val);
           if (diff <= (q.margin || 3.0) && diff < closestDiff) {
             closestDiff = diff;
-            winnerTable = parseInt(tableNum);
+            winnerTable = tNum;
           }
         } else {
-          // Rondas Normales: Sin pasarse
+          // Rondas Normales y Desempate: Sin pasarse
           if (val <= target) {
             const diff = target - val;
             if (diff < closestDiff) {
               closestDiff = diff;
-              winnerTable = parseInt(tableNum);
+              winnerTable = tNum;
             }
           }
         }
@@ -440,18 +470,18 @@
       document.getElementById('target-value-display').innerText = `${target.toLocaleString()} ${unit}`;
       
       if (winnerTable !== null) {
-        const ptsAwarded = q.isFinal ? 500 : 100;
+        const ptsAwarded = q.type === 'final' ? 500 : 100;
         scores[winnerTable] += ptsAwarded;
-        document.getElementById('winner-announcement').innerText = `🎉 ¡Ganador Ronda: Mesa ${winnerTable} con ${bidsData[winnerTable]}! (+${ptsAwarded} pts)`;
+        document.getElementById('winner-announcement').innerText = `🎉 ¡Ganador: Mesa ${winnerTable} con ${bidsData[winnerTable]}! (+${ptsAwarded} pts)`;
         confetti({ particleCount: 200, spread: 100, origin: { y: 0.5 } });
       } else {
-        document.getElementById('winner-announcement').innerText = q.isFinal 
-          ? `💥 Ninguna mesa ha entrado en el margen de ±${q.margin}€. ¡Cláusula de flexibilidad del presentador!` 
+        document.getElementById('winner-announcement').innerText = q.type === 'final'
+          ? `💥 La Mesa ${finalQualifiedTable} no ha entrado en el margen de ±${q.margin}€. ¡Se requiere decisión del presentador!` 
           : `💥 ¡Todas las mesas se han pasado! Nadie suma puntos en esta ronda.`;
       }
 
       renderBetsGrid(winnerTable);
-      renderLeaderboard();
+      renderLeaderboardVertical();
 
       document.getElementById('reveal-banner').classList.remove('hidden');
       document.getElementById('btn-reveal').classList.add('hidden');
@@ -459,8 +489,40 @@
     }
 
     function nextQuestion() {
-      if (currentQ + 1 < questions.length) {
-        loadQuestion(currentQ + 1);
+      // Al terminar las 5 rondas normales, verificar empate en la 1ª posición
+      if (currentQIdx === 4 && activeQuestionList.length === 5) {
+        const sorted = Object.keys(scores)
+          .map(t => ({ table: parseInt(t), pts: scores[t] }))
+          .sort((a, b) => b.pts - a.pts);
+
+        const topPts = sorted[0].pts;
+        const topTables = sorted.filter(item => item.pts === topPts && topPts > 0);
+
+        if (topTables.length > 1) {
+          // EMPATE EN EL 1º PUESTO: Se inserta la ronda de desempate
+          alert(`¡Hay un empate en el 1º puesto entre ${topTables.length} mesas! Pasamos a la Ronda de Desempate.`);
+          activeQuestionList.push(tieBreakerQuestion);
+          activeQuestionList.push(finalBasketQuestion);
+        } else if (topTables.length === 1) {
+          // GANADOR ÚNICO EN EL RANKING: Pasa directo a la Gran Final
+          finalQualifiedTable = topTables[0].table;
+          activeQuestionList.push(finalBasketQuestion);
+        } else {
+          // Si nadie puntúa, se clasifica la Mesa 1 por defecto para la simulación
+          finalQualifiedTable = 1;
+          activeQuestionList.push(finalBasketQuestion);
+        }
+      } 
+      // Si venimos de la ronda de desempate, determinar el ganador para la final
+      else if (activeQuestionList[currentQIdx].type === 'tiebreaker') {
+        const sorted = Object.keys(scores)
+          .map(t => ({ table: parseInt(t), pts: scores[t] }))
+          .sort((a, b) => b.pts - a.pts);
+        finalQualifiedTable = sorted[0].table;
+      }
+
+      if (currentQIdx + 1 < activeQuestionList.length) {
+        loadQuestion(currentQIdx + 1);
       } else {
         alert("¡Has completado el concurso de simulación!");
       }
@@ -470,6 +532,8 @@
       clearInterval(timerInterval);
       clearInterval(carouselInterval);
       bidsData = {};
+      finalQualifiedTable = null;
+      activeQuestionList = [...questions];
       for(let i = 1; i <= TOTAL_TABLES; i++) scores[i] = 0;
       loadQuestion(0);
     }
