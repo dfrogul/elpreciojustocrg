@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cena de Navidad 2026 - Reserva de Plaza</title>
+  <title>Cena de Navidad 2026 - Registro</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
     :root {
       --bg: #0f172a;
       --card-bg: #1e293b;
       --accent-red: #dc2626;
-      --accent-red-hover: #b91c1c;
       --accent-gold: #f59e0b;
       --text-main: #f8fafc;
       --text-muted: #94a3b8;
@@ -18,14 +18,10 @@
       --warning: #f59e0b;
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       background-color: var(--bg);
       color: var(--text-main);
       display: flex;
@@ -41,43 +37,22 @@
       background-color: var(--card-bg);
       border-radius: 16px;
       padding: 32px 24px;
-      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
       border: 1px solid var(--border);
       position: relative;
-      overflow: hidden;
     }
 
     .container::before {
       content: '';
       position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
+      top: 0; left: 0; right: 0;
       height: 4px;
       background: linear-gradient(90deg, var(--accent-red), var(--accent-gold), var(--accent-red));
     }
 
-    .header {
-      text-align: center;
-      margin-bottom: 24px;
-    }
-
-    .header h1 {
-      font-size: 1.75rem;
-      font-weight: 800;
-      color: var(--text-main);
-      letter-spacing: -0.025em;
-      margin-bottom: 6px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-    }
-
-    .header p {
-      color: var(--text-muted);
-      font-size: 0.9rem;
-    }
+    .header { text-align: center; margin-bottom: 24px; }
+    .header h1 { font-size: 1.75rem; font-weight: 800; margin-bottom: 6px; }
+    .header p { color: var(--text-muted); font-size: 0.9rem; }
 
     .counter-card {
       background: rgba(15, 23, 42, 0.6);
@@ -86,39 +61,48 @@
       padding: 16px;
       text-align: center;
       margin-bottom: 24px;
-      position: relative;
     }
 
-    .counter-value {
-      font-size: 2.25rem;
-      font-weight: 800;
-      color: var(--accent-gold);
-      line-height: 1.1;
-    }
+    .counter-value { font-size: 2.25rem; font-weight: 800; color: var(--accent-gold); line-height: 1.1; }
+    .counter-label { font-size: 0.8rem; text-transform: uppercase; color: var(--text-muted); margin-top: 4px; }
 
-    .counter-label {
-      font-size: 0.8rem;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      color: var(--text-muted);
-      margin-top: 4px;
-    }
-
-    .form-group {
-      margin-bottom: 18px;
-    }
-
-    label {
+    .img-preview {
+      width: 100%;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      margin-bottom: 20px;
       display: block;
-      font-size: 0.85rem;
-      font-weight: 600;
-      margin-bottom: 6px;
-      color: var(--text-main);
     }
 
-    input[type="text"],
-    input[type="email"],
-    select {
+    .info-card {
+      background: rgba(15, 23, 42, 0.4);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px;
+      margin-bottom: 24px;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .info-card h3 {
+      color: var(--accent-gold);
+      font-size: 0.9rem;
+      margin-bottom: 8px;
+    }
+
+    .info-card ul {
+      padding-left: 18px;
+    }
+
+    .info-card li {
+      margin-bottom: 4px;
+    }
+
+    .form-group { margin-bottom: 18px; }
+    label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 6px; }
+
+    input[type="text"], input[type="email"], select {
       width: 100%;
       padding: 12px 14px;
       background-color: rgba(15, 23, 42, 0.8);
@@ -127,12 +111,9 @@
       color: var(--text-main);
       font-size: 0.95rem;
       outline: none;
-      transition: border-color 0.2s;
     }
 
-    input:focus, select:focus {
-      border-color: var(--accent-gold);
-    }
+    input:focus, select:focus { border-color: var(--accent-gold); }
 
     .checkbox-card {
       display: flex;
@@ -146,30 +127,9 @@
       cursor: pointer;
     }
 
-    .checkbox-card input[type="checkbox"] {
-      width: 18px;
-      height: 18px;
-      margin-top: 2px;
-      accent-color: var(--accent-gold);
-      cursor: pointer;
-    }
-
-    .checkbox-info {
-      flex: 1;
-    }
-
-    .checkbox-title {
-      font-size: 0.9rem;
-      font-weight: 700;
-      color: var(--accent-gold);
-      margin-bottom: 2px;
-    }
-
-    .checkbox-desc {
-      font-size: 0.78rem;
-      color: var(--text-muted);
-      line-height: 1.3;
-    }
+    .checkbox-card input[type="checkbox"] { width: 18px; height: 18px; margin-top: 2px; accent-color: var(--accent-gold); }
+    .checkbox-title { font-size: 0.9rem; font-weight: 700; color: var(--accent-gold); margin-bottom: 2px; }
+    .checkbox-desc { font-size: 0.78rem; color: var(--text-muted); }
 
     .btn-submit {
       width: 100%;
@@ -181,16 +141,9 @@
       font-size: 1rem;
       font-weight: 700;
       cursor: pointer;
-      transition: background-color 0.2s, transform 0.1s;
     }
 
-    .btn-submit:hover {
-      background-color: var(--accent-red-hover);
-    }
-
-    .btn-submit:active {
-      transform: scale(0.99);
-    }
+    .btn-submit:disabled { background-color: var(--border); cursor: not-allowed; }
 
     .alert {
       margin-top: 18px;
@@ -199,44 +152,9 @@
       font-size: 0.88rem;
       text-align: center;
       display: none;
-      line-height: 1.4;
     }
-
-    .alert-success {
-      background-color: rgba(16, 185, 129, 0.15);
-      border: 1px solid var(--success);
-      color: #34d399;
-    }
-
-    .alert-warning {
-      background-color: rgba(245, 158, 11, 0.15);
-      border: 1px solid var(--warning);
-      color: #fbbf24;
-    }
-
-    .sim-controls {
-      margin-top: 30px;
-      padding-top: 16px;
-      border-top: 1px dashed var(--border);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .sim-btn {
-      background: transparent;
-      border: 1px solid var(--border);
-      color: var(--text-muted);
-      padding: 6px 12px;
-      border-radius: 6px;
-      font-size: 0.75rem;
-      cursor: pointer;
-    }
-
-    .sim-btn:hover {
-      color: var(--text-main);
-      border-color: var(--text-muted);
-    }
+    .alert-success { background-color: rgba(16, 185, 129, 0.15); border: 1px solid var(--success); color: #34d399; }
+    .alert-warning { background-color: rgba(245, 158, 11, 0.15); border: 1px solid var(--warning); color: #fbbf24; }
   </style>
 </head>
 <body>
@@ -244,43 +162,61 @@
 <div class="container">
   <div class="header">
     <h1>🎄 Cena de Navidad</h1>
-    <p>Inscripción de plazas y selección de menú</p>
+    <p>Parrillada Caminito - Reserva de Plaza</p>
   </div>
 
   <div class="counter-card">
-    <div id="plazasDisplay" class="counter-value">12</div>
+    <div id="plazasDisplay" class="counter-value">--</div>
     <div id="counterLabel" class="counter-label">Plazas disponibles (Máximo 55)</div>
   </div>
 
-  <form id="previewForm" onsubmit="handleSubmit(event)">
+  <!-- Imagen del menú subida al repositorio -->
+  <img src="menu-precios.png" alt="Menús Parrillada Caminito" class="img-preview">
+
+  <div class="info-card">
+    <h3>📌 Condiciones del Asador:</h3>
+    <ul>
+      <li>Entrantes y primeros platos compartidos para todo el grupo[cite: 3].</li>
+      <li>Vino incluido hasta 1/2 botella por persona[cite: 3].</li>
+      <li><strong>Cancelaciones:</strong> Avisar con al menos 24h de antelación[cite: 3].</li>
+      <li><strong>Horario:</strong> Salida a la 1:00h como máximo[cite: 3].</li>
+    </ul>
+  </div>
+
+  <!-- Imagen con las normas del local -->
+  <img src="condiciones-caminito.png" alt="Condiciones del Asador Caminito" class="img-preview">
+
+  <form id="registroForm">
     <div class="form-group">
       <label for="nombre">Nombre y Apellidos *</label>
       <input type="text" id="nombre" placeholder="Ej: Denis Fernández" required>
     </div>
 
     <div class="form-group">
-      <label for="email">Correo Corporativo *</label>
-      <input type="email" id="email" placeholder="tu.nombre@empresa.es" required>
+      <label for="email">Correo electrónico *</label>
+      <input type="email" id="email" placeholder="tu.email@empresa.es" required>
     </div>
 
     <div class="form-group">
       <label for="menu">Elección de Menú *</label>
       <select id="menu" required>
-        <option value="">-- Selecciona tu opción --</option>
-        <option value="carne">Carne</option>
-        <option value="pescado">Pescado</option>
-        <option value="vegetariano">Vegetariano / Vegano</option>
+        <option value="">-- Selecciona una opción --</option>
+        <option value="carne">Menú Grupo (Parrilla de Carne)</option>
+        <option value="pescado_bacalao">Pescado: Bacalao a la brasa[cite: 2]</option>
+        <option value="pescado_pulpo">Pescado: Pulpo a la brasa[cite: 2]</option>
+        <option value="vegetariano">Opción Vegetariana / Vegana (25€)[cite: 2]</option>
+        <option value="infantil">Menú Infantil (&lt;12 años)[cite: 2]</option>
       </select>
     </div>
 
     <div class="form-group">
       <label for="alergias">Intolerancias / Alergias</label>
-      <input type="text" id="alergias" placeholder="Sin gluten, marisco, fructosa, etc.">
+      <input type="text" id="alergias" placeholder="Sin gluten, marisco, lactosa, etc.">
     </div>
 
     <label class="checkbox-card">
       <input type="checkbox" id="juego" checked>
-      <div class="checkbox-info">
+      <div>
         <div class="checkbox-title">Participar en "El Precio Justo" (5€) 🎁</div>
         <div class="checkbox-desc">Entras en la puja en vivo por la Cesta de Navidad durante la cena.</div>
       </div>
@@ -290,27 +226,30 @@
   </form>
 
   <div id="alertBox" class="alert"></div>
-
-  <!-- Controles interactivos para simulación -->
-  <div class="sim-controls">
-    <span style="font-size: 0.75rem; color: var(--text-muted);">Simulador de Aforo:</span>
-    <div>
-      <button class="sim-btn" onclick="setPlazas(12)">12 Libres</button>
-      <button class="sim-btn" onclick="setPlazas(0)">Lleno (0 Libres)</button>
-    </div>
-  </div>
 </div>
 
 <script>
-  let plazasLibres = 12;
+  const SUPABASE_URL = 'https://TU-PROYECTO.supabase.co';
+  const SUPABASE_ANON_KEY = 'TU-ANON-KEY';
+  const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-  function updateUI() {
+  const MAX_PLAZAS = 55;
+
+  async function actualizarAforo() {
+    const { count, error } = await supabase
+      .from('asistentes')
+      .select('*', { count: 'exact', head: true })
+      .eq('estado', 'confirmado');
+
+    if (error) return;
+
+    const restantes = MAX_PLAZAS - count;
     const display = document.getElementById('plazasDisplay');
     const label = document.getElementById('counterLabel');
     const btn = document.getElementById('btnSubmit');
 
-    if (plazasLibres > 0) {
-      display.innerText = plazasLibres;
+    if (restantes > 0) {
+      display.innerText = restantes;
       display.style.color = "var(--accent-gold)";
       label.innerText = "Plazas disponibles (Máximo 55)";
       btn.innerText = "Confirmar Mi Reserva";
@@ -318,33 +257,50 @@
     } else {
       display.innerText = "0";
       display.style.color = "var(--accent-red)";
-      label.innerText = "Aforo principal completo (55/55)";
+      label.innerText = "Aforo completo (55/55)";
       btn.innerText = "Inscribirme en Lista de Espera";
       btn.style.backgroundColor = "var(--warning)";
     }
   }
 
-  function setPlazas(val) {
-    plazasLibres = val;
-    document.getElementById('alertBox').style.display = 'none';
-    updateUI();
-  }
-
-  function handleSubmit(e) {
+  document.getElementById('registroForm').addEventListener('submit', async (e) => {
     e.preventDefault();
+    const btn = document.getElementById('btnSubmit');
+    btn.disabled = true;
+
+    const payload = {
+      nombre: document.getElementById('nombre').value.trim(),
+      email: document.getElementById('email').value.trim(),
+      menu: document.getElementById('menu').value,
+      alergias: document.getElementById('alergias').value.trim(),
+      participa_juego: document.getElementById('juego').checked
+    };
+
+    const { data, error } = await supabase.from('asistentes').insert([payload]).select().single();
+
     const alertBox = document.getElementById('alertBox');
     alertBox.style.display = 'block';
 
-    if (plazasLibres > 0) {
-      alertBox.className = 'alert alert-success';
-      alertBox.innerText = '¡Reserva confirmada! Tu plaza queda asignada correctamente.';
-      plazasLibres--;
-      updateUI();
-    } else {
+    if (error) {
       alertBox.className = 'alert alert-warning';
-      alertBox.innerText = 'Has quedado registrado en la Lista de Espera. Te avisaremos si se libera una plaza.';
+      alertBox.innerText = error.code === '23505'
+        ? 'Este correo ya tiene una reserva registrada.'
+        : 'Error al procesar la reserva. Inténtalo de nuevo.';
+      btn.disabled = false;
+    } else {
+      document.getElementById('registroForm').reset();
+      if (data.estado === 'confirmado') {
+        alertBox.className = 'alert alert-success';
+        alertBox.innerText = '¡Reserva confirmada con éxito! Nos vemos en la cena.';
+      } else {
+        alertBox.className = 'alert alert-warning';
+        alertBox.innerText = 'Aforo principal completo. Te hemos añadido a la Lista de Espera.';
+      }
+      actualizarAforo();
     }
-  }
+  });
+
+  actualizarAforo();
 </script>
 
 </body>
