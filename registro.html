@@ -20,7 +20,7 @@
     <div id="counterLabel" class="counter-label">Plazas disponibles (Máximo 55)</div>
   </div>
 
-  <button type="button" class="menu-toggle-btn" id="btnOpenModal">
+  <button type="button" class="menu-toggle-btn" onclick="toggleMenuModal(true)">
     📋 Ver Menús Oficiales y Condiciones de la Casa
   </button>
 
@@ -76,9 +76,9 @@
 </div>
 
 <!-- Modal para ver las cartas -->
-<div id="menuModal" class="modal">
+<div id="menuModal" class="modal" onclick="if(event.target === this) toggleMenuModal(false)">
   <div class="modal-content">
-    <span class="modal-close" id="btnCloseModal">&times;</span>
+    <span class="modal-close" onclick="toggleMenuModal(false)">&times;</span>
     <h3 style="color: var(--primary); margin-bottom: 8px;">Cartas y Condiciones</h3>
     <p style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 12px;">Información proporcionada por Parrillada Caminito</p>
     <div class="images-grid">
@@ -89,74 +89,69 @@
 </div>
 
 <script>
-  // Control del Modal (independiente de Supabase para asegurar funcionamiento)
-  const modal = document.getElementById('menuModal');
-  const btnOpen = document.getElementById('btnOpenModal');
-  const btnClose = document.getElementById('btnCloseModal');
-
-  btnOpen.addEventListener('click', () => {
-    modal.style.display = 'flex';
-  });
-
-  btnClose.addEventListener('click', () => {
-    modal.style.display = 'none';
-  });
-
-  window.addEventListener('click', (e) => {
-    if (e.target === modal) {
-      modal.style.display = 'none';
+  // Función global e ininterrumpible para abrir y cerrar el modal
+  function toggleMenuModal(show) {
+    const modal = document.getElementById('menuModal');
+    if (modal) {
+      modal.style.display = show ? 'flex' : 'none';
     }
-  });
+  }
 
   window.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-      modal.style.display = 'none';
-    }
+    if (e.key === 'Escape') toggleMenuModal(false);
   });
 
-  // Configuración de Supabase
+  // Integración con Supabase aislada
   const SUPABASE_URL = 'https://TU-PROYECTO.supabase.co';
   const SUPABASE_ANON_KEY = 'TU-ANON-KEY';
   const MAX_PLAZAS = 55;
 
-  let supabase = null;
-  if (typeof supabase !== 'undefined' && !SUPABASE_URL.includes('TU-PROYECTO')) {
-    supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  let supabaseClient = null;
+  try {
+    if (typeof supabase !== 'undefined' && !SUPABASE_URL.includes('TU-PROYECTO')) {
+      supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    }
+  } catch (err) {
+    console.warn('Supabase no configurado aún:', err);
   }
 
   async function actualizarAforo() {
-    if (!supabase) return;
+    if (!supabaseClient) return;
 
-    const { count, error } = await supabase
-      .from('asistentes')
-      .select('*', { count: 'exact', head: true })
-      .eq('estado', 'confirmado');
+    try {
+      const { count, error } = await supabaseClient
+        .from('asistentes')
+        .select('*', { count: 'exact', head: true })
+        .eq('estado', 'confirmado');
 
-    if (error) return;
+      if (error) return;
 
-    const restantes = MAX_PLAZAS - count;
-    const display = document.getElementById('plazasDisplay');
-    const label = document.getElementById('counterLabel');
-    const btn = document.getElementById('btnSubmit');
+      const restantes = MAX_PLAZAS - count;
+      const display = document.getElementById('plazasDisplay');
+      const label = document.getElementById('counterLabel');
+      const btn = document.getElementById('btnSubmit');
 
-    if (restantes > 0) {
-      display.innerText = restantes;
-      label.innerText = "Plazas disponibles (Máximo 55)";
-      btn.innerText = "Confirmar Mi Reserva";
-      btn.disabled = false;
-    } else {
-      display.innerText = "0";
-      label.innerText = "Aforo completo (55/55)";
-      btn.innerText = "Inscribirme en Lista de Espera";
-      btn.style.backgroundColor = "#d97706";
-      btn.disabled = false;
+      if (restantes > 0) {
+        display.innerText = restantes;
+        label.innerText = "Plazas disponibles (Máximo 55)";
+        btn.innerText = "Confirmar Mi Reserva";
+        btn.disabled = false;
+      } else {
+        display.innerText = "0";
+        label.innerText = "Aforo completo (55/55)";
+        btn.innerText = "Inscribirme en Lista de Espera";
+        btn.style.backgroundColor = "#d97706";
+        btn.disabled = false;
+      }
+    } catch (e) {
+      console.error(e);
     }
   }
 
   document.getElementById('registroForm').addEventListener('submit', async (e) => {
     e.preventDefault();
-    if (!supabase) {
-      alert('Debes configurar las claves reales de Supabase en el código antes de enviar.');
+    if (!supabaseClient) {
+      alert('Debes configurar la URL y la Anon Key de tu proyecto Supabase en el código.');
       return;
     }
 
@@ -171,7 +166,7 @@
       participa_juego: document.getElementById('juego').checked
     };
 
-    const { data, error } = await supabase.from('asistentes').insert([payload]).select().single();
+    const { data, error } = await supabaseClient.from('asistentes').insert([payload]).select().single();
 
     const alertBox = document.getElementById('alertBox');
     alertBox.style.display = 'block';
