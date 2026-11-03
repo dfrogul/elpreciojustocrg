@@ -33,7 +33,7 @@
 
     .container {
       width: 100%;
-      max-width: 480px;
+      max-width: 680px;
       background-color: var(--card-bg);
       border-radius: 16px;
       padding: 32px 24px;
@@ -66,12 +66,19 @@
     .counter-value { font-size: 2.25rem; font-weight: 800; color: var(--accent-gold); line-height: 1.1; }
     .counter-label { font-size: 0.8rem; text-transform: uppercase; color: var(--text-muted); margin-top: 4px; }
 
-    .img-preview {
-      width: 100%;
+    /* Contenedor de imágenes en paralelo */
+    .images-grid {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .images-grid img {
+      width: 50%;
+      height: auto;
+      object-fit: cover;
       border-radius: 10px;
       border: 1px solid var(--border);
-      margin-bottom: 20px;
-      display: block;
     }
 
     .info-card {
@@ -91,13 +98,8 @@
       margin-bottom: 8px;
     }
 
-    .info-card ul {
-      padding-left: 18px;
-    }
-
-    .info-card li {
-      margin-bottom: 4px;
-    }
+    .info-card ul { padding-left: 18px; }
+    .info-card li { margin-bottom: 4px; }
 
     .form-group { margin-bottom: 18px; }
     label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 6px; }
@@ -170,21 +172,21 @@
     <div id="counterLabel" class="counter-label">Plazas disponibles (Máximo 55)</div>
   </div>
 
-  <!-- Imagen del menú subida al repositorio -->
-  <img src="menu-precios.png" alt="Menús Parrillada Caminito" class="img-preview">
-
-  <div class="info-card">
-    <h3>📌 Condiciones del Asador:</h3>
-    <ul>
-      <li>Entrantes y primeros platos compartidos para todo el grupo[cite: 3].</li>
-      <li>Vino incluido hasta 1/2 botella por persona[cite: 3].</li>
-      <li><strong>Cancelaciones:</strong> Avisar con al menos 24h de antelación[cite: 3].</li>
-      <li><strong>Horario:</strong> Salida a la 1:00h como máximo[cite: 3].</li>
-    </ul>
+  <!-- Imágenes del restaurante en paralelo -->
+  <div class="images-grid">
+    <img src="menu-precios.png" alt="Menús Parrillada Caminito">
+    <img src="condiciones-caminito.png" alt="Condiciones del Asador Caminito">
   </div>
 
-  <!-- Imagen con las normas del local -->
-  <img src="condiciones-caminito.png" alt="Condiciones del Asador Caminito" class="img-preview">
+  <div class="info-card">
+    <h3>📌 Resumen de condiciones:</h3>
+    <ul>
+      <li>Entrantes compartidos para la mesa[cite: 3].</li>
+      <li>Vino incluido hasta 1/2 botella por persona[cite: 3].</li>
+      <li><strong>Cancelaciones:</strong> Avisar con al menos 24h de antelación[cite: 3].</li>
+      <li><strong>Horario:</strong> Cierre del local a la 1:00h como máximo[cite: 3].</li>
+    </ul>
+  </div>
 
   <form id="registroForm">
     <div class="form-group">
