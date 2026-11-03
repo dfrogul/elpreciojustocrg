@@ -4,167 +4,15 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Cena de Navidad 2026 - Registro</title>
+  <link rel="stylesheet" href="style.css">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <style>
-    :root {
-      --bg: #0f172a;
-      --card-bg: #1e293b;
-      --accent-red: #dc2626;
-      --accent-gold: #f59e0b;
-      --text-main: #f8fafc;
-      --text-muted: #94a3b8;
-      --border: #334155;
-      --success: #10b981;
-      --warning: #f59e0b;
-    }
-
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background-color: var(--bg);
-      color: var(--text-main);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      padding: 20px;
-    }
-
-    .container {
-      width: 100%;
-      max-width: 680px;
-      background-color: var(--card-bg);
-      border-radius: 16px;
-      padding: 32px 24px;
-      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
-      border: 1px solid var(--border);
-      position: relative;
-    }
-
-    .container::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 4px;
-      background: linear-gradient(90deg, var(--accent-red), var(--accent-gold), var(--accent-red));
-    }
-
-    .header { text-align: center; margin-bottom: 24px; }
-    .header h1 { font-size: 1.75rem; font-weight: 800; margin-bottom: 6px; }
-    .header p { color: var(--text-muted); font-size: 0.9rem; }
-
-    .counter-card {
-      background: rgba(15, 23, 42, 0.6);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 16px;
-      text-align: center;
-      margin-bottom: 24px;
-    }
-
-    .counter-value { font-size: 2.25rem; font-weight: 800; color: var(--accent-gold); line-height: 1.1; }
-    .counter-label { font-size: 0.8rem; text-transform: uppercase; color: var(--text-muted); margin-top: 4px; }
-
-    /* Contenedor de imágenes en paralelo */
-    .images-grid {
-      display: flex;
-      gap: 12px;
-      margin-bottom: 24px;
-    }
-
-    .images-grid img {
-      width: 50%;
-      height: auto;
-      object-fit: cover;
-      border-radius: 10px;
-      border: 1px solid var(--border);
-    }
-
-    .info-card {
-      background: rgba(15, 23, 42, 0.4);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 14px;
-      margin-bottom: 24px;
-      font-size: 0.82rem;
-      color: var(--text-muted);
-      line-height: 1.5;
-    }
-
-    .info-card h3 {
-      color: var(--accent-gold);
-      font-size: 0.9rem;
-      margin-bottom: 8px;
-    }
-
-    .info-card ul { padding-left: 18px; }
-    .info-card li { margin-bottom: 4px; }
-
-    .form-group { margin-bottom: 18px; }
-    label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 6px; }
-
-    input[type="text"], input[type="email"], select {
-      width: 100%;
-      padding: 12px 14px;
-      background-color: rgba(15, 23, 42, 0.8);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      color: var(--text-main);
-      font-size: 0.95rem;
-      outline: none;
-    }
-
-    input:focus, select:focus { border-color: var(--accent-gold); }
-
-    .checkbox-card {
-      display: flex;
-      align-items: flex-start;
-      gap: 12px;
-      background: rgba(245, 158, 11, 0.08);
-      border: 1px solid rgba(245, 158, 11, 0.25);
-      border-radius: 10px;
-      padding: 14px;
-      margin-bottom: 24px;
-      cursor: pointer;
-    }
-
-    .checkbox-card input[type="checkbox"] { width: 18px; height: 18px; margin-top: 2px; accent-color: var(--accent-gold); }
-    .checkbox-title { font-size: 0.9rem; font-weight: 700; color: var(--accent-gold); margin-bottom: 2px; }
-    .checkbox-desc { font-size: 0.78rem; color: var(--text-muted); }
-
-    .btn-submit {
-      width: 100%;
-      padding: 14px;
-      background-color: var(--accent-red);
-      color: white;
-      border: none;
-      border-radius: 8px;
-      font-size: 1rem;
-      font-weight: 700;
-      cursor: pointer;
-    }
-
-    .btn-submit:disabled { background-color: var(--border); cursor: not-allowed; }
-
-    .alert {
-      margin-top: 18px;
-      padding: 12px 16px;
-      border-radius: 8px;
-      font-size: 0.88rem;
-      text-align: center;
-      display: none;
-    }
-    .alert-success { background-color: rgba(16, 185, 129, 0.15); border: 1px solid var(--success); color: #34d399; }
-    .alert-warning { background-color: rgba(245, 158, 11, 0.15); border: 1px solid var(--warning); color: #fbbf24; }
-  </style>
 </head>
 <body>
 
 <div class="container">
   <div class="header">
-    <h1>🎄 Cena de Navidad</h1>
-    <p>Parrillada Caminito - Reserva de Plaza</p>
+    <h1>🎄 Cena de Navidad 2026</h1>
+    <p>Asador Parrillada Caminito - Registro de Plazas</p>
   </div>
 
   <div class="counter-card">
@@ -172,19 +20,16 @@
     <div id="counterLabel" class="counter-label">Plazas disponibles (Máximo 55)</div>
   </div>
 
-  <!-- Imágenes del restaurante en paralelo -->
-  <div class="images-grid">
-    <img src="menu-precios.png" alt="Menús Parrillada Caminito">
-    <img src="condiciones-caminito.png" alt="Condiciones del Asador Caminito">
-  </div>
+  <button type="button" class="menu-toggle-btn" onclick="openModal()">
+    📋 Ver Menús Oficiales y Condiciones de la Casa
+  </button>
 
   <div class="info-card">
-    <h3>📌 Resumen de condiciones:</h3>
+    <strong>Notas clave de la reserva:</strong>
     <ul>
-      <li>Entrantes compartidos para la mesa[cite: 3].</li>
-      <li>Vino incluido hasta 1/2 botella por persona[cite: 3].</li>
-      <li><strong>Cancelaciones:</strong> Avisar con al menos 24h de antelación[cite: 3].</li>
-      <li><strong>Horario:</strong> Cierre del local a la 1:00h como máximo[cite: 3].</li>
+      <li>Entrantes compartidos y plato principal a elegir.</li>
+      <li>Vino incluido hasta 1/2 botella por persona.</li>
+      <li>Cancelaciones con un mínimo de 24 horas de antelación.</li>
     </ul>
   </div>
 
@@ -195,32 +40,32 @@
     </div>
 
     <div class="form-group">
-      <label for="email">Correo electrónico *</label>
-      <input type="email" id="email" placeholder="tu.email@empresa.es" required>
+      <label for="email">Correo corporativo *</label>
+      <input type="email" id="email" placeholder="tu.nombre@empresa.es" required>
     </div>
 
     <div class="form-group">
-      <label for="menu">Elección de Menú *</label>
+      <label for="menu">Selección de Menú Principal *</label>
       <select id="menu" required>
-        <option value="">-- Selecciona una opción --</option>
+        <option value="">-- Elige una opción --</option>
         <option value="carne">Menú Grupo (Parrilla de Carne)</option>
-        <option value="pescado_bacalao">Pescado: Bacalao a la brasa[cite: 2]</option>
-        <option value="pescado_pulpo">Pescado: Pulpo a la brasa[cite: 2]</option>
-        <option value="vegetariano">Opción Vegetariana / Vegana (25€)[cite: 2]</option>
-        <option value="infantil">Menú Infantil (&lt;12 años)[cite: 2]</option>
+        <option value="pescado_bacalao">Pescado: Bacalao a la brasa</option>
+        <option value="pescado_pulpo">Pescado: Pulpo a la brasa</option>
+        <option value="vegetariano">Opción Vegetariana / Vegana (25€)</option>
+        <option value="infantil">Menú Infantil (&lt;12 años)</option>
       </select>
     </div>
 
     <div class="form-group">
       <label for="alergias">Intolerancias / Alergias</label>
-      <input type="text" id="alergias" placeholder="Sin gluten, marisco, lactosa, etc.">
+      <input type="text" id="alergias" placeholder="Sin gluten, sin lactosa, frutos secos, etc.">
     </div>
 
     <label class="checkbox-card">
       <input type="checkbox" id="juego" checked>
       <div>
-        <div class="checkbox-title">Participar en "El Precio Justo" (5€) 🎁</div>
-        <div class="checkbox-desc">Entras en la puja en vivo por la Cesta de Navidad durante la cena.</div>
+        <div class="checkbox-title">Participar en "El Precio Justo" (+5€) 🎁</div>
+        <div class="checkbox-desc">Inscripción al juego en vivo por la Cesta de Navidad durante la cena.</div>
       </div>
     </label>
 
@@ -230,12 +75,28 @@
   <div id="alertBox" class="alert"></div>
 </div>
 
+<!-- Modal para ver las cartas -->
+<div id="menuModal" class="modal">
+  <div class="modal-content">
+    <span class="modal-close" onclick="closeModal()">&times;</span>
+    <h3 style="color: var(--primary); margin-bottom: 8px;">Cartas y Condiciones</h3>
+    <p style="font-size: 0.82rem; color: var(--text-muted);">Información proporcionada por Parrillada Caminito</p>
+    <div class="images-grid">
+      <img src="menu-precios.png" alt="Menú Precios">
+      <img src="condiciones-caminito.png" alt="Condiciones">
+    </div>
+  </div>
+</div>
+
 <script>
   const SUPABASE_URL = 'https://TU-PROYECTO.supabase.co';
   const SUPABASE_ANON_KEY = 'TU-ANON-KEY';
   const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
   const MAX_PLAZAS = 55;
+
+  function openModal() { document.getElementById('menuModal').style.display = 'flex'; }
+  function closeModal() { document.getElementById('menuModal').style.display = 'none'; }
 
   async function actualizarAforo() {
     const { count, error } = await supabase
@@ -252,16 +113,15 @@
 
     if (restantes > 0) {
       display.innerText = restantes;
-      display.style.color = "var(--accent-gold)";
       label.innerText = "Plazas disponibles (Máximo 55)";
       btn.innerText = "Confirmar Mi Reserva";
-      btn.style.backgroundColor = "var(--accent-red)";
+      btn.disabled = false;
     } else {
       display.innerText = "0";
-      display.style.color = "var(--accent-red)";
       label.innerText = "Aforo completo (55/55)";
       btn.innerText = "Inscribirme en Lista de Espera";
-      btn.style.backgroundColor = "var(--warning)";
+      btn.style.backgroundColor = "#d97706";
+      btn.disabled = false;
     }
   }
 
