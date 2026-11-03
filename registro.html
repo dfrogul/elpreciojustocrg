@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cena de Navidad 2026 - Reserva de Plaza</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card-bg: #1e293b;
+      --accent-red: #dc2626;
+      --accent-red-hover: #b91c1c;
+      --accent-gold: #f59e0b;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --border: #334155;
+      --success: #10b981;
+      --warning: #f59e0b;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg);
+      color: var(--text-main);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 480px;
+      background-color: var(--card-bg);
+      border-radius: 16px;
+      padding: 32px 24px;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.5);
+      border: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--accent-red), var(--accent-gold), var(--accent-red));
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .header h1 {
+      font-size: 1.75rem;
+      font-weight: 800;
+      color: var(--text-main);
+      letter-spacing: -0.025em;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .header p {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    .counter-card {
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      text-align: center;
+      margin-bottom: 24px;
+      position: relative;
+    }
+
+    .counter-value {
+      font-size: 2.25rem;
+      font-weight: 800;
+      color: var(--accent-gold);
+      line-height: 1.1;
+    }
+
+    .counter-label {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: var(--text-main);
+    }
+
+    input[type="text"],
+    input[type="email"],
+    select {
+      width: 100%;
+      padding: 12px 14px;
+      background-color: rgba(15, 23, 42, 0.8);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text-main);
+      font-size: 0.95rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    input:focus, select:focus {
+      border-color: var(--accent-gold);
+    }
+
+    .checkbox-card {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      background: rgba(245, 158, 11, 0.08);
+      border: 1px solid rgba(245, 158, 11, 0.25);
+      border-radius: 10px;
+      padding: 14px;
+      margin-bottom: 24px;
+      cursor: pointer;
+    }
+
+    .checkbox-card input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      margin-top: 2px;
+      accent-color: var(--accent-gold);
+      cursor: pointer;
+    }
+
+    .checkbox-info {
+      flex: 1;
+    }
+
+    .checkbox-title {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--accent-gold);
+      margin-bottom: 2px;
+    }
+
+    .checkbox-desc {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      line-height: 1.3;
+    }
+
+    .btn-submit {
+      width: 100%;
+      padding: 14px;
+      background-color: var(--accent-red);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background-color 0.2s, transform 0.1s;
+    }
+
+    .btn-submit:hover {
+      background-color: var(--accent-red-hover);
+    }
+
+    .btn-submit:active {
+      transform: scale(0.99);
+    }
+
+    .alert {
+      margin-top: 18px;
+      padding: 12px 16px;
+      border-radius: 8px;
+      font-size: 0.88rem;
+      text-align: center;
+      display: none;
+      line-height: 1.4;
+    }
+
+    .alert-success {
+      background-color: rgba(16, 185, 129, 0.15);
+      border: 1px solid var(--success);
+      color: #34d399;
+    }
+
+    .alert-warning {
+      background-color: rgba(245, 158, 11, 0.15);
+      border: 1px solid var(--warning);
+      color: #fbbf24;
+    }
+
+    .sim-controls {
+      margin-top: 30px;
+      padding-top: 16px;
+      border-top: 1px dashed var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .sim-btn {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      cursor: pointer;
+    }
+
+    .sim-btn:hover {
+      color: var(--text-main);
+      border-color: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <div class="header">
+    <h1>🎄 Cena de Navidad</h1>
+    <p>Inscripción de plazas y selección de menú</p>
+  </div>
+
+  <div class="counter-card">
+    <div id="plazasDisplay" class="counter-value">12</div>
+    <div id="counterLabel" class="counter-label">Plazas disponibles (Máximo 55)</div>
+  </div>
+
+  <form id="previewForm" onsubmit="handleSubmit(event)">
+    <div class="form-group">
+      <label for="nombre">Nombre y Apellidos *</label>
+      <input type="text" id="nombre" placeholder="Ej: Denis Fernández" required>
+    </div>
+
+    <div class="form-group">
+      <label for="email">Correo Corporativo *</label>
+      <input type="email" id="email" placeholder="tu.nombre@empresa.es" required>
+    </div>
+
+    <div class="form-group">
+      <label for="menu">Elección de Menú *</label>
+      <select id="menu" required>
+        <option value="">-- Selecciona tu opción --</option>
+        <option value="carne">Carne</option>
+        <option value="pescado">Pescado</option>
+        <option value="vegetariano">Vegetariano / Vegano</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="alergias">Intolerancias / Alergias</label>
+      <input type="text" id="alergias" placeholder="Sin gluten, marisco, fructosa, etc.">
+    </div>
+
+    <label class="checkbox-card">
+      <input type="checkbox" id="juego" checked>
+      <div class="checkbox-info">
+        <div class="checkbox-title">Participar en "El Precio Justo" (5€) 🎁</div>
+        <div class="checkbox-desc">Entras en la puja en vivo por la Cesta de Navidad durante la cena.</div>
+      </div>
+    </label>
+
+    <button type="submit" id="btnSubmit" class="btn-submit">Confirmar Mi Reserva</button>
+  </form>
+
+  <div id="alertBox" class="alert"></div>
+
+  <!-- Controles interactivos para simulación -->
+  <div class="sim-controls">
+    <span style="font-size: 0.75rem; color: var(--text-muted);">Simulador de Aforo:</span>
+    <div>
+      <button class="sim-btn" onclick="setPlazas(12)">12 Libres</button>
+      <button class="sim-btn" onclick="setPlazas(0)">Lleno (0 Libres)</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  let plazasLibres = 12;
+
+  function updateUI() {
+    const display = document.getElementById('plazasDisplay');
+    const label = document.getElementById('counterLabel');
+    const btn = document.getElementById('btnSubmit');
+
+    if (plazasLibres > 0) {
+      display.innerText = plazasLibres;
+      display.style.color = "var(--accent-gold)";
+      label.innerText = "Plazas disponibles (Máximo 55)";
+      btn.innerText = "Confirmar Mi Reserva";
+      btn.style.backgroundColor = "var(--accent-red)";
+    } else {
+      display.innerText = "0";
+      display.style.color = "var(--accent-red)";
+      label.innerText = "Aforo principal completo (55/55)";
+      btn.innerText = "Inscribirme en Lista de Espera";
+      btn.style.backgroundColor = "var(--warning)";
+    }
+  }
+
+  function setPlazas(val) {
+    plazasLibres = val;
+    document.getElementById('alertBox').style.display = 'none';
+    updateUI();
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    const alertBox = document.getElementById('alertBox');
+    alertBox.style.display = 'block';
+
+    if (plazasLibres > 0) {
+      alertBox.className = 'alert alert-success';
+      alertBox.innerText = '¡Reserva confirmada! Tu plaza queda asignada correctamente.';
+      plazasLibres--;
+      updateUI();
+    } else {
+      alertBox.className = 'alert alert-warning';
+      alertBox.innerText = 'Has quedado registrado en la Lista de Espera. Te avisaremos si se libera una plaza.';
+    }
+  }
+</script>
+
+</body>
+</html>
