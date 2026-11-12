@@ -188,14 +188,14 @@ label.f{display:block;font-weight:700;font-size:14px;margin:12px 0 6px}
       </section>
 
       <section class="step">
-        <h2><span class="n">3</span>Tu segundo plato</h2>
-        <p class="hint">Si no quieres la parrilla, puedes cambiarla solo para ti.</p>
+        <h2><span class="n">3</span>¿Carne para ti?</h2>
+        <p class="hint">Lo normal es tomar la parrilla del menú que salga votado. Solo si prefieres <b>pescado</b> en lugar de la carne (u otra opción), márcalo aquí.</p>
         <div class="chips" id="segundos">
-          <label class="chip"><input type="radio" name="segundo" value="parrilla" checked><span>🔥 Parrilla del menú</span></label>
-          <label class="chip"><input type="radio" name="segundo" value="bacalao" data-limit><span>🐟 Bacalao a la brasa</span></label>
-          <label class="chip"><input type="radio" name="segundo" value="pulpo" data-limit><span>🐙 Pulpo a la brasa</span></label>
+          <label class="chip"><input type="radio" name="segundo" value="parrilla" checked><span>🥩 Sí, carne del menú</span></label>
+          <label class="chip"><input type="radio" name="segundo" value="bacalao" data-limit><span>🐟 Prefiero bacalao a la brasa</span></label>
+          <label class="chip"><input type="radio" name="segundo" value="pulpo" data-limit><span>🐙 Prefiero pulpo a la brasa</span></label>
           <label class="chip"><input type="radio" name="segundo" value="vegetariano"><span>🥗 Vegetariano / vegano · 25 €</span></label>
-          <label class="chip"><input type="radio" name="segundo" value="infantil"><span>🧒 Infantil (&lt;12 años)</span></label>
+          <label class="chip"><input type="radio" name="segundo" value="infantil"><span>🧒 Menú infantil (&lt;12 años)</span></label>
         </div>
         <p class="note" id="nota-pescado"></p>
       </section>
@@ -211,14 +211,14 @@ label.f{display:block;font-weight:700;font-size:14px;margin:12px 0 6px}
       <section class="step">
         <h2><span class="n">5</span>¿Juegas?</h2>
         <label class="toggle game"><input type="checkbox" id="juego"><span class="sw"></span>
-          <div><b>🎁 Quiero jugar a «El Precio Justo» · +5 €</b>
-          <p>Concurso por mesas durante la cena. La mesa con más puntos al final se lleva la <b>Cesta de Navidad</b>.</p></div>
+          <div><b>🎁 Quiero apuntarme al juego sorpresa · +5 €</b>
+          <p>Durante la cena habrá un juego por mesas… y no desvelamos nada más 🤫</p></div>
         </label>
       </section>
 
       <button class="submit" id="submit" type="submit">Confirmar mi plaza</button>
       <div class="alert hidden" id="alert"></div>
-      <p class="legal">Solo guardamos tu nombre, correo, voto y elección de segundo para organizar la cena. Ningún asistente puede ver los datos de los demás.</p>
+      <p class="legal">Solo guardamos tu nombre, correo, voto y elección de plato para organizar la cena. Ningún asistente puede ver los datos de los demás.</p>
     </form>
 
     <!-- ============ CONFIRMACIÓN ============ -->
@@ -278,7 +278,7 @@ const MENUS = [
   { n:4, precio:55, titulo:'Chuletón + picanha',         desc:'Chuletón y picanha de Angus + parrilla base' },
   { n:5, precio:60, titulo:'La completa',                desc:'Chuletón, picanha de Angus y abanico ibérico + parrilla base' },
 ];
-const SEGUNDOS = { parrilla:'Parrilla del menú', bacalao:'Bacalao a la brasa', pulpo:'Pulpo a la brasa', vegetariano:'Vegetariano / vegano', infantil:'Menú infantil' };
+const SEGUNDOS = { parrilla:'Carne del menú', bacalao:'Bacalao a la brasa (en vez de carne)', pulpo:'Pulpo a la brasa (en vez de carne)', vegetariano:'Vegetariano / vegano', infantil:'Menú infantil' };
 const BASE_TXT = 'Parrilla base: tira de churrasco de vacuno añojo, parripollo, churrasco de cerdo 50 % Duroc y chorizo criollo.';
 
 /* =================== UTILIDADES =================== */
@@ -407,7 +407,7 @@ function mostrarConfirmacion(r, recien){
   $('#tk-sub').textContent = espera ? `Puesto ${r.posicion || '—'} · te avisaremos si se libera una plaza` : 'Plaza confirmada · nos vemos el viernes 18 de diciembre';
   const m = MENUS.find(x => x.n === r.voto);
   $('#sum').innerHTML = `<span>Nombre</span><b>${esc(r.nombre)}</b><span>Tu voto</span><b>Menú ${r.voto}${m ? ' · ' + esc(m.titulo) : ''}</b>
-    <span>Segundo</span><b>${esc(SEGUNDOS[r.segundo] || r.segundo)}</b><span>Precio Justo</span><b>${r.juego ? '🎁 Sí, juegas (+5 €)' : 'No'}</b>`;
+    <span>Tu plato</span><b>${esc(SEGUNDOS[r.segundo] || r.segundo)}</b><span>Juego sorpresa</span><b>${r.juego ? '🎁 Sí, juegas (+5 €)' : 'No'}</b>`;
   $('#btn-alergias').classList.toggle('hidden', !r.alergias);
   $('#btn-alergias').onclick = () => {
     if (EMAIL_ORGANIZADOR.startsWith('TU_')) return toast('Falta configurar el correo del organizador');
@@ -421,7 +421,7 @@ $('#btn-ics').onclick = () => {
   const ics = ['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Cena Navidad 2026//ES','BEGIN:VEVENT',
     'UID:cena-navidad-2026@precio-justo', 'DTSTAMP:' + f(new Date()), 'DTSTART:' + f(FECHA_CENA), 'DTEND:' + f(FIN_CENA),
     'SUMMARY:🎄 Cena de Navidad de empresa', 'LOCATION:Parrillada Caminito\\, Rúa Río Sil 43\\, Lugo',
-    'DESCRIPTION:Cena de Navidad 2026 + El Precio Justo por la Cesta de Navidad.',
+    'DESCRIPTION:Cena de Navidad 2026 + juego sorpresa.',
     'BEGIN:VALARM','TRIGGER:-PT3H','ACTION:DISPLAY','DESCRIPTION:Cena de Navidad esta noche','END:VALARM','END:VEVENT','END:VCALENDAR'].join('\r\n');
   const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([ics], { type: 'text/calendar' })); a.download = 'cena-navidad-2026.ics'; a.click();
 };

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tarjetas de mesa · El Precio Justo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bungee&family=Outfit:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+:root{--navy:#0c1530;--gold:#e0a526;--gold2:#b97d0c;--red:#c8102e;--cream:#fffaf0;--disp:'Bungee','Outfit',system-ui,sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Outfit',system-ui,sans-serif;background:#e9e4d8;color:var(--navy);-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.bar{position:sticky;top:0;z-index:5;display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:center;padding:14px;background:var(--navy);color:#fff}
+.bar label{font-weight:700}
+.bar input{width:70px;padding:8px 10px;border-radius:10px;border:0;font:inherit;font-weight:800;text-align:center}
+.bar button{padding:10px 18px;border-radius:12px;border:0;background:var(--gold);color:#1a1203;font:inherit;font-weight:900;cursor:pointer}
+.bar small{color:#aab4dd;width:100%;text-align:center}
+.sheet{width:210mm;height:297mm;margin:16px auto;background:#fff;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;box-shadow:0 10px 30px rgba(0,0,0,.15);page-break-after:always;break-after:page}
+.sheet:last-child{page-break-after:auto;break-after:auto}
+.cell{border:.3mm dashed #c9c2b2;padding:6mm;display:flex}
+.card{flex:1;border-radius:6mm;background:var(--cream);border:1.2mm solid var(--gold);position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:center;text-align:center;padding:7mm 6mm 6mm}
+.card::before{content:'';position:absolute;inset:0;background:radial-gradient(60mm 40mm at 50% -8mm,rgba(200,16,46,.12),transparent 70%);pointer-events:none}
+.bulbs{position:absolute;left:0;right:0;top:2.2mm;display:flex;justify-content:space-around;padding:0 4mm}
+.bulbs i{width:2mm;height:2mm;border-radius:50%;background:var(--gold)}
+.bulbs i:nth-child(2n){background:var(--red)}
+.logo{font-family:var(--disp);font-size:7.2mm;line-height:1;color:var(--red);letter-spacing:.02em;margin-top:2mm}
+.sub{font-weight:800;font-size:3mm;letter-spacing:.18em;text-transform:uppercase;color:#6b6f86;margin-top:1.2mm}
+.mesa{font-family:var(--disp);font-size:19mm;line-height:1;margin-top:3mm;color:var(--navy)}
+.mesa small{display:block;font-family:'Outfit';font-weight:900;font-size:4mm;letter-spacing:.3em;color:var(--gold2);margin-bottom:1mm}
+.qr{width:44mm;height:44mm;margin-top:4mm;padding:2.5mm;background:#fff;border-radius:3mm;border:.8mm solid var(--navy)}
+.qr img,.qr canvas{width:100%!important;height:100%!important;display:block}
+.tag{margin-top:3.5mm;display:inline-block;background:var(--navy);color:#fff;font-weight:900;font-size:3.4mm;padding:1.4mm 4mm;border-radius:99mm;letter-spacing:.04em}
+.how{margin-top:3mm;font-size:3mm;line-height:1.35;color:#3b4060;font-weight:600;max-width:78mm}
+.how b{color:var(--navy)}
+.foot{margin-top:auto;font-size:2.5mm;color:#8a8ea3;font-weight:600}
+@page{size:A4;margin:0}
+@media print{body{background:#fff}.bar{display:none}.sheet{margin:0;box-shadow:none}}
+</style>
+</head>
+<body>
+<div class="bar">
+  <label>Número de mesas <input id="n" type="number" min="1" max="20" value="8"></label>
+  <button id="print">🖨️ Imprimir / Guardar PDF</button>
+  <small>4 tarjetas por A4 · recorta por la línea discontinua · al imprimir, activa «Gráficos de fondo» y márgenes «Ninguno»</small>
+</div>
+<div id="sheets"></div>
+<script>
+const base = new URL('./', location.href).href;
+const url = n => `${base}?mode=player&mesa=${n}`;
+function card(n){
+  return `<div class="cell"><div class="card">
+    <div class="bulbs">${'<i></i>'.repeat(14)}</div>
+    <div class="logo">EL PRECIO JUSTO</div>
+    <div class="sub">🎄 Cena de Navidad 2026</div>
+    <div class="mesa"><small>MESA</small>${n}</div>
+    <div class="qr" data-n="${n}"></div>
+    <div class="tag">🎤 TARJETA DEL PORTAVOZ</div>
+    <p class="how">Decidid quién es el portavoz y que <b>escanee este QR con su móvil</b>. Entrará directamente como <b>Mesa ${n}</b>. ¡Solo cuenta el primer móvil que lo escanee!</p>
+    <div class="foot">${base.replace(/^https?:\/\//, '')}</div>
+  </div></div>`;
+}
+function render(){
+  const total = Math.max(1, Math.min(20, +document.getElementById('n').value || 8));
+  let html = '';
+  for (let i = 1; i <= total; i += 4) {
+    html += '<div class="sheet">';
+    for (let n = i; n < i + 4; n++) html += n <= total ? card(n) : '<div class="cell"></div>';
+    html += '</div>';
+  }
+  document.getElementById('sheets').innerHTML = html;
+  document.querySelectorAll('.qr').forEach(el => {
+    if (window.QRCode) new QRCode(el, { text: url(el.dataset.n), width: 400, height: 400, colorDark: '#0c1530', colorLight: '#ffffff', correctLevel: QRCode.CorrectLevel.M });
+    else el.textContent = url(el.dataset.n);
+  });
+}
+const q = +new URLSearchParams(location.search).get('mesas'); if (q) document.getElementById('n').value = q;
+document.getElementById('n').addEventListener('input', render);
+document.getElementById('print').onclick = () => print();
+render();
+</script>
+</body>
+</html>
