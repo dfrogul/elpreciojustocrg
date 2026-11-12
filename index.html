@@ -1,511 +1,1546 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>El Precio Justo - Cena de Empresa</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-  <!-- Supabase JS Client v2 -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800;900&display=swap');
-    body { font-family: 'Outfit', sans-serif; background: #0f172a; color: #f8fafc; }
-    .gold-gradient { background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 50%, #d97706 100%); }
-    .gold-text { background: linear-gradient(135deg, #fef08a 0%, #f59e0b 50%, #eab308 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-    .glass-card { background: rgba(30, 41, 59, 0.85); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.1); }
-    .carousel-fade { transition: opacity 0.8s ease-in-out; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#060a18">
+<title>El Precio Justo · Cena de Navidad 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bungee&family=Outfit:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+<style>
+:root{
+  --bg:#060a18; --panel:rgba(17,25,52,.82); --panel2:rgba(30,41,82,.65); --line:rgba(255,255,255,.10);
+  --gold:#fbbf24; --gold2:#f59e0b; --gold3:#fde68a; --red:#ef233c; --red2:#b91c1c; --green:#22c55e; --teal:#14b8a6;
+  --text:#f8fafc; --muted:#94a3b8;
+  --disp:'Bungee','Outfit',system-ui,-apple-system,'Segoe UI',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  font-family:'Outfit',system-ui,-apple-system,sans-serif; color:var(--text); overflow-x:hidden;
+  background:
+    radial-gradient(1200px 700px at 50% -15%, #1d2d63 0%, transparent 60%),
+    radial-gradient(900px 600px at 105% 115%, rgba(239,35,60,.20), transparent 60%),
+    radial-gradient(700px 500px at -10% 110%, rgba(34,197,94,.10), transparent 60%),
+    var(--bg);
+  -webkit-tap-highlight-color:transparent;
+}
+button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
+input,select,textarea{font:inherit;color:inherit}
+.hidden{display:none!important}
+.muted{color:var(--muted)}
+.small{font-size:.85em}
+.logo{
+  font-family:var(--disp); line-height:.95; letter-spacing:.01em;
+  background:linear-gradient(180deg,#fffbe6 0%,#fde68a 25%,#fbbf24 55%,#d97706 100%);
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+  filter:drop-shadow(0 .06em 0 #7c2d12) drop-shadow(0 .2em .5em rgba(251,191,36,.35));
+}
+.badge{display:inline-flex;align-items:center;gap:.4em;padding:.35em .9em;border-radius:999px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;font-size:.9em;white-space:nowrap}
+.badge.red{background:rgba(239,35,60,.18);color:#fecdd3;border:1px solid rgba(239,35,60,.45)}
+.badge.gold{background:rgba(251,191,36,.18);color:var(--gold3);border:1px solid rgba(251,191,36,.5)}
+.qr{background:#fff;border-radius:12px;padding:10px;line-height:0}
+.qr canvas,.qr img{width:100%!important;height:auto!important;display:block}
+.qr-fallback{color:#0b1230;font-size:12px;line-height:1.3;word-break:break-all;padding:10px}
+#toast{position:fixed;left:50%;bottom:calc(18px + env(safe-area-inset-bottom));transform:translateX(-50%) translateY(150%);background:#111a36;border:1px solid var(--line);padding:.8em 1.2em;border-radius:14px;font-weight:700;z-index:200;transition:transform .3s;max-width:92vw;text-align:center;box-shadow:0 10px 30px rgba(0,0,0,.5)}
+#toast.show{transform:translateX(-50%) translateY(0)}
+#toast.err{border-color:rgba(239,35,60,.6);color:#fecdd3}
+#toast.ok{border-color:rgba(34,197,94,.6);color:#bbf7d0}
+@keyframes pop{0%{transform:scale(.6);opacity:0}60%{transform:scale(1.12);opacity:1}100%{transform:scale(1)}}
+@keyframes sceneIn{from{opacity:0;transform:translateY(3vh) scale(.98)}to{opacity:1;transform:none}}
+@keyframes floaty{50%{transform:translateY(-1.2vh) rotate(-4deg)}}
+@keyframes shine{0%,70%{background-position:-200% 0}100%{background-position:200% 0}}
+@keyframes pulse{50%{transform:scale(1.06);opacity:.85}}
+@keyframes shake{10%,90%{transform:translate(-2px,0)}20%,80%{transform:translate(3px,0)}30%,50%,70%{transform:translate(-5px,0)}40%,60%{transform:translate(5px,0)}}
+
+/* ============================== TV ============================== */
+#tv{position:fixed;inset:0;display:flex;flex-direction:column;padding:4vh 3.2vw 3.5vh;overflow:hidden;font-size:1.6vh}
+#snow{position:fixed;inset:0;pointer-events:none;z-index:0}
+#tv > *:not(#snow){position:relative;z-index:1}
+.bulbs{position:fixed!important;left:0;right:0;height:1.4vh;display:flex;justify-content:space-around;align-items:center;z-index:3!important;pointer-events:none}
+.bulbs.top{top:.9vh}.bulbs.bottom{bottom:.9vh}
+.bulbs i{width:.9vh;height:.9vh;border-radius:50%;background:#fde68a;box-shadow:0 0 1vh .3vh rgba(251,191,36,.8);animation:blink 1.2s infinite}
+.bulbs i:nth-child(2n){animation-delay:.6s;background:#fecaca;box-shadow:0 0 1vh .3vh rgba(239,35,60,.8)}
+@keyframes blink{50%{opacity:.2;box-shadow:none}}
+body.urgent .bulbs i{animation-duration:.25s}
+body.urgent #tv{animation:shake .5s}
+.tv-head{display:flex;align-items:center;gap:1.4vw;min-height:6vh}
+.tv-logo{font-size:4.2vh}
+.tv-sub{font-weight:700;color:var(--muted);font-size:2vh}
+.grow{flex:1}
+#tv-round{font-size:2vh}
+.conn{display:flex;align-items:center;gap:.5em;font-size:1.5vh;color:var(--muted);font-weight:700}
+.conn i{width:1.1vh;height:1.1vh;border-radius:50%;background:#f59e0b;box-shadow:0 0 1vh #f59e0b}
+.conn.ok i{background:var(--green);box-shadow:0 0 1vh var(--green)}
+.conn.ok span{display:none}
+.conn.bad i{background:var(--red);box-shadow:0 0 1vh var(--red)}
+#tv.ph-lobby .tv-logo,#tv.ph-lobby .tv-sub,#tv.ph-final .tv-logo,#tv.ph-final .tv-sub{visibility:hidden}
+.scene{flex:1;min-height:0;display:none}
+.scene.on{display:flex;animation:sceneIn .8s cubic-bezier(.2,.9,.2,1)}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:2.4vh;backdrop-filter:blur(10px)}
+
+/* lobby */
+.lobby{display:none;flex-direction:column;gap:3vh}
+.lobby.on{display:flex}
+.lobby-top{flex:1;display:grid;grid-template-columns:1.25fr 1fr;gap:4vw;align-items:center;min-height:0}
+.mega{font-size:15vh;background-size:200% 100%}
+.mega.shine{background-image:linear-gradient(100deg,#d97706 0%,#fbbf24 30%,#fffbe6 45%,#fbbf24 60%,#d97706 100%);background-size:250% 100%;animation:shine 4s linear infinite}
+.tagline{font-size:3vh;font-weight:800;margin-top:2vh;color:#fecdd3}
+.steps{list-style:none;margin-top:3.5vh;display:grid;gap:1.6vh}
+.steps li{display:flex;align-items:center;gap:1.2vw;font-size:2.6vh;font-weight:700}
+.steps b{display:grid;place-items:center;width:5vh;height:5vh;border-radius:50%;background:linear-gradient(180deg,var(--gold),var(--gold2));color:#1a1203;font-weight:900;font-size:2.6vh;flex:none}
+.qr-card{background:#fff;border-radius:3vh;padding:2.4vh;border:.6vh solid var(--gold);box-shadow:0 0 0 .6vh rgba(251,191,36,.25),0 0 8vh rgba(251,191,36,.35);text-align:center;justify-self:center}
+.qr-card .qr{padding:0;width:42vh;margin:0 auto}
+.qr-cap{color:#0b1230;font-weight:900;font-size:2.8vh;letter-spacing:.06em;margin-top:1.6vh}
+.qr-url{color:#475569;font-weight:700;font-size:1.6vh;margin-top:.4vh}
+.chips{display:grid;grid-template-columns:repeat(auto-fit,minmax(13vw,1fr));gap:1.4vh 1vw}
+.chip{padding:1.4vh 1vw;border-radius:1.8vh;background:var(--panel);border:.25vh solid var(--line);text-align:center;transition:all .4s}
+.chip .cn{font-weight:900;font-size:2.4vh;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chip .cs{font-size:1.6vh;color:var(--muted);font-weight:700;margin-top:.3vh}
+.chip.on{border-color:var(--gold);background:linear-gradient(180deg,rgba(251,191,36,.22),rgba(251,191,36,.05));box-shadow:0 0 3vh rgba(251,191,36,.25)}
+.chip.on .cs{color:var(--gold3)}
+.chip.flash{animation:pop .6s}
+
+/* question */
+.question{flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:3vh;position:relative}
+.q-badges{display:flex;gap:1vw;font-size:2.4vh}
+.q-emoji{font-size:16vh;line-height:1;animation:floaty 3s ease-in-out infinite;filter:drop-shadow(0 2vh 3vh rgba(0,0,0,.5))}
+.q-text{font-size:6.4vh;font-weight:900;line-height:1.12;max-width:85vw;text-wrap:balance}
+.q-unit{font-size:2.6vh;font-weight:800;color:var(--gold3)}
+.q-foot{font-size:2.4vh;color:var(--muted);font-weight:700}
+.qr-mini{position:absolute;right:0;bottom:0;width:15vh;text-align:center;font-size:1.4vh;font-weight:800;color:var(--muted)}
+.qr-mini .qr{padding:.8vh;margin-bottom:.6vh}
+
+/* open */
+.open{flex-direction:column;gap:2.4vh}
+.open-top{display:flex;align-items:center;gap:1.4vw}
+.open-top h2{font-size:3.8vh;font-weight:900;line-height:1.15;text-wrap:balance}
+.open-mid{flex:1;min-height:0;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:3vw}
+.ring-wrap{position:relative;width:46vh;height:46vh;justify-self:center}
+.ring-wrap svg{width:100%;height:100%;transform:rotate(-90deg)}
+.ring-bg{fill:none;stroke:rgba(255,255,255,.08);stroke-width:12}
+.ring{fill:none;stroke:url(#ringGrad);stroke-width:12;stroke-linecap:round;stroke-dasharray:565.49;transition:stroke-dashoffset .2s linear;filter:drop-shadow(0 0 1.2vh rgba(251,191,36,.6))}
+body.urgent .ring{stroke:var(--red);filter:drop-shadow(0 0 2vh rgba(239,35,60,.9))}
+.ring-num{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--disp);font-size:16vh;color:var(--gold3);text-shadow:0 0 4vh rgba(251,191,36,.5)}
+body.urgent .ring-num{color:#fecdd3;text-shadow:0 0 4vh rgba(239,35,60,.9);animation:pulse .5s infinite}
+.ring-lbl{position:absolute;left:0;right:0;bottom:22%;text-align:center;font-weight:800;color:var(--muted);font-size:2vh;letter-spacing:.2em;text-transform:uppercase}
+.open-side{display:flex;flex-direction:column;align-items:center;gap:1.4vh;text-align:center}
+.big-count{font-family:var(--disp);font-size:11vh;line-height:1;color:var(--gold3)}
+.big-count small{font-size:.45em;color:var(--muted)}
+.open-side .lbl{font-size:2.4vh;font-weight:800;color:var(--muted)}
+.open-qr{background:#fff;border-radius:2vh;padding:1.6vh;border:.5vh solid var(--gold);text-align:center}
+.open-qr .qr{width:24vh;padding:0}
+.open-qr div.cap{color:#0b1230;font-weight:900;font-size:1.8vh;margin-top:1vh}
+.chip .lock{font-size:2.2vh}
+.chip.sent{border-color:var(--green);background:linear-gradient(180deg,rgba(34,197,94,.22),rgba(34,197,94,.05))}
+.chip.sent .cs{color:#bbf7d0}
+.chip.off{opacity:.35}
+
+/* reveal */
+.reveal{flex-direction:column;gap:2.2vh}
+.ans-box{text-align:center;padding:2vh 2vw;align-self:center;min-width:50vw;border-radius:3vh;background:radial-gradient(ellipse at 50% 0%,rgba(251,191,36,.25),rgba(17,25,52,.85) 70%);border:.35vh solid rgba(251,191,36,.55);box-shadow:0 0 8vh rgba(251,191,36,.18)}
+.ans-lbl{font-weight:900;letter-spacing:.25em;color:var(--gold3);font-size:2.2vh}
+.ans{font-family:var(--disp);font-size:13vh;line-height:1.1;color:#fff;text-shadow:0 0 4vh rgba(251,191,36,.6);font-variant-numeric:tabular-nums;white-space:nowrap}
+.ans.pulse{animation:pulse 1s infinite;color:var(--gold3)}
+.ans.slam{animation:slam .6s cubic-bezier(.2,1.6,.4,1)}
+@keyframes slam{0%{transform:scale(1.8);opacity:.2}100%{transform:scale(1);opacity:1}}
+.rgrid{flex:1;min-height:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(15vw,1fr));gap:1.8vh 1.2vw;align-content:center}
+.rcard{position:relative;padding:1.8vh 1vw;border-radius:2vh;background:var(--panel);border:.3vh solid var(--line);text-align:center;transition:all .5s cubic-bezier(.2,1.2,.3,1);perspective:600px}
+.rc-name{font-weight:900;font-size:2.4vh;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rc-sub{font-size:1.5vh;color:var(--muted);font-weight:700}
+.rc-val{font-family:var(--disp);font-size:4.4vh;color:var(--gold3);margin-top:.8vh;transition:all .45s;font-variant-numeric:tabular-nums;white-space:nowrap}
+.rcard.hid .rc-val{opacity:0;transform:rotateX(90deg)}
+.rcard.nobid .rc-val{font-family:'Outfit';font-weight:800;font-size:2.2vh;color:var(--muted)}
+.rcard.over{border-color:var(--red);background:rgba(127,29,29,.35);filter:saturate(.6);transform:scale(.94)}
+.rcard.over .rc-val{color:#fca5a5;text-decoration:line-through;text-decoration-thickness:.4vh}
+.rcard.over::after{content:'SE PASÓ';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-12deg);font-family:var(--disp);font-size:3.2vh;color:#fff;background:var(--red);padding:.2vh 1.2vw;border-radius:1vh;box-shadow:0 0 3vh rgba(239,35,60,.8);animation:pop .4s}
+.rcard.win{border-color:var(--gold);background:linear-gradient(180deg,rgba(251,191,36,.35),rgba(251,191,36,.08));transform:scale(1.1);box-shadow:0 0 6vh rgba(251,191,36,.7);z-index:2}
+.rcard.win::before{content:'👑';position:absolute;top:-3.4vh;left:50%;transform:translateX(-50%);font-size:5vh;animation:pop .5s}
+.rc-pts{position:absolute;top:-1.6vh;right:-.6vw;background:var(--green);color:#052e16;font-weight:900;font-size:2.2vh;padding:.3vh .8vw;border-radius:999px;opacity:0;transform:scale(.4);transition:all .4s cubic-bezier(.2,1.6,.4,1)}
+.rcard.scored .rc-pts{opacity:1;transform:scale(1)}
+.empty{grid-column:1/-1;text-align:center;font-size:3vh;color:var(--muted);font-weight:800}
+
+/* banner */
+#banner{position:fixed;inset:0;display:grid;place-items:center;pointer-events:none;z-index:50}
+#banner .b{text-align:center;padding:3vh 4vw;border-radius:3vh;background:rgba(6,10,24,.75);backdrop-filter:blur(6px);border:.5vh solid var(--gold);box-shadow:0 0 10vh rgba(251,191,36,.5);animation:stamp .55s cubic-bezier(.2,1.6,.4,1)}
+#banner .b.red{border-color:var(--red);box-shadow:0 0 10vh rgba(239,35,60,.6)}
+#banner .b small{display:block;font-weight:900;letter-spacing:.12em;font-size:2.8vh;color:var(--gold3);margin-bottom:1vh}
+#banner .b span{display:block;font-family:var(--disp);font-size:9vh;line-height:1.05;color:#fff;text-shadow:0 0 3vh rgba(251,191,36,.7);max-width:80vw}
+#banner .b.red span{text-shadow:0 0 3vh rgba(239,35,60,.9)}
+#banner.out .b{animation:fadeOut .4s forwards}
+@keyframes stamp{0%{transform:scale(2.4) rotate(-6deg);opacity:0}100%{transform:scale(1) rotate(-2deg);opacity:1}}
+@keyframes fadeOut{to{transform:scale(.8);opacity:0}}
+
+/* ranking */
+.ranking{flex-direction:column;gap:1.6vh;align-items:stretch}
+.sect{font-size:8vh;text-align:center}
+.rk-sub{text-align:center;font-size:2.4vh;font-weight:800;color:var(--gold3)}
+.rk-list{flex:1;min-height:0;display:grid;gap:1vh;grid-auto-rows:minmax(0,7.5vh);align-content:center;max-width:80vw;width:100%;margin:0 auto}
+.rrow{display:grid;grid-template-columns:7vh 22vw 1fr 12vw;align-items:center;gap:1.4vw;padding:0 1.4vw;border-radius:1.6vh;background:var(--panel);border:.25vh solid var(--line);opacity:0;animation:rowIn .6s cubic-bezier(.2,1.2,.3,1) forwards;animation-delay:var(--d,0s)}
+.rrow.lead{border-color:var(--gold);background:linear-gradient(90deg,rgba(251,191,36,.25),rgba(17,25,52,.85));box-shadow:0 0 4vh rgba(251,191,36,.3)}
+@keyframes rowIn{from{opacity:0;transform:translateX(-6vw)}to{opacity:1;transform:none}}
+.rpos{font-family:var(--disp);font-size:3.4vh;text-align:center}
+.rname{font-weight:900;font-size:3vh;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rname small{font-size:.55em;color:var(--muted);margin-left:.6vw;font-weight:700}
+.rbar{height:2.6vh;border-radius:999px;background:rgba(255,255,255,.07);overflow:hidden}
+.rbar i{display:block;height:100%;width:0;border-radius:999px;background:linear-gradient(90deg,var(--gold2),var(--gold3));transition:width 1.4s cubic-bezier(.2,.9,.2,1);transition-delay:calc(var(--d,0s) + .3s)}
+.rrow.go .rbar i{width:var(--w)}
+.rpts{font-family:var(--disp);font-size:3.6vh;text-align:right;color:var(--gold3);font-variant-numeric:tabular-nums}
+
+/* final */
+.final{flex-direction:column;align-items:center;justify-content:center;gap:2vh;text-align:center}
+.fin-pre{font-size:5vh;font-weight:900;opacity:0;transition:opacity .8s}
+.fin-pre.show{opacity:1}
+.podium{display:flex;align-items:flex-end;justify-content:center;gap:2vw;height:48vh}
+.pcol{width:22vw;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;opacity:0;transform:translateY(8vh);transition:all .9s cubic-bezier(.2,1.3,.3,1)}
+.pcol.show{opacity:1;transform:none}
+.pcol .pname{font-weight:900;font-size:3.4vh;margin-bottom:.6vh;max-width:22vw;line-height:1.1;text-wrap:balance}
+.pcol .ppts{font-family:var(--disp);color:var(--gold3);font-size:3vh;margin-bottom:1vh}
+.pcol .pblock{width:100%;border-radius:2vh 2vh 0 0;display:grid;place-items:start center;padding-top:2vh;font-family:var(--disp);font-size:9vh;color:rgba(0,0,0,.35)}
+.pcol.p1 .pblock{height:30vh;background:linear-gradient(180deg,#fde68a,#f59e0b);box-shadow:0 0 8vh rgba(251,191,36,.7)}
+.pcol.p2 .pblock{height:21vh;background:linear-gradient(180deg,#e2e8f0,#94a3b8)}
+.pcol.p3 .pblock{height:14vh;background:linear-gradient(180deg,#fdba74,#c2410c)}
+.pcol.p1 .pname{font-size:4.6vh}
+.pcol.p1 .pname::before{content:'👑 '}
+.fin-win{font-family:var(--disp);font-size:5.6vh;min-height:7vh;color:#fff;text-shadow:0 0 3vh rgba(251,191,36,.8)}
+.fin-rest{display:flex;flex-wrap:wrap;justify-content:center;gap:.8vh 1.4vw;font-weight:800;color:var(--muted);font-size:2vh;max-width:80vw}
+
+/* start overlay */
+.tv-start{position:fixed!important;inset:0;z-index:100!important;display:grid;place-items:center;background:rgba(3,6,16,.86);backdrop-filter:blur(8px);cursor:pointer}
+.start-card{text-align:center;display:flex;flex-direction:column;align-items:center;gap:3vh}
+.start-card .logo{font-size:11vh}
+.start-btn{font-family:var(--disp);font-size:4vh;padding:2vh 4vw;border-radius:2vh;background:linear-gradient(180deg,var(--gold3),var(--gold2));color:#1a1203;box-shadow:0 1vh 0 #92400e,0 0 6vh rgba(251,191,36,.5);animation:pulse 1.6s infinite}
+.start-hint{color:var(--muted);font-weight:700;font-size:1.8vh}
+.start-remote{display:flex;align-items:center;gap:2vw;padding:2vh 2vw;border:1px dashed rgba(255,255,255,.2);border-radius:2vh;text-align:left}
+.start-remote .qr{width:16vh;padding:.8vh}
+.pin{font-size:3vh;font-weight:800;margin:.6vh 0}
+.pin b{font-family:var(--disp);color:var(--gold3);letter-spacing:.15em;font-size:1.3em}
+#pin-peek{position:fixed!important;top:9vh;right:3vw;z-index:60!important;background:#111a36;border:2px solid var(--gold);border-radius:1.6vh;padding:1.2vh 1.6vw;font-weight:800;font-size:2.4vh}
+
+/* =========================== MÓVIL (comunes) =========================== */
+.mob{min-height:100%;max-width:520px;margin:0 auto;padding:calc(14px + env(safe-area-inset-top)) 18px calc(24px + env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:16px}
+.m-head{display:flex;align-items:center;gap:10px}
+.m-head .logo{font-size:22px}
+.m-head .sp{flex:1}
+.m-tag{font-size:13px;font-weight:800;color:var(--muted);text-align:right;line-height:1.2}
+.m-tag b{color:var(--gold3);display:block;font-size:15px}
+.dot{width:10px;height:10px;border-radius:50%;background:#f59e0b;box-shadow:0 0 8px #f59e0b;flex:none}
+.dot.ok{background:var(--green);box-shadow:0 0 8px var(--green)}
+.dot.bad{background:var(--red);box-shadow:0 0 8px var(--red)}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:18px}
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:18px 16px;border-radius:16px;font-weight:900;font-size:18px;transition:transform .1s,filter .2s;text-align:center}
+.btn:active{transform:scale(.97)}
+.btn:disabled{filter:grayscale(1) brightness(.6);pointer-events:none}
+.btn.gold{background:linear-gradient(180deg,var(--gold3),var(--gold2));color:#1a1203;box-shadow:0 5px 0 #92400e}
+.btn.green{background:linear-gradient(180deg,#4ade80,#16a34a);color:#052e16;box-shadow:0 5px 0 #14532d}
+.btn.red{background:linear-gradient(180deg,#fb7185,#e11d48);color:#fff;box-shadow:0 5px 0 #881337}
+.btn.teal{background:linear-gradient(180deg,#5eead4,#0d9488);color:#042f2e;box-shadow:0 5px 0 #134e4a}
+.btn.ghost{background:rgba(255,255,255,.06);border:1px solid var(--line);font-size:15px;padding:13px}
+.btn.sm{font-size:14px;padding:10px 12px;border-radius:12px;width:auto}
+.field{width:100%;padding:14px 16px;border-radius:14px;background:#0b1230;border:2px solid #263256;outline:none;font-size:16px}
+.field:focus{border-color:var(--gold)}
+.center{text-align:center}
+.big-emoji{font-size:64px;line-height:1;text-align:center;animation:floaty 3s ease-in-out infinite}
+h2.m-title{font-size:24px;font-weight:900;text-align:center;line-height:1.2}
+.m-sub{color:var(--muted);text-align:center;font-weight:600}
+
+/* jugador */
+.tables{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.tbtn{padding:20px 10px;border-radius:16px;background:var(--panel2);border:2px solid #2b3a6b;font-weight:900;font-size:20px;display:flex;flex-direction:column;gap:2px;align-items:center}
+.tbtn small{font-size:12px;color:var(--muted);font-weight:700}
+.tbtn:active{background:var(--gold);color:#1a1203}
+.tbtn.taken{opacity:.4;pointer-events:none}
+.p-q{font-size:20px;font-weight:800;line-height:1.3;text-align:center}
+.p-timer{height:12px;border-radius:999px;background:rgba(255,255,255,.08);overflow:hidden}
+.p-timer i{display:block;height:100%;background:linear-gradient(90deg,var(--gold2),var(--gold3));border-radius:999px;transition:width .25s linear}
+.p-timer.urgent i{background:linear-gradient(90deg,#e11d48,#fb7185)}
+.p-secs{font-family:var(--disp);font-size:44px;text-align:center;color:var(--gold3);line-height:1}
+.p-secs.urgent{color:#fda4af;animation:pulse .5s infinite}
+.bid-input{width:100%;padding:16px;border-radius:18px;background:#0b1230;border:3px solid #263256;outline:none;font-family:var(--disp);font-size:34px;text-align:center;color:var(--gold3)}
+.bid-input:focus{border-color:var(--gold)}
+.bid-wrap{position:relative}
+.bid-unit{position:absolute;right:16px;top:50%;transform:translateY(-50%);font-weight:900;color:var(--muted);font-size:18px;pointer-events:none}
+.preview{text-align:center;font-weight:800;color:var(--muted);min-height:22px}
+.preview b{color:#fff}
+.status{text-align:center;font-weight:800;min-height:22px}
+.status.ok{color:#86efac}.status.err{color:#fda4af}.status.wait{color:var(--gold3)}
+.result{text-align:center;display:flex;flex-direction:column;gap:10px;align-items:center}
+.result .r-emoji{font-size:80px;line-height:1;animation:pop .6s}
+.result .r-title{font-family:var(--disp);font-size:30px;line-height:1.1}
+.result .r-pts{font-family:var(--disp);font-size:44px;color:#86efac}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;text-align:left;font-weight:700}
+.kv span{color:var(--muted)}
+.linkbtn{color:var(--muted);text-decoration:underline;font-weight:700;font-size:14px;align-self:center;padding:8px}
+
+/* mando */
+.r-now .ph{font-family:var(--disp);font-size:20px;color:var(--gold3)}
+.r-now .row{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:8px;font-weight:700}
+.secret{filter:blur(8px);transition:filter .2s;cursor:pointer;font-family:var(--disp);color:#86efac}
+.secret.show{filter:none}
+.r-actions{display:grid;gap:12px}
+.r-actions .two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.r-sec{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+details.card summary{font-weight:900;font-size:17px;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center}
+details.card summary::after{content:'▾';color:var(--muted)}
+details[open].card summary::after{content:'▴'}
+details.card > div{margin-top:14px}
+.tlist{display:grid;gap:8px}
+.trow{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;padding:10px 12px;border-radius:12px;background:rgba(255,255,255,.04);border:1px solid var(--line)}
+.trow .tn{font-weight:800}
+.trow .ti{font-size:13px;color:var(--muted);font-weight:700}
+.trow .tb{display:flex;gap:6px}
+.trow .tb button{padding:8px 10px;border-radius:10px;background:rgba(255,255,255,.08);font-weight:800;font-size:13px}
+.stepper{display:flex;align-items:center;gap:12px;justify-content:center}
+.stepper button{width:48px;height:48px;border-radius:14px;background:rgba(255,255,255,.08);font-size:24px;font-weight:900}
+.stepper b{font-family:var(--disp);font-size:30px;min-width:60px;text-align:center}
+.qitem{border:1px solid var(--line);border-radius:14px;padding:12px;display:grid;gap:8px;background:rgba(255,255,255,.03)}
+.qitem.cur{border-color:var(--gold)}
+.qitem .qh{display:flex;align-items:center;gap:8px;font-weight:900}
+.qitem .qh .n{background:var(--gold);color:#1a1203;border-radius:8px;padding:2px 8px;font-size:13px}
+.qitem .qh .sp{flex:1}
+.qitem .qh button{padding:6px 9px;border-radius:9px;background:rgba(255,255,255,.08);font-size:13px}
+.qgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.qgrid label{font-size:12px;color:var(--muted);font-weight:800;display:grid;gap:4px}
+.qgrid .full{grid-column:1/-1}
+.qitem .field{padding:10px 12px;font-size:15px;border-radius:10px}
+.qitem textarea.field{min-height:64px;resize:vertical}
+.warn{background:rgba(251,191,36,.12);border:1px solid rgba(251,191,36,.4);color:var(--gold3);border-radius:12px;padding:10px 12px;font-weight:700;font-size:14px}
+.ansprev{font-size:12px;color:#86efac;font-weight:800}
+.ansprev.bad{color:#fda4af}
+</style>
 </head>
-<body class="min-h-screen flex flex-col justify-between p-4 md:p-8">
+<body>
 
-  <!-- ================= 1. VISTA PANTALLA PRINCIPAL (TV / PORTÁTIL) ================= -->
-  <div id="host-view" class="max-w-7xl mx-auto w-full flex-1 flex flex-col justify-between">
-    
-    <!-- Header TV -->
-    <header class="flex justify-between items-center border-b border-slate-700 pb-4">
+<!-- ============================ PANTALLA TV ============================ -->
+<div id="tv" class="hidden">
+  <canvas id="snow"></canvas>
+  <div class="bulbs top" id="bulbs-top"></div>
+  <div class="bulbs bottom" id="bulbs-bottom"></div>
+
+  <header class="tv-head">
+    <div class="tv-logo logo">EL PRECIO JUSTO</div>
+    <div class="tv-sub">🎄 Cena de Navidad 2026</div>
+    <div class="grow"></div>
+    <div id="tv-round" class="badge red hidden"></div>
+    <div id="tv-conn" class="conn"><i></i><span>Conectando…</span></div>
+  </header>
+
+  <section id="s-lobby" class="scene lobby">
+    <div class="lobby-top">
       <div>
-        <h1 class="text-3xl md:text-5xl font-black tracking-tight text-red-500">EL PRECIO JUSTO</h1>
-        <p class="text-slate-400 text-sm md:text-base font-semibold">Cena de Empresa 2026</p>
+        <div class="logo mega shine">EL PRECIO<br>JUSTO</div>
+        <div class="tagline">🎄 Edición Cena de Navidad 2026 🎁</div>
+        <ol class="steps">
+          <li><b>1</b>El portavoz de cada mesa escanea el QR</li>
+          <li><b>2</b>Elegid vuestra mesa y ponedle nombre al equipo</li>
+          <li><b>3</b>Acertad la cifra… ¡sin pasaros!</li>
+        </ol>
       </div>
-      <div class="flex items-center gap-3">
-        <button onclick="resetGame()" class="px-3 py-1.5 bg-red-600/80 hover:bg-red-600 text-white font-bold text-xs rounded-xl border border-red-500 transition shadow">
-          🔄 Reiniciar
-        </button>
-        <div id="status-badge" class="px-4 py-2 rounded-full bg-slate-800 border border-slate-700 text-xs font-bold text-amber-400">
-          Conectando...
-        </div>
+      <div class="qr-card">
+        <div class="qr" id="qr-lobby"></div>
+        <div class="qr-cap">ESCANEA Y JUEGA</div>
+        <div class="qr-url" id="qr-url"></div>
       </div>
-    </header>
-
-    <!-- PANTALLA A: PREGUNTA / ESCAPARATE DE PRODUCTOS -->
-    <main id="screen-question" class="my-auto py-6 space-y-6">
-      <div class="glass-card p-6 md:p-8 rounded-3xl space-y-4 shadow-2xl border-2 border-slate-700">
-        <div class="flex justify-between items-center">
-          <span id="question-num" class="px-4 py-1.5 bg-red-500/20 text-red-400 border border-red-500/30 rounded-full text-base font-bold">
-            Ronda 1
-          </span>
-          <span class="text-slate-400 text-sm font-semibold">Prepara tu respuesta con tu mesa</span>
-        </div>
-        <h2 id="question-text" class="text-2xl md:text-4xl font-black leading-snug">
-          Cargando pregunta...
-        </h2>
-      </div>
-
-      <!-- Contenedor Carrusel Visual -->
-      <div class="relative w-full h-64 md:h-80 rounded-3xl overflow-hidden glass-card border-2 border-amber-500/30 shadow-2xl">
-        <img id="carousel-img" src="" alt="Producto" class="w-full h-full object-cover carousel-fade opacity-100">
-        <div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-slate-950 via-slate-950/60 to-transparent p-4 text-center">
-          <p id="carousel-caption" class="text-amber-300 font-bold text-lg md:text-xl drop-shadow">Presentación de Lote</p>
-        </div>
-      </div>
-
-      <div class="flex justify-end">
-        <button onclick="triggerAction('start-timer')" class="px-10 py-5 gold-gradient text-slate-950 font-black text-2xl rounded-2xl shadow-2xl hover:scale-105 active:scale-95 transition">
-          ⏱️ COMENZAR TIEMPO (MOSTRAR QR)
-        </button>
-      </div>
-    </main>
-
-    <!-- PANTALLA B: QR GIGANTE + CUENTA ATRÁS -->
-    <main id="screen-qr-timer" class="hidden my-auto py-6 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-      <div class="space-y-6 text-center lg:text-left">
-        <div class="inline-block px-4 py-2 bg-amber-500/10 border border-amber-500/20 rounded-full text-amber-400 font-bold text-sm">
-          ¡TIEMPO CORRIENDO!
-        </div>
-        <h2 class="text-4xl md:text-6xl font-black leading-tight">
-          Escanea y envía vuestra <span class="gold-text">Apuesta</span>
-        </h2>
-        <p class="text-slate-300 text-lg md:text-xl">
-          Selecciona tu mesa en el móvil e introduce la cifra antes de que se agote el tiempo.
-        </p>
-        
-        <div class="p-6 bg-slate-800/80 rounded-3xl border-2 border-amber-400 inline-block">
-          <p class="text-xs uppercase tracking-widest text-slate-400 font-bold mb-1">Tiempo Restante</p>
-          <p id="big-timer" class="text-7xl font-black text-amber-400">45s</p>
-        </div>
-      </div>
-
-      <div class="flex flex-col items-center justify-center bg-white p-8 rounded-3xl shadow-2xl border-4 border-amber-400">
-        <div id="qrcode" class="p-2"></div>
-        <p class="text-slate-900 font-black text-lg mt-4 tracking-wide uppercase">Escanear para responder</p>
-      </div>
-    </main>
-
-    <!-- PANTALLA C: RESULTADOS, GANADOR Y CLASIFICACIÓN -->
-    <main id="screen-results" class="hidden my-auto py-4 space-y-6">
-      <div id="reveal-banner" class="hidden glass-card p-6 rounded-3xl border-2 border-emerald-500/50 bg-emerald-950/30 text-center space-y-2">
-        <p class="text-sm font-bold text-emerald-400 uppercase tracking-widest">El Precio Justo Exacto Es:</p>
-        <p id="target-value-display" class="text-5xl font-black text-amber-400">---</p>
-        <p id="winner-announcement" class="text-2xl font-bold text-white pt-2">---</p>
-      </div>
-
-      <div>
-        <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">Apuestas de las Mesas:</h3>
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4" id="bets-grid"></div>
-      </div>
-
-      <div class="glass-card p-4 rounded-2xl border border-slate-700">
-        <h3 class="text-xs font-bold text-amber-400 uppercase tracking-widest mb-2">🏆 Clasificación General (Puntos):</h3>
-        <div class="grid grid-cols-4 md:grid-cols-8 gap-2 text-center text-sm" id="leaderboard-grid"></div>
-      </div>
-
-      <div class="flex gap-4 justify-end">
-        <button id="btn-reveal" onclick="triggerAction('reveal')" class="px-8 py-4 bg-emerald-600 hover:bg-emerald-500 text-white font-black text-xl rounded-2xl shadow-xl hover:scale-105 active:scale-95 transition">
-          🏆 REVELAR CIFRA Y GANADOR
-        </button>
-        <button id="btn-next" onclick="triggerAction('next-question')" class="hidden px-8 py-4 bg-slate-700 hover:bg-slate-600 text-white font-bold text-xl rounded-2xl transition">
-          ➡️ Siguiente Pregunta
-        </button>
-      </div>
-    </main>
-
-  </div>
-
-  <!-- ================= 2. VISTA MÓVIL JUGADOR (MESAS) ================= -->
-  <div id="player-view" class="hidden max-w-md mx-auto w-full flex-1 flex flex-col justify-between py-4">
-    <header class="text-center border-b border-slate-800 pb-3">
-      <h1 class="text-xl font-black text-red-500">EL PRECIO JUSTO</h1>
-      <p id="player-table-title" class="text-xs text-slate-400 font-semibold">Selecciona tu mesa</p>
-    </header>
-
-    <div id="table-selector" class="my-auto space-y-4">
-      <h2 class="text-lg font-bold text-center">¿En qué mesa estáis?</h2>
-      <div class="grid grid-cols-2 gap-3" id="tables-buttons"></div>
     </div>
+    <div class="chips" id="lobby-chips"></div>
+  </section>
 
-    <div id="player-form" class="hidden my-auto space-y-6">
-      <div class="glass-card p-6 rounded-2xl text-center space-y-2">
-        <p class="text-xs font-bold text-amber-400 uppercase tracking-wider">Tu Apuesta</p>
-        <h3 id="player-q-text" class="text-lg font-bold">Introduce vuestra cifra:</h3>
+  <section id="s-question" class="scene question">
+    <div class="q-badges"><span class="badge red" id="q-round"></span><span class="badge gold hidden" id="q-mult"></span></div>
+    <div class="q-emoji" id="q-emoji"></div>
+    <h1 class="q-text" id="q-text"></h1>
+    <div class="q-unit" id="q-unit"></div>
+    <div class="q-foot">📱 Portavoces, móvil en mano… ¡las apuestas están a punto de abrirse!</div>
+    <div class="qr-mini"><div class="qr" id="qr-mini"></div>¿Aún no estáis?</div>
+  </section>
+
+  <section id="s-open" class="scene open">
+    <div class="open-top"><span class="badge red" id="o-round"></span><span class="badge gold hidden" id="o-mult"></span><h2 id="o-text"></h2></div>
+    <div class="open-mid">
+      <div class="open-side">
+        <div class="big-count"><span id="o-count">0</span><small>/<span id="o-total">0</span></small></div>
+        <div class="lbl">mesas han apostado</div>
       </div>
-
-      <div class="space-y-2">
-        <input type="number" step="0.01" id="player-input" inputmode="decimal" placeholder="Cifra sin pasarse..." class="w-full p-4 bg-slate-800 border-2 border-slate-700 rounded-xl text-2xl font-black text-center text-amber-400 focus:border-amber-400 outline-none">
+      <div class="ring-wrap">
+        <svg viewBox="0 0 200 200"><defs><linearGradient id="ringGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fde68a"/><stop offset="1" stop-color="#f59e0b"/></linearGradient></defs><circle class="ring-bg" cx="100" cy="100" r="90"/><circle id="ring" class="ring" cx="100" cy="100" r="90"/></svg>
+        <div class="ring-num" id="ring-num">30</div>
+        <div class="ring-lbl">segundos</div>
       </div>
+      <div class="open-side">
+        <div class="open-qr"><div class="qr" id="qr-open"></div><div class="cap">¿AÚN NO ESTÁIS? ESCANEA</div></div>
+      </div>
+    </div>
+    <div class="chips" id="open-chips"></div>
+  </section>
 
-      <button onclick="submitBid()" class="w-full py-4 gold-gradient text-slate-950 font-black text-lg rounded-xl shadow-lg active:scale-95 transition">
-        ENVIAR APUESTA
-      </button>
+  <section id="s-reveal" class="scene reveal">
+    <div class="open-top"><span class="badge red" id="r-round"></span><h2 id="r-text"></h2></div>
+    <div class="ans-box"><div class="ans-lbl" id="ans-lbl">¿CUÁL SERÁ LA CIFRA?</div><div class="ans" id="ans">?</div></div>
+    <div class="rgrid" id="rgrid"></div>
+  </section>
 
-      <p id="player-status" class="text-center text-sm font-semibold text-slate-400"></p>
+  <section id="s-ranking" class="scene ranking">
+    <h1 class="logo sect">CLASIFICACIÓN</h1>
+    <div class="rk-sub" id="rk-sub"></div>
+    <div class="rk-list" id="rk-list"></div>
+  </section>
+
+  <section id="s-final" class="scene final">
+    <div class="fin-pre" id="fin-pre">Y la Cesta de Navidad es para…</div>
+    <div class="podium" id="podium"></div>
+    <div class="fin-win" id="fin-win"></div>
+    <div class="fin-rest" id="fin-rest"></div>
+  </section>
+
+  <div id="banner"></div>
+  <div id="pin-peek" class="hidden"></div>
+
+  <div id="tv-start" class="tv-start">
+    <div class="start-card">
+      <div class="logo">EL PRECIO JUSTO</div>
+      <button class="start-btn">▶ PULSA PARA EMPEZAR</button>
+      <div class="start-hint">Activa el sonido y la pantalla completa · Teclas: <b>F</b> pantalla completa · <b>M</b> silencio · <b>P</b> ver PIN</div>
+      <div class="start-remote">
+        <div class="qr" id="qr-remote"></div>
+        <div>
+          <div class="muted">Mando del presentador (escanéalo tú)</div>
+          <div class="pin">PIN <b id="tv-pin"></b></div>
+          <div class="muted small" id="remote-url"></div>
+        </div>
+      </div>
     </div>
   </div>
+</div>
 
-  <!-- ================= 3. VISTA MANDO DE CONTROL (MÓVIL PRESENTADOR) ================= -->
-  <div id="remote-view" class="hidden max-w-md mx-auto w-full flex-1 flex flex-col justify-between py-6 space-y-6">
-    <header class="text-center border-b border-slate-800 pb-4">
-      <span class="px-3 py-1 bg-red-500/20 text-red-400 border border-red-500/30 rounded-full text-xs font-bold uppercase">Modo Presentador</span>
-      <h1 class="text-2xl font-black text-amber-400 mt-2">Mando de Control TV</h1>
-      <p id="remote-q-info" class="text-xs text-slate-400 mt-1">Controlando la gran pantalla...</p>
-    </header>
+<!-- ============================ MÓVIL JUGADOR ============================ -->
+<div id="player" class="mob hidden">
+  <header class="m-head">
+    <div class="logo">EL PRECIO JUSTO</div>
+    <div class="sp"></div>
+    <div class="m-tag" id="p-tag"></div>
+    <span class="dot" id="p-dot"></span>
+  </header>
 
-    <div class="space-y-4 my-auto">
-      <button onclick="sendRemoteCommand('start-timer')" class="w-full py-6 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xl rounded-2xl shadow-xl active:scale-95 transition flex items-center justify-center gap-3">
-        ⏱️ LANZAR TIEMPO / QR
-      </button>
+  <section id="p-connecting" class="card center">
+    <div class="big-emoji">📡</div>
+    <h2 class="m-title" style="margin-top:10px">Conectando con la pantalla…</h2>
+    <p class="m-sub" id="p-conn-msg" style="margin-top:6px">Un segundo</p>
+  </section>
 
-      <button onclick="sendRemoteCommand('reveal')" class="w-full py-6 bg-emerald-600 hover:bg-emerald-500 text-white font-black text-xl rounded-2xl shadow-xl active:scale-95 transition flex items-center justify-center gap-3">
-        🏆 REVELAR GANADOR
-      </button>
+  <section id="p-join" class="hidden" style="display:grid;gap:14px">
+    <h2 class="m-title">¿En qué mesa estáis?</h2>
+    <p class="m-sub">Solo un móvil por mesa: el del portavoz 🎤</p>
+    <div class="tables" id="p-tables"></div>
+  </section>
 
-      <button onclick="sendRemoteCommand('next-question')" class="w-full py-5 bg-slate-700 hover:bg-slate-600 text-white font-bold text-lg rounded-2xl active:scale-95 transition flex items-center justify-center gap-3">
-        ➡️ SIGUIENTE PREGUNTA
-      </button>
+  <section id="p-name" class="card hidden" style="display:grid;gap:12px">
+    <div class="big-emoji">🏷️</div>
+    <h2 class="m-title">¿Cómo se llama vuestro equipo?</h2>
+    <p class="m-sub">Saldrá en la pantalla gigante. Opcional.</p>
+    <input class="field" id="p-name-in" maxlength="22" placeholder="Ej: Los Turrones Blandos" autocomplete="off">
+    <button class="btn gold" id="p-name-ok">Guardar nombre</button>
+    <button class="btn ghost" id="p-name-skip">Seguir como «Mesa»</button>
+  </section>
+
+  <section id="p-wait" class="card hidden" style="display:grid;gap:12px">
+    <div class="big-emoji" id="pw-emoji">🎄</div>
+    <div class="center" id="pw-badge"></div>
+    <h2 class="m-title" id="pw-title"></h2>
+    <p class="p-q" id="pw-q"></p>
+    <p class="m-sub" id="pw-sub"></p>
+    <button class="btn ghost hidden" id="pw-rename">✏️ Cambiar nombre del equipo</button>
+  </section>
+
+  <section id="p-bid" class="hidden" style="display:grid;gap:14px">
+    <div class="center" id="pb-badge"></div>
+    <p class="p-q" id="pb-q"></p>
+    <div class="p-secs" id="pb-secs">30</div>
+    <div class="p-timer" id="pb-timer"><i></i></div>
+    <div class="bid-wrap">
+      <input class="bid-input" id="pb-in" type="text" inputmode="numeric" autocomplete="off" placeholder="0">
+      <span class="bid-unit" id="pb-unit"></span>
+    </div>
+    <div class="preview" id="pb-prev"></div>
+    <button class="btn gold" id="pb-send">ENVIAR APUESTA</button>
+    <div class="status" id="pb-status"></div>
+  </section>
+
+  <section id="p-closed" class="card hidden result">
+    <div class="r-emoji">⏱️</div>
+    <div class="r-title">¡TIEMPO!</div>
+    <p class="m-sub" id="pc-msg"></p>
+    <p class="m-sub">Mirad la pantalla… 🥁</p>
+  </section>
+
+  <section id="p-result" class="card hidden result">
+    <div class="r-emoji" id="pr-emoji"></div>
+    <div class="r-title" id="pr-title"></div>
+    <div class="r-pts" id="pr-pts"></div>
+    <div class="kv" id="pr-kv"></div>
+    <p class="m-sub" id="pr-pos"></p>
+  </section>
+
+  <section id="p-rank" class="card hidden result">
+    <div class="r-emoji" id="pk-emoji">📊</div>
+    <div class="r-title" id="pk-title"></div>
+    <div class="r-pts" id="pk-pts"></div>
+    <p class="m-sub" id="pk-sub"></p>
+  </section>
+
+  <button class="linkbtn hidden" id="p-leave">Cambiar de mesa</button>
+</div>
+
+<!-- ============================ MANDO ============================ -->
+<div id="remote" class="mob hidden">
+  <header class="m-head">
+    <div class="logo">MANDO</div>
+    <div class="sp"></div>
+    <div class="m-tag" id="r-tv">Buscando la TV…</div>
+    <span class="dot" id="r-dot"></span>
+  </header>
+
+  <section id="r-pinbox" class="card hidden" style="display:grid;gap:12px">
+    <div class="big-emoji">🔐</div>
+    <h2 class="m-title">PIN de la pantalla</h2>
+    <p class="m-sub">Aparece en la TV al abrirla (o pulsa la tecla <b>P</b> en el portátil).</p>
+    <input class="field center" id="r-pin" inputmode="numeric" maxlength="8" placeholder="····" style="font-family:var(--disp);font-size:28px;letter-spacing:.2em">
+    <button class="btn gold" id="r-pin-ok">Conectar mando</button>
+  </section>
+
+  <div id="r-main" class="hidden" style="display:grid;gap:16px">
+    <section class="card r-now">
+      <div class="ph" id="rn-phase">—</div>
+      <div class="row"><span class="muted" id="rn-round">—</span><span id="rn-timer" class="muted"></span></div>
+      <div class="row"><span id="rn-q" style="font-weight:700"></span></div>
+      <div class="row"><span class="muted">Respuesta (toca para ver):</span><span class="secret" id="rn-ans" onclick="this.classList.toggle('show')">—</span></div>
+      <div class="row"><span class="muted">Apuestas recibidas</span><b id="rn-recv">0/0</b></div>
+    </section>
+
+    <section class="r-actions" id="r-actions"></section>
+    <div class="r-sec">
+      <button class="btn ghost" data-act="ranking">📊 Ranking</button>
+      <button class="btn ghost" data-act="lobby">🏠 Inicio</button>
+      <button class="btn ghost" data-act="sound">🔊 Sonido</button>
     </div>
 
-    <div class="pt-4 border-t border-slate-800 flex justify-between gap-3">
-      <button onclick="sendRemoteCommand('reset')" class="w-full py-3 bg-red-950/60 border border-red-600/40 text-red-400 font-bold text-xs rounded-xl active:scale-95 transition">
-        🔄 Reiniciar Juego
-      </button>
-    </div>
+    <details class="card" id="r-tables-box" open>
+      <summary>🪑 Mesas y puntos</summary>
+      <div style="display:grid;gap:14px">
+        <div class="stepper"><button id="r-tminus">−</button><b id="r-tcount">8</b><button id="r-tplus">+</button></div>
+        <p class="m-sub small">Número de mesas que se ven en la pantalla y en los móviles.</p>
+        <div class="tlist" id="r-tlist"></div>
+      </div>
+    </details>
+
+    <details class="card" id="r-q-box">
+      <summary>📝 Rondas y precios</summary>
+      <div style="display:grid;gap:12px">
+        <div class="warn" id="r-demo-warn">Son preguntas y precios <b>inventados</b> de ejemplo. Los precios solo se guardan en <b>este móvil</b>: no van en el código ni en GitHub.</div>
+        <div id="r-qlist" style="display:grid;gap:10px"></div>
+        <button class="btn ghost" id="r-qadd">➕ Añadir ronda</button>
+        <details>
+          <summary class="muted" style="font-weight:800;cursor:pointer;padding:6px 0">Copia de seguridad (importar / exportar)</summary>
+          <div style="display:grid;gap:8px;margin-top:8px">
+            <textarea class="field" id="r-json" rows="5" placeholder="Pega aquí un JSON de rondas"></textarea>
+            <div class="two" style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+              <button class="btn ghost" id="r-export">📤 Copiar</button>
+              <button class="btn ghost" id="r-import">📥 Cargar</button>
+            </div>
+            <button class="btn ghost" id="r-demo">↺ Volver a las de ejemplo</button>
+          </div>
+        </details>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary>⚠️ Zona peligrosa</summary>
+      <div style="display:grid;gap:10px">
+        <button class="btn ghost" id="r-reset">🔄 Reiniciar partida (borra puntos, mantiene mesas)</button>
+        <button class="btn ghost" id="r-releaseall">🚪 Liberar todas las mesas</button>
+        <button class="btn ghost" id="r-changepin">🔐 Cambiar PIN</button>
+      </div>
+    </details>
   </div>
+</div>
 
-  <script>
-    const SUPABASE_URL = 'https://zsiybimuicenbejqblrp.supabase.co';
-    const SUPABASE_KEY = 'sb_publishable_Vj0QnLFI8AoU92buxt4NIg_qehwOSUS';
-    
-    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+<div id="toast"></div>
 
-    // Configuración de Preguntas + Carrusel de imágenes por pregunta
-    const questions = [
-      { 
-        q: "¿Cuántas tazas de café se han consumido en la oficina durante este año 2026?", 
-        target: 4320, unit: "tazas", time: 30, isFinal: false,
-        images: [
-          { url: "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=800", caption: "El motor de la oficina" },
-          { url: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=800", caption: "¿Cuántas tazas van al día?" }
-        ]
-      },
-      { 
-        q: "¿Cuántos folios/páginas se han impreso en total durante 2026?", 
-        target: 38500, unit: "folios", time: 30, isFinal: false,
-        images: [
-          { url: "https://images.unsplash.com/photo-1586075010923-2dd4570fb338?w=800", caption: "Papelería e Impresoras" }
-        ]
-      },
-      { 
-        q: "GRAN FINAL: ¿Cuál es el PRECIO JUSTO EXACTO del ticket total de la Cesta Gourmet (8-9 productos)?", 
-        target: 234.85, unit: "€", time: 45, isFinal: true, margin: 3.0,
-        images: [
-          { url: "https://images.unsplash.com/photo-1544025162-d76694265947?w=800", caption: "Lote de Jamón y Embutidos Ibéricos" },
-          { url: "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=800", caption: "Selección de Vinos y Licores" },
-          { url: "https://images.unsplash.com/photo-1559181567-c3190ca9959b?w=800", caption: "Conservas Artesanales y Dulces Navideños" },
-          { url: "https://images.unsplash.com/photo-1513201099705-a9746e1e201f?w=800", caption: "¡Cesta Completa para la Mesa Ganadora!" }
-        ]
+<script>
+/* =====================================================================
+   CONFIGURACIÓN
+   ===================================================================== */
+const SUPABASE_URL = 'https://zsiybimuicenbejqblrp.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_Vj0QnLFI8AoU92buxt4NIg_qehwOSUS';
+const CHANNEL      = 'room-precio-justo';
+
+const POINTS       = [100, 50, 25]; // 1º, 2º y 3º más cercanos SIN pasarse
+const EXACT_BONUS  = 100;           // extra si clavan la cifra exacta
+const DEFAULT_TABLES = 8;
+const MAX_TABLES   = 20;
+
+// Rondas de EJEMPLO (inventadas). Las de verdad se editan en el mando y
+// se guardan solo en el móvil del presentador.
+const DEMO_QUESTIONS = [
+  { emoji:'☕', text:'¿Cuántos cafés se han tomado en la oficina durante 2026?', unit:'cafés', decimals:0, time:30, mult:1, answer:4320 },
+  { emoji:'🖨️', text:'¿Cuántos folios se han impreso en la empresa este año?', unit:'folios', decimals:0, time:30, mult:1, answer:38500 },
+  { emoji:'🦐', text:'¿Cuánto cuesta 1 kg de percebes en Lugo la semana de Navidad?', unit:'€', decimals:2, time:30, mult:1, answer:119.90 },
+  { emoji:'📧', text:'¿Cuántos correos ha enviado la plantilla en 2026?', unit:'correos', decimals:0, time:30, mult:1, answer:182340 },
+  { emoji:'🎄', text:'¿Cuántas bombillas tiene el árbol de Navidad de la oficina?', unit:'bombillas', decimals:0, time:30, mult:1, answer:850 },
+  { emoji:'🚗', text:'¿Cuántos kilómetros han hecho los coches de empresa este año?', unit:'km', decimals:0, time:40, mult:2, answer:125000 },
+  { emoji:'🍫', text:'¿Cuánto cuesta una tableta de turrón de Jijona de 300 g?', unit:'€', decimals:2, time:30, mult:2, answer:12.50 },
+  { emoji:'🎁', text:'GRAN FINAL: ¿Cuánto cuesta la Cesta de Navidad completa?', unit:'€', decimals:2, time:45, mult:3, answer:234.85 }
+];
+
+/* =====================================================================
+   UTILIDADES
+   ===================================================================== */
+const MODE = new URLSearchParams(location.search).get('mode') || 'tv';
+const $  = s => document.querySelector(s);
+const $$ = s => [...document.querySelectorAll(s)];
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+const hash = s => { let h = 2166136261; for (const c of String(s)) { h ^= c.charCodeAt(0); h = Math.imul(h, 16777619); } return (h >>> 0).toString(36); };
+const store = {
+  get(k){ try { return localStorage.getItem(k); } catch(e){ return null; } },
+  set(k,v){ try { localStorage.setItem(k, v); } catch(e){} },
+  del(k){ try { localStorage.removeItem(k); } catch(e){} },
+  json(k){ try { return JSON.parse(localStorage.getItem(k)); } catch(e){ return null; } }
+};
+function fmtNum(v, dec = 0){
+  if (v === null || v === undefined || isNaN(v)) return '—';
+  return Number(v).toLocaleString('es-ES', { minimumFractionDigits: dec, maximumFractionDigits: dec, useGrouping: 'always' });
+}
+function fmtVal(v, q){
+  const dec = q && q.decimals ? 2 : 0, u = (q && q.unit) || '';
+  return fmtNum(v, dec) + (u ? (u === '€' ? ' €' : ' ' + u) : '');
+}
+// Acepta "1.500", "1500", "234,85", "234.85", "1.234,5"…
+function parseNum(str, decimals){
+  let s = String(str || '').trim().replace(/[\s€]/g, '');
+  if (!s) return null;
+  if (!/^[\d.,]+$/.test(s)) return NaN;
+  if (s.includes(',')) s = s.replace(/\./g, '').replace(',', '.');
+  else if (s.includes('.')) {
+    const parts = s.split('.');
+    const last = parts[parts.length - 1];
+    if (parts.length > 2 || last.length === 3) s = parts.join('');   // separador de miles
+  }
+  if ((s.match(/\./g) || []).length > 1) return NaN;
+  let v = Number(s);
+  if (!isFinite(v)) return NaN;
+  if (!decimals) v = Math.round(v); else v = Math.round(v * 100) / 100;
+  return v;
+}
+const cleanName = s => String(s || '').replace(/[<>]/g, '').replace(/\s+/g, ' ').trim().slice(0, 22);
+const labelOf = (t, names) => (names && names[t]) || ('Mesa ' + t);
+function deviceId(){
+  let id = store.get('pj_device');
+  if (!id) { id = 'd' + Math.random().toString(36).slice(2, 10) + Date.now().toString(36); store.set('pj_device', id); }
+  return id;
+}
+let toastTimer;
+function toast(msg, kind = ''){
+  const el = $('#toast'); el.textContent = msg; el.className = 'show ' + kind;
+  clearTimeout(toastTimer); toastTimer = setTimeout(() => el.className = kind, 2800);
+}
+async function keepAwake(){
+  if (!('wakeLock' in navigator)) return;
+  const req = async () => { try { await navigator.wakeLock.request('screen'); } catch(e){} };
+  await req();
+  document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') req(); });
+}
+function makeQR(el, text, size = 512){
+  el.innerHTML = '';
+  if (!window.QRCode) { el.innerHTML = `<div class="qr-fallback">${esc(text)}</div>`; return; }
+  new QRCode(el, { text, width: size, height: size, colorDark: '#0b1230', colorLight: '#ffffff', correctLevel: QRCode.CorrectLevel.M });
+}
+const BASE_URL   = location.origin + location.pathname;
+const PLAYER_URL = BASE_URL + '?mode=player';
+const REMOTE_URL = BASE_URL + '?mode=remote';
+const shortUrl = u => u.replace(/^https?:\/\//, '');
+
+// Clasificación: puntos, luego rondas ganadas. Empates comparten puesto.
+function standings(st){
+  const ids = new Set();
+  for (let t = 1; t <= st.tables; t++) if (st.claims[t]) ids.add(t);
+  Object.keys(st.scores || {}).forEach(t => { if (st.scores[t]) ids.add(+t); });
+  const rows = [...ids].map(t => ({ t, s: (st.scores || {})[t] || 0, w: (st.wins || {})[t] || 0 }))
+    .sort((a, b) => b.s - a.s || b.w - a.w || a.t - b.t);
+  rows.forEach((r, i) => { r.pos = (i > 0 && rows[i-1].s === r.s && rows[i-1].w === r.w) ? rows[i-1].pos : i + 1; });
+  return rows;
+}
+const medal = p => p === 1 ? '🥇' : p === 2 ? '🥈' : p === 3 ? '🥉' : p + 'º';
+
+/* =====================================================================
+   CANAL SUPABASE (Realtime Broadcast)
+   ===================================================================== */
+const Bus = {
+  ch: null, status: 'CONNECTING',
+  start(handlers, onStatus = () => {}){
+    if (!window.supabase) { onStatus('NO_LIB'); return; }
+    const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    this.ch = sb.channel(CHANNEL, { config: { broadcast: { self: false, ack: true } } });
+    Object.entries(handlers).forEach(([ev, fn]) =>
+      this.ch.on('broadcast', { event: ev }, m => { try { fn(m.payload || {}); } catch(e){ console.error(e); } }));
+    this.ch.subscribe(st => { this.status = st; onStatus(st); });
+  },
+  async send(event, payload){
+    if (!this.ch || this.status !== 'SUBSCRIBED') return 'offline';
+    try { return await this.ch.send({ type: 'broadcast', event, payload }); } catch(e){ return 'error'; }
+  }
+};
+
+/* =====================================================================
+   SONIDO (sintetizado, sin archivos)
+   ===================================================================== */
+const Sfx = (() => {
+  let ctx = null, master = null, on = true;
+  function init(){
+    if (ctx) { if (ctx.state === 'suspended') ctx.resume(); return; }
+    const AC = window.AudioContext || window.webkitAudioContext; if (!AC) return;
+    ctx = new AC(); master = ctx.createGain(); master.gain.value = .55; master.connect(ctx.destination);
+  }
+  function tone(f, d = .15, type = 'sine', vol = .3, when = 0, slide = null){
+    if (!ctx || !on) return;
+    const t = ctx.currentTime + when, o = ctx.createOscillator(), g = ctx.createGain();
+    o.type = type; o.frequency.setValueAtTime(f, t);
+    if (slide) o.frequency.exponentialRampToValueAtTime(slide, t + d);
+    g.gain.setValueAtTime(.0001, t); g.gain.exponentialRampToValueAtTime(vol, t + .012); g.gain.exponentialRampToValueAtTime(.0001, t + d);
+    o.connect(g).connect(master); o.start(t); o.stop(t + d + .05);
+  }
+  function noise(d = .1, vol = .3, when = 0, freq = 800){
+    if (!ctx || !on) return;
+    const t = ctx.currentTime + when, len = Math.max(1, Math.floor(ctx.sampleRate * d));
+    const buf = ctx.createBuffer(1, len, ctx.sampleRate), data = buf.getChannelData(0);
+    for (let i = 0; i < len; i++) data[i] = (Math.random() * 2 - 1) * (1 - i / len);
+    const s = ctx.createBufferSource(); s.buffer = buf;
+    const f = ctx.createBiquadFilter(); f.type = 'bandpass'; f.frequency.value = freq;
+    const g = ctx.createGain(); g.gain.value = vol;
+    s.connect(f).connect(g).connect(master); s.start(t);
+  }
+  return {
+    init, toggle(){ on = !on; return on; }, get on(){ return on; },
+    pop(){ tone(880, .08, 'triangle', .25); tone(1320, .12, 'triangle', .22, .06); },
+    ding(){ [1046, 1318, 1568, 2093].forEach((f, i) => tone(f, .4, 'sine', .2, i * .07)); },
+    tick(){ tone(1500, .03, 'square', .05); },
+    beep(){ tone(880, .2, 'square', .18); tone(1760, .2, 'sine', .08); },
+    buzz(){ tone(150, .35, 'sawtooth', .22, 0, 100); },
+    buzzer(){ tone(140, 1, 'sawtooth', .3, 0, 85); tone(147, 1, 'square', .15); },
+    whoosh(){ noise(.45, .35, 0, 1200); },
+    drumroll(sec = 2.5){ for (let t = 0; t < sec; t += .045) noise(.05, .06 + .3 * (t / sec), t, 260); noise(.5, .5, sec, 120); tone(70, .5, 'sine', .5, sec); },
+    fanfare(){
+      [523, 659, 784].forEach((f, i) => tone(f, .18, 'sawtooth', .16, i * .12));
+      [523, 659, 784, 1046].forEach(f => tone(f, 1.3, 'sawtooth', .1, .42));
+      tone(1046, 1.3, 'triangle', .18, .42);
+    },
+    sad(){ [392, 370, 349].forEach((f, i) => tone(f, .38, 'sawtooth', .16, i * .4)); tone(330, 1.1, 'sawtooth', .16, 1.2, 250); },
+    jingle(){ const E=659,G=784,C=523,D=587; [E,E,E,0,E,E,E,0,E,G,C,D,E].forEach((f, i) => f && tone(f, .2, 'triangle', .2, i * .15)); },
+  };
+})();
+
+function fireworks(ms = 5000){
+  if (!window.confetti) return;
+  const end = Date.now() + ms, colors = ['#fbbf24', '#ef233c', '#ffffff', '#22c55e', '#fde68a'];
+  (function f(){
+    confetti({ particleCount: 5, angle: 60, spread: 60, origin: { x: 0, y: .75 }, colors });
+    confetti({ particleCount: 5, angle: 120, spread: 60, origin: { x: 1, y: .75 }, colors });
+    if (Math.random() < .07) confetti({ particleCount: 110, spread: 110, startVelocity: 42, origin: { x: .2 + Math.random() * .6, y: .15 + Math.random() * .3 }, colors });
+    if (Date.now() < end) requestAnimationFrame(f);
+  })();
+}
+function burst(){ if (window.confetti) confetti({ particleCount: 160, spread: 100, startVelocity: 50, origin: { y: .45 }, colors: ['#fbbf24','#fde68a','#ef233c','#fff'] }); }
+
+/* =====================================================================
+   PANTALLA TV  — fuente de verdad del juego
+   ===================================================================== */
+const TV = (() => {
+  const KEY = 'pj_tv_state_v2';
+  let PIN, S, shown = { phase: null, round: null }, animTok = 0, lastSec = null;
+
+  const fresh = () => ({ phase:'lobby', round:0, total:0, q:null, deadline:0, tables:DEFAULT_TABLES,
+    claims:{}, names:{}, bids:{}, bidTimes:{}, result:null, scores:{}, wins:{}, history:[], seq:0 });
+
+  function getPin(){
+    const m = location.hash.match(/pin=(\d{4,8})/);
+    if (m) { store.set('pj_tv_pin', m[1]); return m[1]; }
+    let p = store.get('pj_tv_pin');
+    if (!p) { p = String(Math.floor(1000 + Math.random() * 9000)); store.set('pj_tv_pin', p); }
+    return p;
+  }
+  const save = () => store.set(KEY, JSON.stringify(S));
+
+  function pub(){
+    const claims = {}; for (const t in S.claims) claims[t] = hash(S.claims[t]);
+    const showBids = ['closed', 'reveal'].includes(S.phase);
+    return { seq:S.seq, phase:S.phase, round:S.round, total:S.total, q:S.q,
+      remaining: S.phase === 'open' ? Math.max(0, S.deadline - Date.now()) : 0,
+      tables:S.tables, claims, names:S.names, received:Object.keys(S.bids).map(Number),
+      bids: showBids ? S.bids : null,
+      result: ['reveal','ranking','final'].includes(S.phase) ? S.result : null,
+      scores:S.scores, wins:S.wins };
+  }
+  const broadcast = () => Bus.send('state', pub());
+  function commit(){ S.seq++; save(); render(); broadcast(); }
+
+  /* ---------- reglas ---------- */
+  function computeResult(answer){
+    const mult = (S.q && S.q.mult) || 1, EPS = 1e-9;
+    const entries = Object.entries(S.bids).map(([t, v]) => ({ t: +t, v }));
+    const valid = entries.filter(e => e.v <= answer + EPS).sort((a, b) => b.v - a.v);
+    const distinct = [...new Set(valid.map(e => e.v))];
+    const awards = {};
+    valid.forEach(e => {
+      const place = distinct.indexOf(e.v);
+      if (place < POINTS.length) {
+        let p = POINTS[place];
+        if (Math.abs(e.v - answer) < EPS) p += EXACT_BONUS;
+        awards[e.t] = p * mult;
       }
-    ];
+    });
+    const winners = distinct.length ? valid.filter(e => e.v === distinct[0]).map(e => e.t) : [];
+    return { answer, awards, winners, mult,
+      exact: distinct.length > 0 && Math.abs(distinct[0] - answer) < EPS,
+      allOver: entries.length > 0 && valid.length === 0,
+      none: entries.length === 0,
+      over: entries.filter(e => e.v > answer + EPS).sort((a, b) => b.v - a.v).map(e => e.t) };
+  }
 
-    let currentQ = 0;
-    let selectedTable = null;
-    let timerInterval = null;
-    let carouselInterval = null;
-    let carouselIdx = 0;
-    const TOTAL_TABLES = 8;
-    let bidsData = {};
-    let scores = {};
-    let realtimeChannel = null;
-
-    for(let i = 1; i <= TOTAL_TABLES; i++) scores[i] = 0;
-
-    const urlParams = new URLSearchParams(window.location.search);
-    const mode = urlParams.get('mode');
-
-    window.onload = () => {
-      realtimeChannel = supabaseClient.channel('room-precio-justo', {
-        config: { broadcast: { self: true, ack: false } }
-      });
-
-      if (mode === 'player') {
-        document.getElementById('host-view').classList.add('hidden');
-        document.getElementById('player-view').classList.remove('hidden');
-        initPlayerUI();
-        realtimeChannel.subscribe();
-      } else if (mode === 'remote') {
-        document.getElementById('host-view').classList.add('hidden');
-        document.getElementById('remote-view').classList.remove('hidden');
-        realtimeChannel.subscribe();
-      } else {
-        initHostUI();
+  /* ---------- mensajes entrantes ---------- */
+  const handlers = {
+    hello(){ broadcast(); },
+    claim(p){
+      const t = +p.table, d = String(p.device || '');
+      const res = (ok, reason) => Bus.send('claim-res', { device: d, table: t, ok, reason });
+      if (!d || !(t >= 1 && t <= S.tables)) return res(false, 'Mesa no válida');
+      if (S.claims[t] && S.claims[t] !== d) return res(false, 'Esa mesa ya tiene portavoz');
+      for (const k in S.claims) if (S.claims[k] === d && +k !== t) { delete S.claims[k]; delete S.names[k]; }
+      const isNew = !S.claims[t];
+      S.claims[t] = d; const n = cleanName(p.name); if (n) S.names[t] = n;
+      commit(); res(true);
+      if (isNew) { Sfx.ding(); flashChip(t); }
+    },
+    rename(p){
+      const t = +p.table; if (S.claims[t] !== p.device) return;
+      const n = cleanName(p.name); if (n) S.names[t] = n; else delete S.names[t];
+      commit(); flashChip(t);
+    },
+    leave(p){ const t = +p.table; if (S.claims[t] !== p.device) return; delete S.claims[t]; delete S.names[t]; commit(); },
+    bid(p){
+      const t = +p.table, d = String(p.device || '');
+      const fail = r => Bus.send('bid-ack', { device: d, round: p.round, ok: false, reason: r });
+      if (S.claims[t] !== d) return fail('Este móvil ya no es el portavoz de la mesa');
+      if (S.phase !== 'open' || +p.round !== S.round) return fail('Las apuestas están cerradas');
+      if (Date.now() > S.deadline + 1000) return fail('¡Se acabó el tiempo!');
+      let v = Number(p.value);
+      if (!isFinite(v) || v < 0 || v > 1e12) return fail('Cifra no válida');
+      v = S.q && S.q.decimals ? Math.round(v * 100) / 100 : Math.round(v);
+      const isNew = !(t in S.bids);
+      S.bids[t] = v; S.bidTimes[t] = Date.now();
+      commit(); Bus.send('bid-ack', { device: d, round: S.round, ok: true, value: v });
+      if (isNew) { Sfx.pop(); flashChip(t); }
+    },
+    cmd(p){
+      const reply = (ok, msg) => Bus.send('cmd-res', { id: p.id, ok, msg });
+      if (String(p.pin) !== PIN) return reply(false, 'pin');
+      switch (p.action) {
+        case 'question': {
+          const q = p.q || {};
+          S.round = +p.round || S.round + 1; S.total = +p.total || S.total;
+          S.q = { text: String(q.text || '').slice(0, 300), unit: String(q.unit || '').slice(0, 20), decimals: q.decimals ? 2 : 0,
+                  time: clamp(+q.time || 30, 5, 300), mult: clamp(+q.mult || 1, 1, 10), emoji: String(q.emoji || '').slice(0, 8) };
+          S.phase = 'question'; S.bids = {}; S.bidTimes = {}; S.result = null; S.deadline = 0;
+          break;
+        }
+        case 'open':
+          if (!S.q || S.result) return reply(false, 'No hay ninguna ronda pendiente');
+          S.deadline = Date.now() + (S.phase === 'closed' ? 15000 : S.q.time * 1000);
+          S.phase = 'open'; break;
+        case 'close':
+          if (S.phase !== 'open') return reply(false, 'Las apuestas no están abiertas');
+          S.phase = 'closed'; break;
+        case 'addtime':
+          if (S.phase !== 'open') return reply(false, 'Las apuestas no están abiertas');
+          S.deadline += 15000; break;
+        case 'reveal': {
+          if (S.result) return reply(false, 'Esta ronda ya está revelada');
+          if (!['open', 'closed'].includes(S.phase)) return reply(false, 'Primero abre y cierra las apuestas');
+          if (+p.round !== S.round) return reply(false, 'El mando y la TV no están en la misma ronda');
+          let ans = Number(p.answer);
+          if (!isFinite(ans)) return reply(false, 'Falta el precio de esta ronda');
+          ans = S.q.decimals ? Math.round(ans * 100) / 100 : Math.round(ans);
+          const r = computeResult(ans);
+          for (const t in r.awards) S.scores[t] = (S.scores[t] || 0) + r.awards[t];
+          r.winners.forEach(t => S.wins[t] = (S.wins[t] || 0) + 1);
+          S.history.push({ round: S.round, awards: r.awards, winners: r.winners });
+          S.result = r; S.phase = 'reveal'; break;
+        }
+        case 'unreveal': {
+          if (!S.result || S.phase !== 'reveal') return reply(false, 'No hay nada que deshacer');
+          for (const t in S.result.awards) S.scores[t] = (S.scores[t] || 0) - S.result.awards[t];
+          S.result.winners.forEach(t => S.wins[t] = Math.max(0, (S.wins[t] || 0) - 1));
+          S.history.pop(); S.result = null; S.phase = 'closed'; break;
+        }
+        case 'ranking': S.phase = 'ranking'; break;
+        case 'final':   S.phase = 'final'; break;
+        case 'lobby':   S.phase = 'lobby'; break;
+        case 'tables':
+          S.tables = clamp(+p.n || DEFAULT_TABLES, 1, MAX_TABLES);
+          for (const t in S.claims) if (+t > S.tables) { delete S.claims[t]; delete S.names[t]; }
+          break;
+        case 'release':    delete S.claims[p.table]; delete S.names[p.table]; break;
+        case 'releaseAll': S.claims = {}; S.names = {}; break;
+        case 'score':      S.scores[+p.table] = (S.scores[+p.table] || 0) + (+p.delta || 0); break;
+        case 'sound':      { const on = Sfx.toggle(); reply(true, on ? '🔊 Sonido activado' : '🔇 Sonido silenciado'); return; }
+        case 'ping':       reply(true, '✅ Mando conectado a la TV'); broadcast(); return;
+        case 'reset': {
+          const keep = { tables: S.tables, claims: S.claims, names: S.names, seq: S.seq };
+          S = Object.assign(fresh(), keep); break;
+        }
+        default: return reply(false, 'Acción desconocida');
       }
+      commit(); reply(true);
+    }
+  };
+
+  /* ---------- render ---------- */
+  const L = t => labelOf(t, S.names);
+  function sceneOf(ph){ return { lobby:'s-lobby', question:'s-question', open:'s-open', closed:'s-reveal', reveal:'s-reveal', ranking:'s-ranking', final:'s-final' }[ph]; }
+
+  function render(){
+    const ph = S.phase, changed = shown.phase !== ph || shown.round !== S.round;
+    const tv = $('#tv'); tv.className = 'ph-' + ph;
+    const rp = $('#tv-round');
+    rp.classList.add('hidden');
+    if (changed) { const prev = shown.phase, anim = prev !== null; shown = { phase: ph, round: S.round }; enter(ph, prev, anim); }
+    else update(ph);
+  }
+
+  function enter(ph, prev, anim){
+    animTok++; document.body.classList.remove('urgent'); lastSec = null;
+    $$('.scene').forEach(s => s.classList.remove('on'));
+    $('#' + sceneOf(ph)).classList.add('on');
+    if (ph === 'lobby') renderChips('#lobby-chips', 'lobby');
+    if (ph === 'question') { renderQuestion(); if (anim) Sfx.whoosh(); }
+    if (ph === 'open') { renderOpen(); if (anim) { Sfx.ding(); showBanner('¡APUESTAS ABIERTAS!', '', 'gold', 1400); } }
+    if (ph === 'closed') renderReveal(anim && prev === 'open' ? 'flip' : 'static');
+    if (ph === 'reveal') { if (anim && prev === 'closed') playReveal(); else renderReveal('done'); }
+    if (ph === 'ranking') renderRanking(anim);
+    if (ph === 'final') renderFinal(anim);
+  }
+  function update(ph){
+    if (ph === 'lobby') renderChips('#lobby-chips', 'lobby');
+    if (ph === 'open') { renderChips('#open-chips', 'open'); $('#o-count').textContent = Object.keys(S.bids).length; $('#o-total').textContent = claimedCount(); }
+    if (ph === 'ranking') renderRanking(false);
+    if (ph === 'final') renderFinal(false);
+    if (ph === 'reveal' || ph === 'closed') { /* sin cambios en vivo */ }
+  }
+  const claimedCount = () => Object.keys(S.claims).filter(t => +t <= S.tables).length;
+
+  function renderChips(sel, mode){
+    let html = '';
+    for (let t = 1; t <= S.tables; t++) {
+      const claimed = !!S.claims[t], sent = t in S.bids;
+      let cls = 'chip', sub;
+      if (mode === 'lobby') { if (claimed) cls += ' on'; sub = claimed ? '✓ ¡Lista!' : 'Esperando…'; }
+      else { if (sent) cls += ' sent'; else if (!claimed) cls += ' off'; sub = sent ? '🔒 Apuesta secreta' : (claimed ? 'Pensando… 🤔' : 'Sin portavoz'); }
+      html += `<div class="${cls}" data-t="${t}"><div class="cn">${esc(L(t))}</div><div class="cs">${sub}</div></div>`;
+    }
+    $(sel).innerHTML = html;
+  }
+  function flashChip(t){ $$(`.chip[data-t="${t}"]`).forEach(c => { c.classList.remove('flash'); void c.offsetWidth; c.classList.add('flash'); }); }
+
+  function multBadge(el){ const m = S.q && S.q.mult > 1; el.classList.toggle('hidden', !m); if (m) el.textContent = `⭐ Puntos x${S.q.mult}`; }
+  function renderQuestion(){
+    const q = S.q || {};
+    $('#q-round').textContent = S.round === S.total && S.total > 1 ? `🔥 Última ronda · ${S.round} de ${S.total}` : `Ronda ${S.round} de ${S.total}`;
+    multBadge($('#q-mult'));
+    $('#q-emoji').textContent = q.emoji || '💰';
+    $('#q-text').textContent = q.text || '';
+    $('#q-unit').textContent = q.unit ? `Respuesta en ${q.unit === '€' ? 'euros (con céntimos)' : q.unit}` : '';
+  }
+  function renderOpen(){
+    $('#o-round').textContent = `Ronda ${S.round} de ${S.total}`; multBadge($('#o-mult'));
+    $('#o-text').textContent = (S.q.emoji ? S.q.emoji + ' ' : '') + S.q.text;
+    $('#o-count').textContent = Object.keys(S.bids).length; $('#o-total').textContent = claimedCount();
+    renderChips('#open-chips', 'open'); tick();
+  }
+  function tick(){
+    if (S.phase !== 'open') return;
+    const rem = Math.max(0, S.deadline - Date.now()), total = S.q.time * 1000;
+    $('#ring').style.strokeDashoffset = (565.49 * (1 - Math.min(1, rem / total))).toFixed(1);
+    const sec = Math.ceil(rem / 1000);
+    $('#ring-num').textContent = sec;
+    if (sec !== lastSec) {
+      lastSec = sec;
+      if (sec <= 5 && sec > 0) { document.body.classList.add('urgent'); Sfx.beep(); }
+      else { document.body.classList.remove('urgent'); if (sec > 0) Sfx.tick(); }
+    }
+    if (rem <= 0) {
+      S.phase = 'closed'; commit();
+      Sfx.buzzer(); showBanner('¡TIEMPO!', '', 'red', 1600);
+    }
+  }
+
+  /* --- revelación --- */
+  function revealEntries(){
+    const ids = new Set();
+    for (let t = 1; t <= S.tables; t++) if (S.claims[t]) ids.add(t);
+    Object.keys(S.bids).forEach(t => ids.add(+t));
+    return [...ids].map(t => ({ t, v: (t in S.bids) ? S.bids[t] : null }))
+      .sort((a, b) => (a.v === null) - (b.v === null) || (a.v ?? 0) - (b.v ?? 0) || a.t - b.t);
+  }
+  function renderRevealGrid(hidden){
+    const list = revealEntries();
+    $('#rgrid').innerHTML = list.length ? list.map(e => `
+      <div class="rcard ${e.v === null ? 'nobid' : ''} ${hidden && e.v !== null ? 'hid' : ''}" data-t="${e.t}">
+        <div class="rc-name">${esc(L(e.t))}</div>${S.names[e.t] ? `<div class="rc-sub">Mesa ${e.t}</div>` : '<div class="rc-sub">&nbsp;</div>'}
+        <div class="rc-val">${e.v === null ? 'Sin apuesta' : fmtVal(e.v, S.q)}</div><div class="rc-pts"></div>
+      </div>`).join('') : '<div class="empty">Ninguna mesa ha apostado 😶</div>';
+  }
+  const card = t => $(`#rgrid .rcard[data-t="${t}"]`);
+  function applyResult(){
+    const r = S.result; if (!r) return;
+    r.over.forEach(t => card(t) && card(t).classList.add('over'));
+    r.winners.forEach(t => card(t) && card(t).classList.add('win'));
+    for (const t in r.awards) { const c = card(t); if (c) { c.querySelector('.rc-pts').textContent = '+' + r.awards[t]; c.classList.add('scored'); } }
+  }
+  function revealHead(){
+    $('#r-round').textContent = `Ronda ${S.round} de ${S.total}`;
+    $('#r-text').textContent = (S.q.emoji ? S.q.emoji + ' ' : '') + S.q.text;
+  }
+  async function renderReveal(mode){
+    const tok = animTok; revealHead();
+    const ans = $('#ans');
+    if (mode === 'done') {
+      renderRevealGrid(false); $('#ans-lbl').textContent = 'EL PRECIO JUSTO ES';
+      ans.className = 'ans'; ans.textContent = fmtVal(S.result.answer, S.q); applyResult(); return;
+    }
+    $('#ans-lbl').textContent = '¿CUÁL SERÁ LA CIFRA?'; ans.className = 'ans pulse'; ans.textContent = '?';
+    renderRevealGrid(mode === 'flip');
+    if (mode !== 'flip') return;
+    await sleep(1500);
+    for (const c of $$('#rgrid .rcard.hid')) { if (tok !== animTok) return; c.classList.remove('hid'); Sfx.pop(); await sleep(380); }
+  }
+  function roll(el, target, ms, tok){
+    return new Promise(res => {
+      const t0 = performance.now(); let last = 0;
+      (function f(now){
+        if (tok !== animTok) return res();
+        const k = Math.min(1, (now - t0) / ms), e = 1 - Math.pow(1 - k, 3), v = target * e;
+        el.textContent = fmtVal(S.q.decimals ? v : Math.round(v), S.q);
+        if (now - last > 70) { Sfx.tick(); last = now; }
+        if (k < 1) requestAnimationFrame(f); else { el.textContent = fmtVal(target, S.q); res(); }
+      })(t0);
+    });
+  }
+  async function playReveal(){
+    const tok = animTok, r = S.result, ans = $('#ans');
+    revealHead(); renderRevealGrid(false);
+    $('#ans-lbl').textContent = 'Y EL PRECIO JUSTO ES…'; ans.className = 'ans pulse'; ans.textContent = '?';
+    Sfx.drumroll(2.6); await sleep(2700); if (tok !== animTok) return;
+    ans.className = 'ans'; await roll(ans, r.answer, 1900, tok); if (tok !== animTok) return;
+    ans.className = 'ans slam'; Sfx.fanfare(); burst();
+    await sleep(1100);
+    for (const t of r.over) { if (tok !== animTok) return; const c = card(t); if (c) { c.classList.add('over'); Sfx.buzz(); } await sleep(420); }
+    await sleep(500); if (tok !== animTok) return;
+    applyResult();
+    if (r.none) showBanner('NADIE APOSTÓ', '🤷', '', 2500);
+    else if (r.allOver) { Sfx.sad(); showBanner('¡TODOS SE PASARON!', 'NADIE PUNTÚA', 'red', 3200); }
+    else {
+      Sfx.fanfare(); fireworks(r.exact ? 6000 : 3000);
+      const who = r.winners.map(L).join(' y ');
+      if (r.exact) showBanner('¡PRECIO EXACTO!', `🎯 ${who} · +${r.awards[r.winners[0]]}`, 'gold', 4200);
+      else showBanner(who, r.winners.length > 1 ? 'EMPATE EN CABEZA · GANAN LA RONDA' : 'GANA LA RONDA', 'gold', 3400);
+    }
+  }
+
+  /* --- clasificación --- */
+  function renderRanking(anim){
+    animTok++; const tok = animTok;
+    const rows = standings(S), max = Math.max(1, ...rows.map(r => r.s));
+    const left = S.total - S.round;
+    $('#rk-sub').textContent = S.round
+      ? `Tras la ronda ${S.round} de ${S.total}${left > 0 ? ` · quedan ${left}` : ''} · 🎁 La cesta es para quien lidere al final`
+      : '🎁 La cesta es para la mesa con más puntos al final';
+    const n = rows.length;
+    $('#rk-list').style.gridAutoRows = `minmax(0, ${Math.min(7.5, 62 / Math.max(1, n)).toFixed(2)}vh)`;
+    $('#rk-list').innerHTML = n ? rows.map((r, i) => `
+      <div class="rrow ${r.pos === 1 && r.s > 0 ? 'lead' : ''}" style="--d:${anim ? ((n - 1 - i) * .22).toFixed(2) : 0}s">
+        <div class="rpos">${medal(r.pos)}</div>
+        <div class="rname">${esc(L(r.t))}${S.names[r.t] ? `<small>Mesa ${r.t}</small>` : ''}</div>
+        <div class="rbar"><i style="--w:${(r.s / max * 100).toFixed(1)}%"></i></div>
+        <div class="rpts" data-v="${r.s}">${anim ? 0 : fmtNum(r.s)}</div>
+      </div>`).join('') : '<div class="empty">Todavía no hay mesas jugando</div>';
+    requestAnimationFrame(() => $$('#rk-list .rrow').forEach(e => e.classList.add('go')));
+    if (!anim) return;
+    Sfx.whoosh();
+    $$('#rk-list .rrow').forEach((row, i) => {
+      const el = row.querySelector('.rpts'), target = +el.dataset.v, delay = (n - 1 - i) * 220 + 300;
+      setTimeout(() => {
+        if (tok !== animTok) return; const t0 = performance.now();
+        (function f(now){ if (tok !== animTok) return; const k = Math.min(1, (now - t0) / 1200); el.textContent = fmtNum(Math.round(target * (1 - Math.pow(1 - k, 3)))); if (k < 1) requestAnimationFrame(f); else if (i === 0) Sfx.ding(); })(t0);
+      }, delay);
+    });
+  }
+
+  /* --- gran final --- */
+  async function renderFinal(anim){
+    animTok++; const tok = animTok;
+    const rows = standings(S), top = rows.filter(r => r.pos === 1 && r.s > 0);
+    const byPos = p => rows.find(r => r.pos === p);
+    const ranked = rows.filter(r => r.s > 0), p1 = ranked[0], p2 = ranked[1], p3 = ranked[2];
+    const col = (r, cls, n) => r ? `<div class="pcol ${cls}"><div class="pname">${esc(L(r.t))}</div><div class="ppts">${fmtNum(r.s)} pts</div><div class="pblock">${n}</div></div>` : `<div class="pcol ${cls}"></div>`;
+    $('#podium').innerHTML = col(p2, 'p2', 2) + col(p1, 'p1', 1) + col(p3, 'p3', 3);
+    $('#fin-rest').innerHTML = ranked.slice(3).map(r => `<span>${r.pos}º ${esc(L(r.t))} · ${fmtNum(r.s)}</span>`).join('');
+    const tie = top.length > 1;
+    const winText = !top.length ? 'Todavía no hay puntos' : tie ? `¡EMPATE ENTRE ${top.map(r => L(r.t)).join(' Y ')}! → RONDA DE DESEMPATE` : `🎁 ¡LA CESTA ES PARA ${L(top[0].t)}! 🎁`;
+    const cols = { p3: $('#podium .p3'), p2: $('#podium .p2'), p1: $('#podium .p1') };
+    if (!anim) { $('#fin-pre').classList.add('show'); Object.values(cols).forEach(c => c.classList.add('show')); $('#fin-win').textContent = winText; return; }
+    $('#fin-pre').classList.remove('show'); $('#fin-win').textContent = '';
+    await sleep(400); $('#fin-pre').classList.add('show');
+    Sfx.drumroll(3.4); await sleep(3500); if (tok !== animTok) return;
+    cols.p3.classList.add('show'); Sfx.pop(); await sleep(1000); if (tok !== animTok) return;
+    cols.p2.classList.add('show'); Sfx.pop(); await sleep(1300); if (tok !== animTok) return;
+    cols.p1.classList.add('show'); Sfx.fanfare(); $('#fin-win').textContent = winText;
+    if (!tie && top.length) { fireworks(12000); setTimeout(() => Sfx.jingle(), 1800); }
+  }
+
+  /* --- banner --- */
+  let bannerTimer;
+  function showBanner(big, small = '', kind = 'gold', ms = 2500){
+    const b = $('#banner');
+    b.className = ''; b.innerHTML = `<div class="b ${kind}">${small ? `<small>${esc(small)}</small>` : ''}<span>${esc(big)}</span></div>`;
+    clearTimeout(bannerTimer);
+    bannerTimer = setTimeout(() => { b.className = 'out'; setTimeout(() => { if (b.className === 'out') b.innerHTML = ''; }, 450); }, ms);
+  }
+
+  /* --- nieve y bombillas --- */
+  function decor(){
+    ['#bulbs-top', '#bulbs-bottom'].forEach(s => $(s).innerHTML = '<i></i>'.repeat(46));
+    const cv = $('#snow'), cx = cv.getContext('2d'); let W, H, flakes = [];
+    const size = () => { W = cv.width = innerWidth; H = cv.height = innerHeight; };
+    size(); addEventListener('resize', size);
+    for (let i = 0; i < 140; i++) flakes.push({ x: Math.random() * W, y: Math.random() * H, r: Math.random() * 2.4 + .6, s: Math.random() * .6 + .25, w: Math.random() * 6.28 });
+    (function f(){
+      cx.clearRect(0, 0, W, H); cx.fillStyle = 'rgba(255,255,255,.75)';
+      for (const p of flakes) { p.y += p.s; p.w += .01; p.x += Math.sin(p.w) * .35; if (p.y > H + 5) { p.y = -5; p.x = Math.random() * W; } cx.beginPath(); cx.arc(p.x, p.y, p.r, 0, 6.28); cx.fill(); }
+      requestAnimationFrame(f);
+    })();
+  }
+
+  function start(){
+    PIN = getPin();
+    S = Object.assign(fresh(), store.json(KEY) || {});
+    $('#tv').classList.remove('hidden');
+    decor();
+    makeQR($('#qr-lobby'), PLAYER_URL); makeQR($('#qr-mini'), PLAYER_URL, 256); makeQR($('#qr-open'), PLAYER_URL, 384);
+    makeQR($('#qr-remote'), REMOTE_URL, 256);
+    $('#qr-url').textContent = shortUrl(PLAYER_URL);
+    $('#tv-pin').textContent = PIN; $('#remote-url').textContent = shortUrl(REMOTE_URL);
+    $('#tv-start').addEventListener('click', () => {
+      Sfx.init(); Sfx.jingle(); keepAwake();
+      try { document.documentElement.requestFullscreen && document.documentElement.requestFullscreen().catch(() => {}); } catch(e){}
+      $('#tv-start').classList.add('hidden');
+    });
+    document.addEventListener('keydown', e => {
+      const k = e.key.toLowerCase();
+      if (k === 'f') { if (document.fullscreenElement) document.exitFullscreen(); else document.documentElement.requestFullscreen().catch(() => {}); }
+      if (k === 'm') toast(Sfx.toggle() ? '🔊 Sonido activado' : '🔇 Silencio');
+      if (k === 'p') { const el = $('#pin-peek'); el.textContent = `🔐 PIN del mando: ${PIN}`; el.classList.remove('hidden'); setTimeout(() => el.classList.add('hidden'), 4000); }
+    });
+    render();
+    Bus.start(handlers, st => {
+      const c = $('#tv-conn'); c.className = 'conn ' + (st === 'SUBSCRIBED' ? 'ok' : st === 'CONNECTING' ? '' : 'bad');
+      c.querySelector('span').textContent = st === 'SUBSCRIBED' ? 'Conectado' : st === 'NO_LIB' ? 'Sin conexión a Supabase' : 'Reconectando…';
+      if (st === 'SUBSCRIBED') broadcast();
+    });
+    setInterval(tick, 100);
+    setInterval(broadcast, 3000);
+  }
+  return { start };
+})();
+
+/* =====================================================================
+   MÓVIL DEL JUGADOR
+   ===================================================================== */
+const Player = (() => {
+  const dev = deviceId(), myH = hash(dev);
+  let table = +store.get('pj_table') || null, st = null, pending = null, deadline = 0, view = '', bidKey = '', ackTimer = null, firstState = false;
+
+  function show(id){ ['p-connecting','p-join','p-name','p-wait','p-bid','p-closed','p-result','p-rank'].forEach(s => $('#' + s).classList.toggle('hidden', s !== id)); view = id; }
+  const L = t => labelOf(t, st && st.names);
+  const myBid = () => st && st.bids && (table in st.bids) ? st.bids[table] : null;
+
+  function onState(s){
+    const wasPhase = st && st.phase;
+    st = s; firstState = true;
+    if (s.phase === 'open') { const d = Date.now() + s.remaining; if (Math.abs(d - deadline) > 500) deadline = d; }
+    if (table && s.claims[table] !== myH && !pending) { table = null; store.del('pj_table'); toast('Tu mesa se ha liberado. Elige de nuevo.', 'err'); }
+    if (wasPhase && wasPhase !== s.phase && navigator.vibrate) navigator.vibrate(s.phase === 'reveal' ? [80, 60, 80] : 60);
+    render();
+  }
+  function render(){
+    $('#p-tag').innerHTML = table ? `<b>${esc(L(table))}</b>${st && st.names[table] ? 'Mesa ' + table : 'Portavoz'}` : '';
+    $('#p-leave').classList.toggle('hidden', !table);
+    if (!st) return show('p-connecting');
+    if (!table) return renderJoin();
+    if (view === 'p-name') return;
+    const ph = st.phase;
+    if (ph === 'lobby' || ph === 'question') return renderWait();
+    if (ph === 'open') return renderBid();
+    if (ph === 'closed') return renderClosed();
+    if (ph === 'reveal') return renderResult();
+    return renderRank();
+  }
+  function renderJoin(){
+    show('p-join');
+    let h = '';
+    for (let t = 1; t <= st.tables; t++) {
+      const taken = st.claims[t] && st.claims[t] !== myH;
+      h += `<button class="tbtn ${taken ? 'taken' : ''}" data-t="${t}">${esc(L(t))}<small>${taken ? 'Ya tiene portavoz' : st.names[t] ? 'Mesa ' + t : 'Libre'}</small></button>`;
+    }
+    $('#p-tables').innerHTML = h;
+  }
+  function claim(t){
+    pending = t; Bus.send('claim', { table: t, device: dev, name: '' }).then(r => { if (r !== 'ok') { pending = null; toast('Sin conexión. Inténtalo otra vez.', 'err'); } });
+    setTimeout(() => { if (pending === t) { pending = null; toast('La pantalla no responde. ¿Está abierta?', 'err'); } }, 5000);
+  }
+  function onClaimRes(p){
+    if (p.device !== dev) return;
+    const t = pending; pending = null;
+    if (!p.ok) { toast(p.reason || 'No se pudo', 'err'); return render(); }
+    table = p.table; store.set('pj_table', table);
+    if (navigator.vibrate) navigator.vibrate(80);
+    keepAwake();
+    if (t) { $('#p-name-in').value = st && st.names[table] || ''; show('p-name'); }
+    render();
+  }
+  function saveName(skip){
+    const n = skip ? '' : cleanName($('#p-name-in').value);
+    if (!skip || (st && st.names[table])) Bus.send('rename', { table, device: dev, name: n });
+    view = ''; render();
+  }
+  function renderWait(){
+    show('p-wait');
+    const q = st.phase === 'question' && st.q;
+    $('#pw-emoji').textContent = q ? (q.emoji || '💰') : '🎄';
+    $('#pw-badge').innerHTML = q ? `<span class="badge red">Ronda ${st.round} de ${st.total}</span>${q.mult > 1 ? ` <span class="badge gold">⭐ x${q.mult}</span>` : ''}` : '';
+    $('#pw-title').textContent = q ? '¡Atentos a la pantalla!' : (st.round ? '¡Seguimos en un momento!' : '¡Mesa lista! 🎉');
+    $('#pw-q').textContent = q ? q.text : '';
+    $('#pw-sub').textContent = q ? 'En nada se abren las apuestas. Id pensando la cifra 🤔' : 'Cuando el presentador abra la ronda, aquí podréis apostar.';
+    $('#pw-rename').classList.toggle('hidden', !!q);
+  }
+  function renderBid(){
+    const key = st.round + '';
+    if (view !== 'p-bid' || bidKey !== key) {
+      bidKey = key; show('p-bid');
+      const q = st.q;
+      $('#pb-badge').innerHTML = `<span class="badge red">Ronda ${st.round} de ${st.total}</span>${q.mult > 1 ? ` <span class="badge gold">⭐ x${q.mult}</span>` : ''}`;
+      $('#pb-q').textContent = (q.emoji ? q.emoji + ' ' : '') + q.text;
+      $('#pb-unit').textContent = q.unit === '€' ? '€' : '';
+      $('#pb-in').inputMode = q.decimals ? 'decimal' : 'numeric';
+      $('#pb-in').placeholder = q.decimals ? '0,00' : '0';
+      const saved = store.get('pj_bid_' + st.round);
+      $('#pb-in').value = '';
+      setStatus(saved !== null && st.received.includes(table) ? `✅ Apuesta registrada: ${fmtVal(+saved, q)}` : '', 'ok');
+      preview();
+    }
+    if (st.received.includes(table) && !$('#pb-status').textContent) setStatus('✅ Apuesta registrada', 'ok');
+  }
+  function preview(){
+    if (!st || !st.q) return;
+    const v = parseNum($('#pb-in').value, st.q.decimals);
+    $('#pb-prev').innerHTML = v === null ? (st.q.unit ? `En ${esc(st.q.unit === '€' ? 'euros' : st.q.unit)}` : '') : isNaN(v) ? '⚠️ Solo números' : `Vais a apostar: <b>${esc(fmtVal(v, st.q))}</b>`;
+  }
+  function setStatus(msg, cls){ const s = $('#pb-status'); s.textContent = msg; s.className = 'status ' + (cls || ''); }
+  async function sendBid(){
+    if (!st || st.phase !== 'open') return;
+    const v = parseNum($('#pb-in').value, st.q.decimals);
+    if (v === null || isNaN(v)) { setStatus('Escribe una cifra válida', 'err'); return; }
+    const btn = $('#pb-send'); btn.disabled = true; setStatus('Enviando…', 'wait');
+    const r = await Bus.send('bid', { table, device: dev, round: st.round, value: v });
+    if (r !== 'ok') { btn.disabled = false; setStatus('Sin conexión. Vuelve a enviar.', 'err'); return; }
+    clearTimeout(ackTimer);
+    ackTimer = setTimeout(() => { btn.disabled = false; setStatus('La pantalla no ha confirmado. Envía otra vez.', 'err'); }, 4500);
+  }
+  function onAck(p){
+    if (p.device !== dev) return;
+    clearTimeout(ackTimer); $('#pb-send').disabled = false;
+    if (p.ok) {
+      store.set('pj_bid_' + p.round, p.value);
+      setStatus(`✅ Apuesta registrada: ${fmtVal(p.value, st.q)} · puedes cambiarla hasta el final`, 'ok');
+      $('#pb-in').value = ''; preview(); $('#pb-in').blur();
+      if (navigator.vibrate) navigator.vibrate([40, 40, 40]);
+    } else setStatus('❌ ' + (p.reason || 'No aceptada'), 'err');
+  }
+  function timerLoop(){
+    if (st && st.phase === 'open' && view === 'p-bid') {
+      const rem = Math.max(0, deadline - Date.now()), sec = Math.ceil(rem / 1000), urgent = sec <= 5;
+      $('#pb-secs').textContent = sec; $('#pb-secs').classList.toggle('urgent', urgent);
+      $('#pb-timer').classList.toggle('urgent', urgent);
+      $('#pb-timer i').style.width = (100 * rem / (st.q.time * 1000)).toFixed(1) + '%';
+    }
+    requestAnimationFrame(timerLoop);
+  }
+  function renderClosed(){
+    show('p-closed');
+    const v = myBid();
+    $('#pc-msg').innerHTML = v !== null ? `Vuestra apuesta: <b style="color:#fff">${esc(fmtVal(v, st.q))}</b>` : '😬 No llegasteis a apostar en esta ronda';
+  }
+  function posLine(){
+    const rows = standings(st), me = rows.find(r => r.t === table);
+    if (!me) return '';
+    return `${medal(me.pos)} Vais ${me.pos}º de ${rows.length} con ${fmtNum(me.s)} puntos`;
+  }
+  function renderResult(){
+    const isNew = view !== 'p-result';
+    show('p-result');
+    const r = st.result, v = myBid(), pts = (r.awards || {})[table] || 0;
+    let e, t;
+    if (v === null) { e = '😶'; t = 'Sin apuesta'; }
+    else if (r.over.includes(table)) { e = '💥'; t = '¡Os pasasteis!'; }
+    else if (r.winners.includes(table)) { e = r.exact ? '🎯' : '🏆'; t = r.exact ? '¡PRECIO EXACTO!' : '¡Ganáis la ronda!'; }
+    else if (pts) { e = '👏'; t = '¡Buen tiro!'; }
+    else { e = '😅'; t = 'Esta vez no'; }
+    $('#pr-emoji').textContent = e; $('#pr-title').textContent = t;
+    $('#pr-pts').textContent = pts ? `+${pts}` : '';
+    const diff = v === null ? null : v - r.answer;
+    $('#pr-kv').innerHTML = `<span>Precio justo</span><b>${esc(fmtVal(r.answer, st.q))}</b>` +
+      (v !== null ? `<span>Vuestra apuesta</span><b>${esc(fmtVal(v, st.q))}</b>` + (diff ? `<span>${diff > 0 ? 'Os pasasteis por' : 'Os quedasteis a'}</span><b>${esc(fmtVal(Math.abs(diff), st.q))}</b>` : '') : '');
+    $('#pr-pos').textContent = posLine();
+    if (isNew && pts && window.confetti) confetti({ particleCount: 90, spread: 70, origin: { y: .3 } });
+  }
+  let rankKey = '';
+  function renderRank(){
+    show('p-rank');
+    const rows = standings(st), me = rows.find(r => r.t === table), fin = st.phase === 'final';
+    const won = fin && me && me.pos === 1 && me.s > 0 && rows.filter(r => r.pos === 1).length === 1;
+    const isNew = rankKey !== st.phase + st.round; rankKey = st.phase + st.round;
+    $('#pk-emoji').textContent = won ? '🎁' : me && me.pos <= 3 && me.s > 0 ? medal(me.pos) : '📊';
+    $('#pk-title').textContent = won ? '¡LA CESTA ES VUESTRA!' : fin ? '¡Gran final!' : 'Clasificación';
+    $('#pk-pts').textContent = me ? `${fmtNum(me.s)} pts` : '';
+    $('#pk-sub').textContent = me ? `Puesto ${me.pos} de ${rows.length}` : 'Mirad la pantalla';
+    if (won && isNew) fireworks(4000);
+  }
+
+  function start(){
+    $('#player').classList.remove('hidden');
+    $('#p-tables').addEventListener('click', e => { const b = e.target.closest('.tbtn'); if (b) claim(+b.dataset.t); });
+    $('#p-name-ok').onclick = () => saveName(false);
+    $('#p-name-skip').onclick = () => saveName(true);
+    $('#p-name-in').addEventListener('keydown', e => { if (e.key === 'Enter') saveName(false); });
+    $('#pw-rename').onclick = () => { $('#p-name-in').value = st.names[table] || ''; show('p-name'); };
+    $('#pb-in').addEventListener('input', preview);
+    $('#pb-in').addEventListener('keydown', e => { if (e.key === 'Enter') sendBid(); });
+    $('#pb-send').onclick = sendBid;
+    $('#p-leave').onclick = () => { if (!confirm('¿Dejar la mesa? Otro móvil podrá cogerla.')) return; Bus.send('leave', { table, device: dev }); table = null; store.del('pj_table'); view = ''; render(); };
+    show('p-connecting');
+    Bus.start({ state: onState, 'claim-res': onClaimRes, 'bid-ack': onAck }, s => {
+      $('#p-dot').className = 'dot ' + (s === 'SUBSCRIBED' ? 'ok' : s === 'CONNECTING' ? '' : 'bad');
+      if (s === 'SUBSCRIBED') Bus.send('hello', {});
+      if (s === 'NO_LIB') $('#p-conn-msg').textContent = 'No se pudo cargar la conexión. Revisa tu internet y recarga.';
+    });
+    setTimeout(() => { if (!firstState) $('#p-conn-msg').textContent = 'No encuentro la pantalla. ¿Está abierta la TV? Recarga en un momento.'; }, 6000);
+    document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') Bus.send('hello', {}); });
+    timerLoop();
+  }
+  return { start };
+})();
+
+/* =====================================================================
+   MANDO DEL PRESENTADOR
+   ===================================================================== */
+const Remote = (() => {
+  const QKEY = 'pj_remote_questions_v1';
+  let pin = store.get('pj_remote_pin') || '', st = null, lastSeen = 0, deadline = 0;
+  let Q = store.json(QKEY) || JSON.parse(JSON.stringify(DEMO_QUESTIONS));
+  const pending = new Map();
+  const saveQ = () => store.set(QKEY, JSON.stringify(Q));
+  const L = t => labelOf(t, st && st.names);
+  const PH = { lobby:'🏠 Pantalla de inicio', question:'❓ Mostrando pregunta', open:'⏱️ APUESTAS ABIERTAS', closed:'🔒 Apuestas cerradas', reveal:'💰 Precio revelado', ranking:'📊 Clasificación', final:'🏆 Gran final' };
+
+  async function cmd(action, extra = {}){
+    if (navigator.vibrate) navigator.vibrate(25);
+    const id = Math.random().toString(36).slice(2);
+    pending.set(id, action);
+    const r = await Bus.send('cmd', { pin, id, action, ...extra });
+    if (r !== 'ok') { pending.delete(id); toast('Sin conexión con Supabase', 'err'); return; }
+    setTimeout(() => { if (pending.has(id)) { pending.delete(id); toast('La TV no responde', 'err'); } }, 4500);
+  }
+  function onRes(p){
+    if (!pending.has(p.id)) return;
+    pending.delete(p.id);
+    if (p.ok) { if (p.msg) toast(p.msg, 'ok'); return; }
+    if (p.msg === 'pin') { toast('PIN incorrecto', 'err'); showPin(); return; }
+    toast(p.msg || 'No se pudo', 'err');
+  }
+  function onState(s){ st = s; lastSeen = Date.now(); if (s.phase === 'open') deadline = Date.now() + s.remaining; renderNow(); }
+
+  const qFor = round => Q[round - 1];
+  function sendQuestion(idx){
+    const q = Q[idx];
+    if (!q) return toast('No hay más rondas', 'err');
+    if (!q.text.trim()) return toast(`La ronda ${idx + 1} no tiene pregunta`, 'err');
+    if (q.answer === null || q.answer === undefined || isNaN(q.answer)) return toast(`Falta el precio de la ronda ${idx + 1}`, 'err');
+    cmd('question', { round: idx + 1, total: Q.length, q: { text: q.text, unit: q.unit, decimals: q.decimals, time: q.time, mult: q.mult, emoji: q.emoji } });
+  }
+  function reveal(){
+    const q = qFor(st.round);
+    if (!q || q.answer === null || isNaN(q.answer)) return toast('Falta el precio de esta ronda', 'err');
+    cmd('reveal', { round: st.round, answer: q.answer });
+  }
+
+  function btn(label, cls, fn){ const b = document.createElement('button'); b.className = 'btn ' + cls; b.innerHTML = label; b.onclick = () => { b.disabled = true; setTimeout(() => b.disabled = false, 900); fn(); }; return b; }
+  function renderActions(){
+    const box = $('#r-actions'); box.innerHTML = '';
+    if (!st) return;
+    const idx = st.round, hasNext = idx < Q.length, isLast = idx === Q.length - 1;
+    const next = () => hasNext
+      ? btn(isLast ? `🔥 Última ronda (${idx + 1}/${Q.length})` : `➡️ Mostrar ronda ${idx + 1} de ${Q.length}`, 'gold', () => sendQuestion(idx))
+      : btn('🏆 GRAN FINAL: ¡revelar quién gana la cesta!', 'gold', () => cmd('final'));
+    const two = (...b) => { const d = document.createElement('div'); d.className = 'two'; b.forEach(x => d.appendChild(x)); return d; };
+    switch (st.phase) {
+      case 'lobby': box.appendChild(next()); break;
+      case 'question': box.appendChild(btn('▶️ ABRIR APUESTAS', 'green', () => cmd('open'))); break;
+      case 'open': box.appendChild(two(btn('⏹ Cerrar ya', 'red', () => cmd('close')), btn('➕ 15 s', 'ghost', () => cmd('addtime')))); break;
+      case 'closed': box.appendChild(btn('💰 REVELAR PRECIO', 'gold', reveal)); box.appendChild(btn('↩️ Reabrir 15 s', 'ghost', () => cmd('open'))); break;
+      case 'reveal':
+        box.appendChild(btn('📊 Ver clasificación', 'teal', () => cmd('ranking')));
+        box.appendChild(next());
+        box.appendChild(btn('↩️ Deshacer revelado (precio mal puesto)', 'ghost', () => { if (confirm('¿Deshacer? Se restan los puntos de esta ronda.')) cmd('unreveal'); }));
+        break;
+      case 'ranking': box.appendChild(next()); break;
+      case 'final': box.appendChild(btn('📊 Clasificación', 'teal', () => cmd('ranking'))); break;
+    }
+  }
+  function renderNow(){
+    if (!st) return;
+    $('#rn-phase').textContent = PH[st.phase] || st.phase;
+    $('#rn-round').textContent = st.round ? `Ronda ${st.round} de ${st.total}` : 'Sin empezar';
+    const q = st.round ? qFor(st.round) : null;
+    $('#rn-q').textContent = st.q && st.round ? (st.q.emoji || '') + ' ' + st.q.text : '';
+    $('#rn-ans').textContent = q && q.answer !== null ? fmtVal(q.answer, q) : '—';
+    const claimed = Object.keys(st.claims).length;
+    $('#rn-recv').textContent = `${st.received.length}/${claimed}`;
+    $('#r-tcount').textContent = st.tables;
+    renderActions(); renderTables(); markCurrentQ();
+  }
+  function renderTables(){
+    let h = '';
+    for (let t = 1; t <= st.tables; t++) {
+      const c = !!st.claims[t], sc = st.scores[t] || 0, got = st.received.includes(t);
+      const bid = st.bids && (t in st.bids) ? ' · ' + fmtVal(st.bids[t], st.q) : got ? ' · ✓ apostó' : '';
+      h += `<div class="trow"><div><div class="tn">${c ? '🟢' : '⚪'} ${esc(L(t))}</div><div class="ti">${fmtNum(sc)} pts${bid}</div></div>
+        <div class="tb"><button data-sc="${t}" data-d="-10">−10</button><button data-sc="${t}" data-d="10">+10</button>${c ? `<button data-rel="${t}">🚪</button>` : ''}</div></div>`;
+    }
+    $('#r-tlist').innerHTML = h;
+  }
+  function timerLoop(){
+    if (st && st.phase === 'open') $('#rn-timer').textContent = '⏱️ ' + Math.ceil(Math.max(0, deadline - Date.now()) / 1000) + ' s';
+    else $('#rn-timer').textContent = '';
+    const alive = Date.now() - lastSeen < 7000;
+    $('#r-tv').textContent = alive ? 'TV conectada' : 'Buscando la TV…';
+    $('#r-dot').className = 'dot ' + (alive ? 'ok' : Bus.status === 'SUBSCRIBED' ? '' : 'bad');
+    setTimeout(timerLoop, 250);
+  }
+
+  /* --- editor de rondas --- */
+  function renderQ(){
+    $('#r-qlist').innerHTML = Q.map((q, i) => `
+      <div class="qitem" data-i="${i}">
+        <div class="qh"><span class="n">${i + 1}</span><span>${esc(q.emoji || '')}</span><span class="sp"></span>
+          <button data-mv="-1">▲</button><button data-mv="1">▼</button><button data-del>🗑</button></div>
+        <div class="qgrid">
+          <label class="full">Pregunta<textarea class="field" data-k="text">${esc(q.text)}</textarea></label>
+          <label>Emoji<input class="field" data-k="emoji" value="${esc(q.emoji || '')}" maxlength="8"></label>
+          <label>Unidad<input class="field" data-k="unit" value="${esc(q.unit || '')}" placeholder="€, km, folios…"></label>
+          <label>Tipo<select class="field" data-k="decimals"><option value="0" ${!q.decimals ? 'selected' : ''}>Número entero</option><option value="2" ${q.decimals ? 'selected' : ''}>Con céntimos</option></select></label>
+          <label>Segundos<input class="field" data-k="time" type="number" min="5" max="300" value="${q.time}"></label>
+          <label>Puntos<select class="field" data-k="mult">${[1,2,3,5].map(m => `<option value="${m}" ${q.mult == m ? 'selected' : ''}>x${m}</option>`).join('')}</select></label>
+          <label>💰 Precio justo<input class="field" data-k="answer" inputmode="decimal" value="${q.answer === null || q.answer === undefined ? '' : String(q.answer).replace('.', ',')}" placeholder="Obligatorio"></label>
+          <div class="full ansprev ${q.answer === null || isNaN(q.answer) ? 'bad' : ''}">${q.answer === null || isNaN(q.answer) ? '⚠️ Falta el precio' : '✓ Se revelará: ' + esc(fmtVal(q.answer, q))}</div>
+        </div>
+      </div>`).join('');
+    markCurrentQ();
+  }
+  function markCurrentQ(){ $$('.qitem').forEach(el => el.classList.toggle('cur', st && +el.dataset.i === st.round - 1)); }
+  function onQInput(e){
+    const el = e.target, item = el.closest('.qitem'); if (!item || !el.dataset.k) return;
+    const q = Q[+item.dataset.i], k = el.dataset.k;
+    if (k === 'decimals') q.decimals = +el.value;
+    else if (k === 'time') q.time = clamp(+el.value || 30, 5, 300);
+    else if (k === 'mult') q.mult = +el.value;
+    else if (k === 'answer') { const v = parseNum(el.value, q.decimals); q.answer = v === null || isNaN(v) ? null : v; }
+    else q[k] = el.value;
+    saveQ();
+    if (k === 'answer' || k === 'decimals' || k === 'unit') {
+      const v = q.answer, p = item.querySelector('.ansprev');
+      p.className = 'full ansprev ' + (v === null ? 'bad' : '');
+      p.textContent = v === null ? '⚠️ Falta el precio' : '✓ Se revelará: ' + fmtVal(v, q);
+    }
+    if (k === 'emoji') item.querySelector('.qh span:nth-child(2)').textContent = q.emoji;
+    renderNow();
+  }
+  function onQClick(e){
+    const item = e.target.closest('.qitem'); if (!item) return; const i = +item.dataset.i;
+    if (e.target.matches('[data-mv]')) { const j = i + +e.target.dataset.mv; if (j < 0 || j >= Q.length) return; [Q[i], Q[j]] = [Q[j], Q[i]]; saveQ(); renderQ(); }
+    if (e.target.matches('[data-del]')) { if (!confirm(`¿Borrar la ronda ${i + 1}?`)) return; Q.splice(i, 1); saveQ(); renderQ(); renderNow(); }
+  }
+
+  function showPin(){ $('#r-pinbox').classList.remove('hidden'); $('#r-main').classList.add('hidden'); $('#r-pin').value = ''; setTimeout(() => $('#r-pin').focus(), 100); }
+  function savePin(){
+    const v = $('#r-pin').value.replace(/\D/g, '');
+    if (v.length < 4) return toast('El PIN tiene 4 cifras', 'err');
+    pin = v; store.set('pj_remote_pin', pin);
+    $('#r-pinbox').classList.add('hidden'); $('#r-main').classList.remove('hidden');
+    cmd('ping');
+  }
+
+  function start(){
+    $('#remote').classList.remove('hidden');
+    if (pin) $('#r-main').classList.remove('hidden'); else showPin();
+    $('#r-pin-ok').onclick = savePin;
+    $('#r-pin').addEventListener('keydown', e => { if (e.key === 'Enter') savePin(); });
+    $$('.r-sec [data-act]').forEach(b => b.onclick = () => cmd(b.dataset.act));
+    $('#r-tminus').onclick = () => st && cmd('tables', { n: st.tables - 1 });
+    $('#r-tplus').onclick = () => st && cmd('tables', { n: st.tables + 1 });
+    $('#r-tlist').addEventListener('click', e => {
+      const sc = e.target.closest('[data-sc]'), rel = e.target.closest('[data-rel]');
+      if (sc) cmd('score', { table: +sc.dataset.sc, delta: +sc.dataset.d });
+      if (rel && confirm(`¿Liberar ${L(+rel.dataset.rel)}? Su móvil tendrá que volver a elegir mesa.`)) cmd('release', { table: +rel.dataset.rel });
+    });
+    $('#r-qlist').addEventListener('input', onQInput);
+    $('#r-qlist').addEventListener('change', onQInput);
+    $('#r-qlist').addEventListener('click', onQClick);
+    $('#r-qadd').onclick = () => { Q.push({ emoji:'💰', text:'', unit:'€', decimals:2, time:30, mult:1, answer:null }); saveQ(); renderQ(); renderNow(); };
+    $('#r-export').onclick = async () => { const j = JSON.stringify(Q, null, 1); $('#r-json').value = j; try { await navigator.clipboard.writeText(j); toast('Copiado. Guárdalo en tus notas 📋', 'ok'); } catch(e){ toast('Selecciona el texto y cópialo', ''); } };
+    $('#r-import').onclick = () => {
+      try { const d = JSON.parse($('#r-json').value); if (!Array.isArray(d) || !d.length) throw 0;
+        Q = d.map(q => ({ emoji: q.emoji || '💰', text: String(q.text || ''), unit: String(q.unit || ''), decimals: q.decimals ? 2 : 0, time: clamp(+q.time || 30, 5, 300), mult: +q.mult || 1, answer: q.answer === null || q.answer === '' || isNaN(+q.answer) ? null : +q.answer }));
+        saveQ(); renderQ(); renderNow(); toast(`${Q.length} rondas cargadas`, 'ok');
+      } catch(e){ toast('JSON no válido', 'err'); }
     };
+    $('#r-demo').onclick = () => { if (!confirm('¿Sustituir tus rondas por las de ejemplo?')) return; Q = JSON.parse(JSON.stringify(DEMO_QUESTIONS)); saveQ(); renderQ(); renderNow(); };
+    $('#r-reset').onclick = () => { if (confirm('¿Reiniciar la partida? Se borran TODOS los puntos.') && confirm('¿Seguro? No se puede deshacer.')) cmd('reset'); };
+    $('#r-releaseall').onclick = () => { if (confirm('¿Liberar todas las mesas? Los portavoces tendrán que volver a elegir.')) cmd('releaseAll'); };
+    $('#r-changepin').onclick = showPin;
+    renderQ();
+    Bus.start({ state: onState, 'cmd-res': onRes }, s => { if (s === 'SUBSCRIBED') Bus.send('hello', {}); });
+    document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') Bus.send('hello', {}); });
+    keepAwake(); timerLoop();
+  }
+  return { start };
+})();
 
-    function initHostUI() {
-      const currentUrl = window.location.href.split('?')[0];
-      const playerUrl = `${currentUrl}?mode=player`;
-
-      document.getElementById("qrcode").innerHTML = "";
-      new QRCode(document.getElementById("qrcode"), {
-        text: playerUrl, width: 280, height: 280,
-        colorDark: "#0f172a", colorLight: "#ffffff",
-        correctLevel: QRCode.CorrectLevel.H
-      });
-
-      loadQuestion(0);
-      listenToSupabaseEvents();
-    }
-
-    function loadQuestion(idx) {
-      currentQ = idx;
-      bidsData = {};
-      
-      document.getElementById('screen-qr-timer').classList.add('hidden');
-      document.getElementById('screen-results').classList.add('hidden');
-      document.getElementById('screen-question').classList.remove('hidden');
-
-      document.getElementById('reveal-banner').classList.add('hidden');
-      document.getElementById('btn-reveal').classList.remove('hidden');
-      document.getElementById('btn-next').classList.add('hidden');
-
-      const q = questions[idx];
-      document.getElementById('question-num').innerText = q.isFinal ? "💥 GRAN FINAL 💥" : `Ronda ${idx + 1} de ${questions.length - 1}`;
-      document.getElementById('question-text').innerText = q.q;
-      document.getElementById('big-timer').innerText = `${q.time}s`;
-
-      startCarousel(q.images);
-      renderBetsGrid();
-      renderLeaderboard();
-    }
-
-    function startCarousel(imgList) {
-      clearInterval(carouselInterval);
-      if (!imgList || imgList.length === 0) return;
-
-      carouselIdx = 0;
-      const imgEl = document.getElementById('carousel-img');
-      const capEl = document.getElementById('carousel-caption');
-
-      const updateImg = () => {
-        imgEl.style.opacity = '0';
-        setTimeout(() => {
-          imgEl.src = imgList[carouselIdx].url;
-          capEl.innerText = imgList[carouselIdx].caption;
-          imgEl.style.opacity = '1';
-          carouselIdx = (carouselIdx + 1) % imgList.length;
-        }, 300);
-      };
-
-      updateImg();
-      if (imgList.length > 1) {
-        carouselInterval = setInterval(updateImg, 3500);
-      }
-    }
-
-    function startTimerAndShowQR() {
-      document.getElementById('screen-question').classList.add('hidden');
-      document.getElementById('screen-qr-timer').classList.remove('hidden');
-
-      let timeLeft = questions[currentQ].time;
-      document.getElementById('big-timer').innerText = `${timeLeft}s`;
-
-      clearInterval(timerInterval);
-      timerInterval = setInterval(() => {
-        timeLeft--;
-        document.getElementById('big-timer').innerText = `${timeLeft}s`;
-
-        if (timeLeft <= 0) {
-          clearInterval(timerInterval);
-          document.getElementById('screen-qr-timer').classList.add('hidden');
-          document.getElementById('screen-results').classList.remove('hidden');
-          renderBetsGrid();
-        }
-      }, 1000);
-    }
-
-    function renderBetsGrid(winningTable = null) {
-      const grid = document.getElementById('bets-grid');
-      grid.innerHTML = '';
-      for (let i = 1; i <= TOTAL_TABLES; i++) {
-        const val = bidsData[i] !== undefined ? bidsData[i] : '---';
-        const isSet = bidsData[i] !== undefined;
-        const isWinner = winningTable === i;
-
-        grid.innerHTML += `
-          <div id="card-mesa-${i}" class="glass-card p-4 rounded-2xl text-center space-y-1 border ${
-            isWinner 
-              ? 'border-emerald-400 bg-emerald-500/20 shadow-xl scale-105 ring-2 ring-emerald-400' 
-              : isSet ? 'border-amber-400/50 bg-amber-500/10' : 'border-slate-700'
-          } transition duration-300">
-            <p class="text-xs text-slate-400 font-bold uppercase">Mesa ${i} ${isWinner ? '🏆' : ''}</p>
-            <p id="val-mesa-${i}" class="text-2xl font-black ${isWinner ? 'text-emerald-400' : isSet ? 'text-amber-400' : 'text-slate-500'}">${val}</p>
-          </div>
-        `;
-      }
-    }
-
-    function renderLeaderboard() {
-      const grid = document.getElementById('leaderboard-grid');
-      grid.innerHTML = '';
-      for (let i = 1; i <= TOTAL_TABLES; i++) {
-        grid.innerHTML += `
-          <div class="bg-slate-800/80 p-2 rounded-xl border border-slate-700">
-            <p class="text-xs text-slate-400 font-bold">Mesa ${i}</p>
-            <p class="text-lg font-black text-amber-400">${scores[i]} pts</p>
-          </div>
-        `;
-      }
-    }
-
-    function revealWinner() {
-      const q = questions[currentQ];
-      const target = q.target;
-      const unit = q.unit;
-
-      let winnerTable = null;
-      let closestDiff = Infinity;
-
-      Object.keys(bidsData).forEach(tableNum => {
-        const val = bidsData[tableNum];
-        if (q.isFinal) {
-          // Lógica Final: Margen de error +- 3€
-          const diff = Math.abs(target - val);
-          if (diff <= (q.margin || 3.0) && diff < closestDiff) {
-            closestDiff = diff;
-            winnerTable = parseInt(tableNum);
-          }
-        } else {
-          // Lógica Normal: Sin pasarse
-          if (val <= target) {
-            const diff = target - val;
-            if (diff < closestDiff) {
-              closestDiff = diff;
-              winnerTable = parseInt(tableNum);
-            }
-          }
-        }
-      });
-
-      document.getElementById('target-value-display').innerText = `${target.toLocaleString()} ${unit}`;
-      
-      if (winnerTable !== null) {
-        scores[winnerTable] += q.isFinal ? 500 : 100;
-        document.getElementById('winner-announcement').innerText = `🎉 ¡Ganador: Mesa ${winnerTable} con su apuesta de ${bidsData[winnerTable]}!`;
-        confetti({ particleCount: 200, spread: 100, origin: { y: 0.5 } });
-      } else {
-        document.getElementById('winner-announcement').innerText = q.isFinal 
-          ? `💥 Ninguna mesa ha entrado en el margen de ±${q.margin}€. ¡Hora de aplicar la cláusula de flexibilidad!` 
-          : `💥 ¡Todas las mesas se han pasado! Nadie suma puntos.`;
-      }
-
-      renderBetsGrid(winnerTable);
-      renderLeaderboard();
-
-      document.getElementById('reveal-banner').classList.remove('hidden');
-      document.getElementById('btn-reveal').classList.add('hidden');
-      document.getElementById('btn-next').classList.remove('hidden');
-    }
-
-    function nextQuestion() {
-      if (currentQ + 1 < questions.length) {
-        loadQuestion(currentQ + 1);
-      } else {
-        alert("¡Has completado el concurso de El Precio Justo!");
-      }
-    }
-
-    function resetGame() {
-      clearInterval(timerInterval);
-      clearInterval(carouselInterval);
-      bidsData = {};
-      for(let i = 1; i <= TOTAL_TABLES; i++) scores[i] = 0;
-      loadQuestion(0);
-    }
-
-    function listenToSupabaseEvents() {
-      realtimeChannel
-        .on('broadcast', { event: 'new-bid' }, (payload) => {
-          if (payload && payload.payload) {
-            const { table, value } = payload.payload;
-            bidsData[table] = value;
-            renderBetsGrid();
-          }
-        })
-        .on('broadcast', { event: 'remote-cmd' }, (payload) => {
-          if (!payload || !payload.payload) return;
-          const cmd = payload.payload.cmd;
-          if (cmd === 'start-timer') startTimerAndShowQR();
-          if (cmd === 'reveal') revealWinner();
-          if (cmd === 'next-question') nextQuestion();
-          if (cmd === 'reset') resetGame();
-        })
-        .subscribe((status) => {
-          if (status === 'SUBSCRIBED') {
-            document.getElementById('status-badge').innerText = 'Conectado';
-            document.getElementById('status-badge').className = "px-4 py-2 rounded-full bg-emerald-950/60 border border-emerald-500/40 text-xs font-bold text-emerald-400";
-          }
-        });
-    }
-
-    function triggerAction(actionName) {
-      if (actionName === 'start-timer') startTimerAndShowQR();
-      if (actionName === 'reveal') revealWinner();
-      if (actionName === 'next-question') nextQuestion();
-    }
-
-    async function sendRemoteCommand(cmd) {
-      if (!realtimeChannel) return;
-      await realtimeChannel.send({
-        type: 'broadcast',
-        event: 'remote-cmd',
-        payload: { cmd: cmd }
-      });
-    }
-
-    function initPlayerUI() {
-      const container = document.getElementById('tables-buttons');
-      container.innerHTML = '';
-      for (let i = 1; i <= TOTAL_TABLES; i++) {
-        const btn = document.createElement('button');
-        btn.className = 'p-4 bg-slate-800 border border-slate-700 rounded-xl font-bold text-lg hover:border-amber-400 active:bg-amber-400 active:text-slate-950 transition';
-        btn.innerText = `Mesa ${i}`;
-        btn.onclick = () => selectTable(i);
-        container.appendChild(btn);
-      }
-    }
-
-    function selectTable(num) {
-      selectedTable = num;
-      document.getElementById('table-selector').classList.add('hidden');
-      document.getElementById('player-form').classList.remove('hidden');
-      document.getElementById('player-table-title').innerText = `Registrado como: Mesa ${num}`;
-    }
-
-    async function submitBid() {
-      const valInput = document.getElementById('player-input');
-      const val = valInput.value;
-      if (!val || !selectedTable) return;
-
-      await realtimeChannel.send({
-        type: 'broadcast',
-        event: 'new-bid',
-        payload: { table: selectedTable, value: parseFloat(val) }
-      });
-
-      document.getElementById('player-status').innerText = `✓ Enviado: ${val} para Mesa ${selectedTable}`;
-      document.getElementById('player-status').className = "text-center text-sm font-semibold text-emerald-400";
-      valInput.value = '';
-    }
-  </script>
+/* ===================================================================== */
+if (MODE === 'player') Player.start();
+else if (MODE === 'remote') Remote.start();
+else TV.start();
+</script>
 </body>
 </html>

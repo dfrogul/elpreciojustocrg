@@ -1,197 +1,444 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cena de Navidad 2026 - Registro</title>
-  <link rel="stylesheet" href="style.css">
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0c1530">
+<title>Cena de Navidad 2026 · Inscripción</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,800;1,9..144,600&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{
+  --navy:#0c1530; --navy2:#16224a; --ink:#1d2340; --cream:#fbf6ec; --sand:#efe3cc; --sand2:#e2cfa9;
+  --gold:#e0a526; --gold2:#c98a12; --red:#c8102e; --green:#15803d; --muted:#6b6f86; --line:#e6dcc6;
+  --serif:'Fraunces',Georgia,'Times New Roman',serif; --sans:'Outfit',system-ui,-apple-system,'Segoe UI',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--sans);background:var(--navy);color:var(--ink);-webkit-font-smoothing:antialiased}
+button,input,select{font:inherit;color:inherit}
+a{color:inherit}
+.hidden{display:none!important}
+
+/* ---------- HERO ---------- */
+.hero{position:relative;overflow:hidden;color:#fff;padding:calc(36px + env(safe-area-inset-top)) 20px 120px;text-align:center;
+  background:radial-gradient(900px 500px at 50% -10%,#24366f 0%,transparent 70%),radial-gradient(600px 400px at 100% 100%,rgba(200,16,46,.35),transparent 70%),var(--navy)}
+#snow{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.hero > *{position:relative}
+.pill{display:inline-flex;gap:8px;align-items:center;padding:7px 14px;border-radius:999px;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.06);font-weight:700;font-size:13px;letter-spacing:.06em;text-transform:uppercase}
+h1{font-family:var(--serif);font-weight:800;font-size:clamp(44px,10vw,84px);line-height:.95;margin:18px 0 6px;letter-spacing:-.02em}
+h1 em{display:block;font-style:italic;font-weight:600;color:var(--gold);font-size:.62em;margin-top:6px}
+.meta{display:flex;flex-wrap:wrap;justify-content:center;gap:8px 18px;margin-top:16px;font-weight:600;color:#dbe2ff}
+.meta a{text-decoration:none;border-bottom:1px dashed rgba(255,255,255,.4)}
+.count{display:flex;justify-content:center;gap:10px;margin-top:28px}
+.count div{width:78px;padding:12px 0 10px;border-radius:16px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);backdrop-filter:blur(6px)}
+.count b{display:block;font-family:var(--serif);font-size:34px;line-height:1;font-variant-numeric:tabular-nums}
+.count span{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#aab4dd;font-weight:700}
+.count-msg{margin-top:28px;font-family:var(--serif);font-size:30px;color:var(--gold)}
+
+/* ---------- PANEL ---------- */
+.wrap{max-width:640px;margin:-84px auto 0;padding:0 14px calc(40px + env(safe-area-inset-bottom));position:relative}
+.panel{background:var(--cream);border-radius:28px;box-shadow:0 30px 80px rgba(0,0,0,.35);overflow:hidden}
+.aforo{padding:22px 24px 20px;border-bottom:1px solid var(--line);background:linear-gradient(180deg,#fffaf0,var(--cream))}
+.aforo-top{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.aforo-top > b{font-family:var(--serif);font-size:30px;white-space:nowrap}
+.aforo-top span{color:var(--muted);font-weight:600;font-size:14px;text-align:right}
+.bar{height:12px;border-radius:999px;background:var(--sand);margin-top:12px;overflow:hidden}
+.bar i{display:block;height:100%;width:0;border-radius:999px;background:linear-gradient(90deg,var(--green),#22c55e);transition:width 1.2s cubic-bezier(.2,.9,.2,1)}
+.bar.full i{background:linear-gradient(90deg,var(--gold2),var(--gold))}
+form,.done{padding:8px 24px 28px}
+.step{padding:22px 0;border-bottom:1px dashed var(--line)}
+.step:last-of-type{border-bottom:0}
+.step h2{font-family:var(--serif);font-size:23px;display:flex;align-items:center;gap:10px;margin-bottom:4px}
+.step h2 .n{width:30px;height:30px;border-radius:50%;background:var(--navy);color:#fff;font-family:var(--sans);font-size:15px;font-weight:800;display:grid;place-items:center;flex:none}
+.hint{color:var(--muted);font-size:14.5px;line-height:1.45;margin-bottom:14px}
+label.f{display:block;font-weight:700;font-size:14px;margin:12px 0 6px}
+.in{width:100%;padding:15px 16px;border-radius:14px;border:2px solid var(--line);background:#fff;font-size:16px;outline:none;transition:border-color .2s}
+.in:focus{border-color:var(--navy)}
+.in.bad{border-color:var(--red)}
+.err{color:var(--red);font-size:13px;font-weight:700;margin-top:6px;min-height:0}
+
+.menus{display:grid;gap:10px}
+.menu{position:relative;display:grid;grid-template-columns:auto 1fr auto;gap:4px 14px;align-items:center;padding:14px 16px;border-radius:18px;border:2px solid var(--line);background:#fff;cursor:pointer;transition:all .2s}
+.menu input{position:absolute;opacity:0;pointer-events:none}
+.menu .num{grid-row:span 2;width:44px;height:44px;border-radius:12px;background:var(--sand);display:grid;place-items:center;font-family:var(--serif);font-weight:800;font-size:20px}
+.menu .ttl{font-weight:800;font-size:16px}
+.menu .price{grid-row:span 2;font-family:var(--serif);font-weight:800;font-size:24px}
+.menu .price small{font-family:var(--sans);font-size:11px;color:var(--muted);font-weight:600;display:block;text-align:right}
+.menu .desc{font-size:13.5px;color:var(--muted);line-height:1.35}
+.menu:has(input:checked){border-color:var(--navy);background:#f3f5ff;box-shadow:0 8px 20px rgba(12,21,48,.12)}
+.menu:has(input:checked) .num{background:var(--navy);color:#fff}
+.menu .vote{grid-column:1/-1;display:none;align-items:center;gap:10px;margin-top:6px;font-size:12.5px;font-weight:700;color:var(--muted)}
+.show-votes .menu .vote{display:flex}
+.vote .vb{flex:1;height:7px;border-radius:999px;background:var(--sand);overflow:hidden}
+.vote .vb i{display:block;height:100%;background:var(--navy);border-radius:999px;transition:width 1s}
+.incl{margin-top:12px;padding:12px 14px;border-radius:14px;background:var(--sand);font-size:13.5px;line-height:1.5}
+.linkbtn{background:none;border:0;color:var(--navy);font-weight:800;text-decoration:underline;cursor:pointer;font-size:14px;padding:8px 0}
+
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{position:relative;cursor:pointer}
+.chip input{position:absolute;opacity:0;pointer-events:none}
+.chip span{display:inline-flex;align-items:center;gap:6px;padding:11px 14px;border-radius:999px;border:2px solid var(--line);background:#fff;font-weight:700;font-size:14.5px;transition:all .15s}
+.chip input:checked + span{border-color:var(--navy);background:var(--navy);color:#fff}
+.chip input:disabled + span{opacity:.4;text-decoration:line-through;cursor:not-allowed}
+.note{margin-top:10px;font-size:13px;color:var(--muted);line-height:1.4}
+
+.toggle{display:flex;gap:14px;align-items:flex-start;padding:16px;border-radius:18px;border:2px solid var(--line);background:#fff;cursor:pointer}
+.toggle input{position:absolute;opacity:0}
+.sw{flex:none;width:50px;height:30px;border-radius:999px;background:#d6cdb9;position:relative;transition:background .2s;margin-top:2px}
+.sw::after{content:'';position:absolute;top:3px;left:3px;width:24px;height:24px;border-radius:50%;background:#fff;box-shadow:0 2px 6px rgba(0,0,0,.2);transition:transform .2s}
+.toggle:has(input:checked){border-color:var(--navy)}
+.toggle:has(input:checked) .sw{background:var(--green)}
+.toggle:has(input:checked) .sw::after{transform:translateX(20px)}
+.toggle > div > b{display:block;font-size:16px}
+.toggle p{font-size:13.5px;color:var(--muted);margin-top:3px;line-height:1.4}
+.toggle.game{background:linear-gradient(135deg,#0c1530,#24366f);color:#fff;border-color:transparent}
+.toggle.game p{color:#c8d0f5}
+.toggle.game:has(input:checked){box-shadow:0 0 0 3px var(--gold)}
+
+.submit{width:100%;margin-top:22px;padding:19px;border:0;border-radius:18px;background:linear-gradient(180deg,#d41a38,#a50d24);color:#fff;font-weight:800;font-size:18px;cursor:pointer;box-shadow:0 6px 0 #6d0717,0 14px 30px rgba(200,16,46,.3);transition:transform .1s}
+.submit:active{transform:translateY(3px);box-shadow:0 3px 0 #6d0717}
+.submit:disabled{filter:grayscale(.6) opacity(.7);cursor:wait}
+.submit.wait{background:linear-gradient(180deg,#e0a526,#b07510);box-shadow:0 6px 0 #6b4708}
+.alert{margin-top:14px;padding:13px 16px;border-radius:14px;font-weight:700;font-size:14.5px;background:#fde8eb;color:#9f1239}
+.legal{margin-top:14px;font-size:12px;color:var(--muted);line-height:1.45;text-align:center}
+
+/* ---------- CONFIRMACIÓN ---------- */
+.ticket{margin-top:18px;border-radius:22px;background:var(--navy);color:#fff;padding:26px 22px;text-align:center;position:relative;overflow:hidden}
+.ticket::before,.ticket::after{content:'';position:absolute;top:50%;width:26px;height:26px;border-radius:50%;background:var(--cream);transform:translateY(-50%)}
+.ticket::before{left:-13px}.ticket::after{right:-13px}
+.ticket .big{font-size:52px;line-height:1}
+.ticket h2{font-family:var(--serif);font-size:30px;margin:10px 0 4px}
+.ticket p{color:#c8d0f5}
+.ticket.wait{background:linear-gradient(135deg,#7a4b06,#c98a12)}
+.ticket.wait p{color:#fff3d6}
+.sum{margin-top:18px;display:grid;grid-template-columns:auto 1fr;gap:8px 16px;font-size:15px}
+.sum span{color:var(--muted);font-weight:600}
+.sum b{font-weight:700}
+.actions{display:grid;gap:10px;margin-top:20px}
+.act{display:flex;align-items:center;justify-content:center;gap:8px;padding:15px;border-radius:16px;border:2px solid var(--line);background:#fff;font-weight:800;text-decoration:none;cursor:pointer;font-size:15.5px}
+.act.primary{background:var(--navy);color:#fff;border-color:var(--navy)}
+.act.alert-act{background:#fff7e6;border-color:var(--gold)}
+.box{margin-top:22px;padding:18px;border-radius:18px;background:#fff;border:1px solid var(--line)}
+.box h3{font-family:var(--serif);font-size:20px;margin-bottom:12px}
+.vrow{display:grid;grid-template-columns:70px 1fr 54px;gap:10px;align-items:center;margin:8px 0;font-size:14px;font-weight:700}
+.vrow .vb{height:10px;border-radius:999px;background:var(--sand);overflow:hidden}
+.vrow .vb i{display:block;height:100%;border-radius:999px;background:var(--navy);transition:width 1s}
+.vrow.top .vb i{background:var(--gold)}
+.vrow em{font-style:normal;color:var(--muted);text-align:right}
+
+.foot{max-width:640px;margin:0 auto;padding:0 20px calc(30px + env(safe-area-inset-bottom));color:#aab4dd;font-size:13px;line-height:1.6;text-align:center}
+.foot b{color:#fff}
+
+/* modal */
+.modal{position:fixed;inset:0;background:rgba(5,8,20,.85);display:none;align-items:flex-start;justify-content:center;padding:20px;z-index:50;overflow:auto}
+.modal.on{display:flex}
+.modal-c{background:var(--cream);border-radius:22px;max-width:760px;width:100%;padding:18px;position:relative}
+.modal-c img{width:100%;border-radius:12px;display:block;margin-top:12px}
+.x{position:absolute;top:10px;right:14px;font-size:30px;background:none;border:0;cursor:pointer;line-height:1}
+.toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:var(--navy);color:#fff;padding:12px 18px;border-radius:14px;font-weight:700;z-index:60;box-shadow:0 10px 30px rgba(0,0,0,.4)}
+</style>
 </head>
 <body>
 
-<div class="container">
-  <div class="header">
-    <h1>🎄 Cena de Navidad 2026</h1>
-    <p>Asador Parrillada Caminito - Registro de Plazas</p>
+<header class="hero">
+  <canvas id="snow"></canvas>
+  <span class="pill">🎄 Cena de empresa</span>
+  <h1>Cena de Navidad<em>2026</em></h1>
+  <div class="meta">
+    <span>📅 Viernes 18 de diciembre</span>
+    <span id="hora">🕘 21:30 h</span>
+    <a href="https://maps.google.com/?q=Parrillada+Caminito,+Rúa+Río+Sil+43,+Lugo" target="_blank" rel="noopener">📍 Parrillada Caminito · Lugo</a>
   </div>
-
-  <div class="counter-card">
-    <div id="plazasDisplay" class="counter-value">--</div>
-    <div id="counterLabel" class="counter-label">Plazas disponibles (Máximo 55)</div>
+  <div class="count" id="count">
+    <div><b id="cd-d">--</b><span>días</span></div>
+    <div><b id="cd-h">--</b><span>horas</span></div>
+    <div><b id="cd-m">--</b><span>min</span></div>
+    <div><b id="cd-s">--</b><span>seg</span></div>
   </div>
+  <div class="count-msg hidden" id="count-msg"></div>
+</header>
 
-  <button type="button" class="menu-toggle-btn" onclick="toggleMenuModal(true)">
-    📋 Ver Menús Oficiales y Condiciones de la Casa
-  </button>
-
-  <div class="info-card">
-    <strong>Notas clave de la reserva:</strong>
-    <ul>
-      <li>Entrantes compartidos y plato principal a elegir.</li>
-      <li>Vino incluido hasta 1/2 botella por persona.</li>
-      <li>Cancelaciones con un mínimo de 24 horas de antelación.</li>
-    </ul>
-  </div>
-
-  <form id="registroForm">
-    <div class="form-group">
-      <label for="nombre">Nombre y Apellidos *</label>
-      <input type="text" id="nombre" placeholder="Ej: Denis Fernández" required>
+<main class="wrap">
+  <div class="panel">
+    <div class="aforo">
+      <div class="aforo-top"><b id="af-num">— / 55</b><span id="af-txt">Cargando plazas…</span></div>
+      <div class="bar" id="af-bar"><i></i></div>
     </div>
 
-    <div class="form-group">
-      <label for="email">Correo corporativo *</label>
-      <input type="email" id="email" placeholder="tu.nombre@empresa.es" required>
-    </div>
+    <!-- ============ FORMULARIO ============ -->
+    <form id="form" novalidate>
+      <section class="step">
+        <h2><span class="n">1</span>Tus datos</h2>
+        <label class="f" for="nombre">Nombre y apellidos</label>
+        <input class="in" id="nombre" autocomplete="name" placeholder="Ej: Denis Fernández" required>
+        <label class="f" for="email">Correo corporativo</label>
+        <input class="in" id="email" type="email" autocomplete="email" inputmode="email" placeholder="tu.nombre@empresa.es" required>
+        <div class="err" id="err-datos"></div>
+      </section>
 
-    <div class="form-group">
-      <label for="menu">Selección de Menú Principal *</label>
-      <select id="menu" required>
-        <option value="">-- Elige una opción --</option>
-        <option value="carne">Menú Grupo (Parrilla de Carne)</option>
-        <option value="pescado_bacalao">Pescado: Bacalao a la brasa</option>
-        <option value="pescado_pulpo">Pescado: Pulpo a la brasa</option>
-        <option value="vegetariano">Opción Vegetariana / Vegana (25€)</option>
-        <option value="infantil">Menú Infantil (&lt;12 años)</option>
-      </select>
-    </div>
+      <section class="step">
+        <h2><span class="n">2</span>Vota el menú del grupo</h2>
+        <p class="hint">El restaurante sirve <b>un único menú para todo el grupo</b>. Elige tu favorito: el más votado será el de la cena.</p>
+        <div class="menus" id="menus"></div>
+        <div class="incl">🍽️ <b>Todos incluyen:</b> cecina de vaca gallega, tataki de solomillo Duroc, croquetas de jamón, empanadillas criollas y torreznos de Soria · milhojas de dulce de leche · vino (½ botella por persona), cerveza Estrella Galicia, refrescos y café.</div>
+        <button type="button" class="linkbtn" id="ver-carta">📋 Ver la carta original y las condiciones</button>
+        <div class="err" id="err-menu"></div>
+      </section>
 
-    <div class="form-group">
-      <label for="alergias">Intolerancias / Alergias</label>
-      <input type="text" id="alergias" placeholder="Sin gluten, sin lactosa, frutos secos, etc.">
-    </div>
+      <section class="step">
+        <h2><span class="n">3</span>Tu segundo plato</h2>
+        <p class="hint">Si no quieres la parrilla, puedes cambiarla solo para ti.</p>
+        <div class="chips" id="segundos">
+          <label class="chip"><input type="radio" name="segundo" value="parrilla" checked><span>🔥 Parrilla del menú</span></label>
+          <label class="chip"><input type="radio" name="segundo" value="bacalao" data-limit><span>🐟 Bacalao a la brasa</span></label>
+          <label class="chip"><input type="radio" name="segundo" value="pulpo" data-limit><span>🐙 Pulpo a la brasa</span></label>
+          <label class="chip"><input type="radio" name="segundo" value="vegetariano"><span>🥗 Vegetariano / vegano · 25 €</span></label>
+          <label class="chip"><input type="radio" name="segundo" value="infantil"><span>🧒 Infantil (&lt;12 años)</span></label>
+        </div>
+        <p class="note" id="nota-pescado"></p>
+      </section>
 
-    <label class="checkbox-card">
-      <input type="checkbox" id="juego" checked>
-      <div>
-        <div class="checkbox-title">Participar en "El Precio Justo" (+5€) 🎁</div>
-        <div class="checkbox-desc">Inscripción al juego en vivo por la Cesta de Navidad durante la cena.</div>
+      <section class="step">
+        <h2><span class="n">4</span>Alergias e intolerancias</h2>
+        <label class="toggle"><input type="checkbox" id="alergias"><span class="sw"></span>
+          <div><b>Tengo alergias o intolerancias</b>
+          <p>Por protección de datos <b>no las guardamos en esta web</b>. Al terminar te abriremos un correo para que se las mandes directamente al organizador.</p></div>
+        </label>
+      </section>
+
+      <section class="step">
+        <h2><span class="n">5</span>¿Juegas?</h2>
+        <label class="toggle game"><input type="checkbox" id="juego"><span class="sw"></span>
+          <div><b>🎁 Quiero jugar a «El Precio Justo» · +5 €</b>
+          <p>Concurso por mesas durante la cena. La mesa con más puntos al final se lleva la <b>Cesta de Navidad</b>.</p></div>
+        </label>
+      </section>
+
+      <button class="submit" id="submit" type="submit">Confirmar mi plaza</button>
+      <div class="alert hidden" id="alert"></div>
+      <p class="legal">Solo guardamos tu nombre, correo, voto y elección de segundo para organizar la cena. Ningún asistente puede ver los datos de los demás.</p>
+    </form>
+
+    <!-- ============ CONFIRMACIÓN ============ -->
+    <section class="done hidden" id="done">
+      <div class="ticket" id="tk">
+        <div class="big" id="tk-ico">🎉</div>
+        <h2 id="tk-title">¡Plaza confirmada!</h2>
+        <p id="tk-sub">Nos vemos el 18 de diciembre</p>
       </div>
-    </label>
+      <div class="sum" id="sum"></div>
+      <div class="actions">
+        <button class="act alert-act hidden" id="btn-alergias">✉️ Enviar mis alergias al organizador</button>
+        <button class="act primary" id="btn-ics">📅 Añadir a mi calendario</button>
+        <a class="act" id="btn-cancel" href="#">🙁 No puedo ir: cancelar mi plaza</a>
+      </div>
+      <div class="box">
+        <h3>🗳️ Así va la votación del menú</h3>
+        <div id="votos"></div>
+      </div>
+      <button class="linkbtn" id="otra" style="margin-top:14px">➕ Apuntar a otra persona desde este móvil</button>
+    </section>
+  </div>
+</main>
 
-    <button type="submit" id="btnSubmit" class="btn-submit">Confirmar Mi Reserva</button>
-  </form>
+<footer class="foot">
+  <p>Parrillada Caminito · Rúa Río Sil, 43 · Lugo</p>
+  <p>Si no puedes venir, <b>avisa con al menos 24 h</b>: si no, el restaurante cobra el menú. Las cenas terminan como máximo a la <b>1:00</b>.</p>
+</footer>
 
-  <div id="alertBox" class="alert"></div>
-</div>
-
-<!-- Modal para ver las cartas -->
-<div id="menuModal" class="modal" onclick="if(event.target === this) toggleMenuModal(false)">
-  <div class="modal-content">
-    <span class="modal-close" onclick="toggleMenuModal(false)">&times;</span>
-    <h3 style="color: var(--primary); margin-bottom: 8px;">Cartas y Condiciones</h3>
-    <p style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 12px;">Información proporcionada por Parrillada Caminito</p>
-    <div class="images-grid">
-      <img src="menu-precios.png" alt="Menú Precios">
-      <img src="condiciones-caminito.png" alt="Condiciones">
-    </div>
+<div class="modal" id="modal">
+  <div class="modal-c">
+    <button class="x" id="modal-x" aria-label="Cerrar">×</button>
+    <h3 style="font-family:var(--serif);font-size:22px">Carta y condiciones</h3>
+    <p class="hint" style="margin:4px 0 0">Información de Parrillada Caminito</p>
+    <img src="menu-precios.png" alt="Menús para grupos de Parrillada Caminito">
+    <img src="condiciones-caminito.png" alt="Condiciones de los menús de grupo">
   </div>
 </div>
 
 <script>
-  // Función global e ininterrumpible para abrir y cerrar el modal
-  function toggleMenuModal(show) {
-    const modal = document.getElementById('menuModal');
-    if (modal) {
-      modal.style.display = show ? 'flex' : 'none';
-    }
-  }
+/* =================== CONFIGURACIÓN =================== */
+const SUPABASE_URL = 'https://zsiybimuicenbejqblrp.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_Vj0QnLFI8AoU92buxt4NIg_qehwOSUS';
+const AFORO = 55;
+const FECHA_CENA = new Date('2026-12-18T21:30:00+01:00');            // ← ajusta la hora si cambia
+const FIN_CENA   = new Date('2026-12-19T01:00:00+01:00');
+const LIMITE_PESCADO = new Date('2026-12-14T23:59:00+01:00');        // bacalao/pulpo: el restaurante pide aviso antes del miércoles 16
+const CIERRE_INSCRIPCION = new Date('2026-12-17T12:00:00+01:00');    // 24 h antes hay que dar el número exacto
+const EMAIL_ORGANIZADOR = 'TU_CORREO@empresa.es';                    // ← tu correo corporativo
+const NOMBRE_ORGANIZADOR = 'Denis';
+const DOMINIO_CORPORATIVO = '';                                      // ej. '@empresa.es' para obligar a usar el correo de empresa
 
-  window.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') toggleMenuModal(false);
+const MENUS = [
+  { n:1, precio:39, titulo:'Abanico ibérico',            desc:'Abanico de cerdo ibérico + parrilla base' },
+  { n:2, precio:44, titulo:'Picanha + abanico',          desc:'Picanha de Angus de Nebraska y abanico ibérico + parrilla base' },
+  { n:3, precio:50, titulo:'Chuletón',                   desc:'Chuletón + parrilla base' },
+  { n:4, precio:55, titulo:'Chuletón + picanha',         desc:'Chuletón y picanha de Angus + parrilla base' },
+  { n:5, precio:60, titulo:'La completa',                desc:'Chuletón, picanha de Angus y abanico ibérico + parrilla base' },
+];
+const SEGUNDOS = { parrilla:'Parrilla del menú', bacalao:'Bacalao a la brasa', pulpo:'Pulpo a la brasa', vegetariano:'Vegetariano / vegano', infantil:'Menú infantil' };
+const BASE_TXT = 'Parrilla base: tira de churrasco de vacuno añojo, parripollo, churrasco de cerdo 50 % Duroc y chorizo criollo.';
+
+/* =================== UTILIDADES =================== */
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const store = { get(k){ try { return JSON.parse(localStorage.getItem(k)); } catch(e){ return null; } }, set(k,v){ try { localStorage.setItem(k, JSON.stringify(v)); } catch(e){} }, del(k){ try { localStorage.removeItem(k); } catch(e){} } };
+function toast(m){ const t = document.createElement('div'); t.className = 'toast'; t.textContent = m; document.body.appendChild(t); setTimeout(() => t.remove(), 2800); }
+let sb = null;
+try { if (window.supabase) sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY); } catch(e){ console.warn(e); }
+
+/* =================== CUENTA ATRÁS =================== */
+function countdown(){
+  const now = Date.now(), d = FECHA_CENA - now;
+  if (d <= 0) {
+    $('#count').classList.add('hidden'); const m = $('#count-msg'); m.classList.remove('hidden');
+    m.textContent = now < FIN_CENA ? '🥂 ¡Es esta noche! ¡Disfrutad!' : '🎄 ¡Gracias por venir! Felices fiestas';
+    return;
+  }
+  const p = n => String(n).padStart(2, '0');
+  $('#cd-d').textContent = Math.floor(d / 864e5);
+  $('#cd-h').textContent = p(Math.floor(d / 36e5) % 24);
+  $('#cd-m').textContent = p(Math.floor(d / 6e4) % 60);
+  $('#cd-s').textContent = p(Math.floor(d / 1e3) % 60);
+}
+$('#hora').textContent = '🕘 ' + FECHA_CENA.toLocaleTimeString('es-ES', { hour:'2-digit', minute:'2-digit', timeZone:'Europe/Madrid' }) + ' h';
+countdown(); setInterval(countdown, 1000);
+
+/* =================== NIEVE =================== */
+(function(){
+  const cv = $('#snow'), cx = cv.getContext('2d'); let W, H, f = [];
+  const size = () => { W = cv.width = cv.offsetWidth; H = cv.height = cv.offsetHeight; };
+  size(); addEventListener('resize', size);
+  for (let i = 0; i < 70; i++) f.push({ x: Math.random() * W, y: Math.random() * H, r: Math.random() * 2 + .5, s: Math.random() * .5 + .2, w: Math.random() * 6 });
+  (function loop(){ cx.clearRect(0, 0, W, H); cx.fillStyle = 'rgba(255,255,255,.7)';
+    for (const p of f) { p.y += p.s; p.w += .01; p.x += Math.sin(p.w) * .3; if (p.y > H) { p.y = -4; p.x = Math.random() * W; } cx.beginPath(); cx.arc(p.x, p.y, p.r, 0, 6.3); cx.fill(); }
+    requestAnimationFrame(loop); })();
+})();
+
+/* =================== MENÚS =================== */
+$('#menus').innerHTML = MENUS.map(m => `
+  <label class="menu">
+    <input type="radio" name="menu" value="${m.n}">
+    <span class="num">${m.n}</span>
+    <span class="ttl">${esc(m.titulo)}</span>
+    <span class="price">${m.precio} €<small>por persona</small></span>
+    <span class="desc">${esc(m.desc)}</span>
+    <span class="vote"><span class="vb"><i style="width:0"></i></span><span class="vt">0 votos</span></span>
+  </label>`).join('') + `<p class="note">${esc(BASE_TXT)}</p>`;
+
+const pescadoAbierto = Date.now() <= LIMITE_PESCADO;
+document.querySelectorAll('[data-limit]').forEach(i => i.disabled = !pescadoAbierto);
+$('#nota-pescado').textContent = pescadoAbierto
+  ? `🐟 Bacalao y pulpo hay que encargarlos con antelación: disponibles hasta el ${LIMITE_PESCADO.toLocaleDateString('es-ES', { weekday:'long', day:'numeric', month:'long' })}.`
+  : '🐟 El plazo para pedir bacalao o pulpo ya ha cerrado.';
+
+/* =================== AFORO Y VOTOS =================== */
+let resumen = null;
+async function cargarResumen(){
+  if (!sb) { $('#af-txt').textContent = 'Sin conexión con la base de datos'; return; }
+  const { data, error } = await sb.rpc('resumen_cena');
+  if (error || !data) { $('#af-txt').textContent = 'No se pudo cargar el aforo'; return; }
+  resumen = data;
+  const conf = data.confirmados, libres = Math.max(0, AFORO - conf);
+  $('#af-num').textContent = `${conf} / ${AFORO}`;
+  $('#af-txt').innerHTML = libres > 0 ? `plazas ocupadas · <b>quedan ${libres}</b>` : `aforo completo · ${data.espera} en lista de espera`;
+  $('#af-bar').classList.toggle('full', libres === 0);
+  $('#af-bar i').style.width = Math.min(100, conf / AFORO * 100) + '%';
+  if (libres === 0 && !$('#submit').disabled) { $('#submit').textContent = 'Apuntarme a la lista de espera'; $('#submit').classList.add('wait'); }
+  pintarVotos();
+}
+function pintarVotos(){
+  if (!resumen) return;
+  const v = resumen.votos || {}, total = Object.values(v).reduce((a, b) => a + b, 0) || 0, max = Math.max(0, ...Object.values(v));
+  document.querySelectorAll('.menu').forEach((el, i) => {
+    const n = v[i + 1] || 0;
+    el.querySelector('.vb i').style.width = total ? (n / total * 100) + '%' : '0';
+    el.querySelector('.vt').textContent = `${n} voto${n === 1 ? '' : 's'}`;
   });
+  $('#votos').innerHTML = MENUS.map(m => { const n = v[m.n] || 0; return `<div class="vrow ${n && n === max ? 'top' : ''}"><span>Menú ${m.n}</span><span class="vb"><i style="width:${total ? n / total * 100 : 0}%"></i></span><em>${total ? Math.round(n / total * 100) : 0}%</em></div>`; }).join('') +
+    `<p class="note">${total} voto${total === 1 ? '' : 's'} en total. El organizador cerrará el menú con el restaurante antes de la cena.</p>`;
+}
 
-  // Integración con Supabase aislada
-  const SUPABASE_URL = 'https://TU-PROYECTO.supabase.co';
-  const SUPABASE_ANON_KEY = 'TU-ANON-KEY';
-  const MAX_PLAZAS = 55;
+/* =================== ENVÍO =================== */
+const cerrado = Date.now() > CIERRE_INSCRIPCION;
+if (cerrado) { $('#submit').disabled = true; $('#submit').textContent = 'Inscripciones cerradas'; }
 
-  let supabaseClient = null;
-  try {
-    if (typeof supabase !== 'undefined' && !SUPABASE_URL.includes('TU-PROYECTO')) {
-      supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-    }
-  } catch (err) {
-    console.warn('Supabase no configurado aún:', err);
+function showAlert(msg){ const a = $('#alert'); a.textContent = msg; a.classList.remove('hidden'); }
+$('#form').addEventListener('submit', async e => {
+  e.preventDefault(); $('#alert').classList.add('hidden');
+  ['nombre', 'email'].forEach(id => $('#' + id).classList.remove('bad'));
+  $('#err-datos').textContent = ''; $('#err-menu').textContent = '';
+  const nombre = $('#nombre').value.trim(), email = $('#email').value.trim().toLowerCase();
+  const voto = +(document.querySelector('input[name=menu]:checked') || {}).value || 0;
+  const segundo = document.querySelector('input[name=segundo]:checked').value;
+  let ok = true;
+  if (nombre.length < 3) { $('#nombre').classList.add('bad'); $('#err-datos').textContent = 'Escribe tu nombre y apellidos.'; ok = false; }
+  if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email) || (DOMINIO_CORPORATIVO && !email.endsWith(DOMINIO_CORPORATIVO.toLowerCase()))) {
+    $('#email').classList.add('bad'); $('#err-datos').textContent = DOMINIO_CORPORATIVO ? `Usa tu correo ${DOMINIO_CORPORATIVO}` : 'Revisa tu correo.'; ok = false;
   }
+  if (!voto) { $('#err-menu').textContent = 'Vota uno de los 5 menús.'; ok = false; }
+  if (!ok) { document.querySelector('.bad, .err:not(:empty)')?.scrollIntoView({ behavior:'smooth', block:'center' }); return; }
+  if (!sb) return showAlert('No hay conexión con la base de datos. Inténtalo más tarde.');
 
-  async function actualizarAforo() {
-    if (!supabaseClient) return;
-
-    try {
-      const { count, error } = await supabaseClient
-        .from('asistentes')
-        .select('*', { count: 'exact', head: true })
-        .eq('estado', 'confirmado');
-
-      if (error) return;
-
-      const restantes = MAX_PLAZAS - count;
-      const display = document.getElementById('plazasDisplay');
-      const label = document.getElementById('counterLabel');
-      const btn = document.getElementById('btnSubmit');
-
-      if (restantes > 0) {
-        display.innerText = restantes;
-        label.innerText = "Plazas disponibles (Máximo 55)";
-        btn.innerText = "Confirmar Mi Reserva";
-        btn.disabled = false;
-      } else {
-        display.innerText = "0";
-        label.innerText = "Aforo completo (55/55)";
-        btn.innerText = "Inscribirme en Lista de Espera";
-        btn.style.backgroundColor = "#d97706";
-        btn.disabled = false;
-      }
-    } catch (e) {
-      console.error(e);
-    }
+  const btn = $('#submit'), txt = btn.textContent; btn.disabled = true; btn.textContent = 'Enviando…';
+  const { data, error } = await sb.rpc('registrar_asistente', { p_nombre: nombre, p_email: email, p_voto: voto, p_segundo: segundo, p_juego: $('#juego').checked });
+  btn.disabled = false; btn.textContent = txt;
+  if (error) {
+    const m = error.message || '';
+    return showAlert(m.includes('duplicado') ? 'Este correo ya tiene una plaza registrada. Si necesitas cambiar algo, escribe al organizador.'
+      : m.includes('email') ? 'El correo no es válido.' : m.includes('nombre') ? 'Revisa el nombre.' : 'No se pudo completar la inscripción. Inténtalo de nuevo en un momento.');
   }
+  const reg = { nombre, email, voto, segundo, juego: $('#juego').checked, alergias: $('#alergias').checked, estado: data.estado, posicion: data.posicion };
+  store.set('cena26_reg', reg);
+  mostrarConfirmacion(reg, true);
+  cargarResumen();
+});
 
-  document.getElementById('registroForm').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    if (!supabaseClient) {
-      alert('Debes configurar la URL y la Anon Key de tu proyecto Supabase en el código.');
-      return;
-    }
+/* =================== CONFIRMACIÓN =================== */
+function mailto(subject, body){ return `mailto:${EMAIL_ORGANIZADOR}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`; }
+function mostrarConfirmacion(r, recien){
+  $('#form').classList.add('hidden'); $('#done').classList.remove('hidden');
+  const espera = r.estado === 'espera';
+  $('#tk').classList.toggle('wait', espera);
+  $('#tk-ico').textContent = espera ? '⏳' : '🎉';
+  $('#tk-title').textContent = espera ? 'Estás en lista de espera' : `¡Dentro, ${r.nombre.split(' ')[0]}!`;
+  $('#tk-sub').textContent = espera ? `Puesto ${r.posicion || '—'} · te avisaremos si se libera una plaza` : 'Plaza confirmada · nos vemos el viernes 18 de diciembre';
+  const m = MENUS.find(x => x.n === r.voto);
+  $('#sum').innerHTML = `<span>Nombre</span><b>${esc(r.nombre)}</b><span>Tu voto</span><b>Menú ${r.voto}${m ? ' · ' + esc(m.titulo) : ''}</b>
+    <span>Segundo</span><b>${esc(SEGUNDOS[r.segundo] || r.segundo)}</b><span>Precio Justo</span><b>${r.juego ? '🎁 Sí, juegas (+5 €)' : 'No'}</b>`;
+  $('#btn-alergias').classList.toggle('hidden', !r.alergias);
+  $('#btn-alergias').onclick = () => {
+    if (EMAIL_ORGANIZADOR.startsWith('TU_')) return toast('Falta configurar el correo del organizador');
+    location.href = mailto(`Alergias · Cena de Navidad 2026 · ${r.nombre}`, `Hola ${NOMBRE_ORGANIZADOR},\n\nSoy ${r.nombre} (${r.email}). Para la cena del 18 de diciembre tengo estas alergias o intolerancias:\n\n- \n\nGracias.`);
+  };
+  $('#btn-cancel').href = mailto(`Cancelación · Cena de Navidad 2026 · ${r.nombre}`, `Hola ${NOMBRE_ORGANIZADOR},\n\nSoy ${r.nombre} (${r.email}) y no podré ir a la cena del 18 de diciembre. Por favor, libera mi plaza.\n\nGracias.`);
+  if (recien) { $('#done').scrollIntoView({ behavior:'smooth', block:'start' }); if (r.alergias) setTimeout(() => toast('No olvides enviar tus alergias 👇'), 900); }
+}
+$('#btn-ics').onclick = () => {
+  const f = d => d.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
+  const ics = ['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Cena Navidad 2026//ES','BEGIN:VEVENT',
+    'UID:cena-navidad-2026@precio-justo', 'DTSTAMP:' + f(new Date()), 'DTSTART:' + f(FECHA_CENA), 'DTEND:' + f(FIN_CENA),
+    'SUMMARY:🎄 Cena de Navidad de empresa', 'LOCATION:Parrillada Caminito\\, Rúa Río Sil 43\\, Lugo',
+    'DESCRIPTION:Cena de Navidad 2026 + El Precio Justo por la Cesta de Navidad.',
+    'BEGIN:VALARM','TRIGGER:-PT3H','ACTION:DISPLAY','DESCRIPTION:Cena de Navidad esta noche','END:VALARM','END:VEVENT','END:VCALENDAR'].join('\r\n');
+  const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([ics], { type: 'text/calendar' })); a.download = 'cena-navidad-2026.ics'; a.click();
+};
+$('#otra').onclick = () => { store.del('cena26_reg'); $('#form').reset(); $('#done').classList.add('hidden'); $('#form').classList.remove('hidden'); $('.panel').scrollIntoView({ behavior:'smooth' }); };
 
-    const btn = document.getElementById('btnSubmit');
-    btn.disabled = true;
+/* =================== MODAL =================== */
+const modal = $('#modal');
+$('#ver-carta').onclick = () => modal.classList.add('on');
+$('#modal-x').onclick = () => modal.classList.remove('on');
+modal.onclick = e => { if (e.target === modal) modal.classList.remove('on'); };
+addEventListener('keydown', e => { if (e.key === 'Escape') modal.classList.remove('on'); });
 
-    const payload = {
-      nombre: document.getElementById('nombre').value.trim(),
-      email: document.getElementById('email').value.trim(),
-      menu: document.getElementById('menu').value,
-      alergias: document.getElementById('alergias').value.trim(),
-      participa_juego: document.getElementById('juego').checked
-    };
-
-    const { data, error } = await supabaseClient.from('asistentes').insert([payload]).select().single();
-
-    const alertBox = document.getElementById('alertBox');
-    alertBox.style.display = 'block';
-
-    if (error) {
-      alertBox.className = 'alert alert-warning';
-      alertBox.innerText = error.code === '23505'
-        ? 'Este correo ya tiene una reserva registrada.'
-        : 'Error al procesar la reserva. Inténtalo de nuevo.';
-      btn.disabled = false;
-    } else {
-      document.getElementById('registroForm').reset();
-      if (data.estado === 'confirmado') {
-        alertBox.className = 'alert alert-success';
-        alertBox.innerText = '¡Reserva confirmada con éxito! Nos vemos en la cena.';
-      } else {
-        alertBox.className = 'alert alert-warning';
-        alertBox.innerText = 'Aforo principal completo. Te hemos añadido a la Lista de Espera.';
-      }
-      actualizarAforo();
-    }
-  });
-
-  actualizarAforo();
+/* =================== INICIO =================== */
+const previo = store.get('cena26_reg');
+if (previo) mostrarConfirmacion(previo, false);
+cargarResumen();
+setInterval(cargarResumen, 30000);
 </script>
-
 </body>
 </html>
