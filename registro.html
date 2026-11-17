@@ -45,7 +45,7 @@ h1 em{display:block;font-style:italic;font-weight:600;color:var(--gold);font-siz
 .aforo-top > b{font-family:var(--serif);font-size:30px;white-space:nowrap}
 .aforo-top span{color:var(--muted);font-weight:600;font-size:14px;text-align:right}
 .bar{height:12px;border-radius:999px;background:var(--sand);margin-top:12px;overflow:hidden}
-.bar i{display:block;height:100%;width:0;border-radius:999px;background:linear-gradient(90deg,var(--green),#22c55e);transition:width 1.2s cubic-bezier(.2,.9,.2,1)}
+.bar i{display:block;height:100%;width:0;border-radius:999px;background:linear-gradient(90deg,var(--green),#22ce);transition:width 1.2s cubic-bezier(.2,.9,.2,1)}
 .bar.full i{background:linear-gradient(90deg,var(--gold2),var(--gold))}
 form,.done{padding:8px 24px 28px}
 .step{padding:22px 0;border-bottom:1px dashed var(--line)}
@@ -163,7 +163,7 @@ label.f{display:block;font-weight:700;font-size:14px;margin:12px 0 6px}
 <main class="wrap">
   <div class="panel">
     <div class="aforo">
-      <div class="aforo-top"><b id="af-num">— / 55</b><span id="af-txt">Cargando plazas…</span></div>
+      <div class="aforo-top"><b id="af-num">— / </b><span id="af-txt">Cargando plazas…</span></div>
       <div class="bar" id="af-bar"><i></i></div>
     </div>
 
@@ -262,7 +262,7 @@ label.f{display:block;font-weight:700;font-size:14px;margin:12px 0 6px}
 /* =================== CONFIGURACIÓN =================== */
 const SUPABASE_URL = 'https://zsiybimuicenbejqblrp.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_Vj0QnLFI8AoU92buxt4NIg_qehwOSUS';
-const AFORO = 55;
+const AFORO = 60;
 const FECHA_CENA = new Date('2026-12-18T21:30:00+01:00');            // ← ajusta la hora si cambia
 const FIN_CENA   = new Date('2026-12-19T01:00:00+01:00');
 const LIMITE_PESCADO = new Date('2026-12-14T23:59:00+01:00');        // bacalao/pulpo: el restaurante pide aviso antes del miércoles 16
