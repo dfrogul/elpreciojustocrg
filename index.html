@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#060a18">
-<title>El Precio Justo · Cena de Navidad 2026</title>
+<title>Cena de Navidad 2026</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bungee&family=Outfit:wght@400;600;700;800;900&display=swap" rel="stylesheet">
@@ -115,6 +115,26 @@ body.urgent #tv{animation:shake .5s}
 .qr-mini{position:absolute;right:0;bottom:0;width:15vh;text-align:center;font-size:1.4vh;font-weight:800;color:var(--muted)}
 .qr-mini .qr{padding:.8vh;margin-bottom:.6vh}
 
+.q-photo{display:none;max-height:44vh;max-width:72vw;object-fit:contain;border-radius:2vh;border:.5vh solid var(--gold);box-shadow:0 0 6vh rgba(251,191,36,.35),0 2vh 4vh rgba(0,0,0,.5);background:#000}
+.question.has-photo .q-photo{display:block}
+.question.has-photo .q-emoji{display:none}
+.question.has-photo .q-text{font-size:4.6vh}
+.question.has-photo{gap:2.2vh}
+.o-photo{max-height:30vh;max-width:26vw;object-fit:contain;border-radius:1.6vh;border:.4vh solid var(--gold);box-shadow:0 0 4vh rgba(251,191,36,.3);background:#000}
+.start-setup{cursor:default;max-width:72vw;border:1px dashed rgba(255,255,255,.2);border-radius:2vh;padding:1.2vh 1.6vw}
+.start-setup summary{cursor:pointer;font-weight:800;font-size:1.8vh;color:var(--muted);list-style:none;white-space:nowrap}
+.start-setup summary::-webkit-details-marker{display:none}
+.start-setup summary span{color:#bbf7d0;margin-left:.6vw}
+.start-setup[open]{background:rgba(6,10,24,.6)}
+.start-setup[open] summary{margin-bottom:1.4vh;color:var(--gold3)}
+.start-setup .start-fotos{margin-top:1.2vh}
+.start-fotos{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:1vh 1vw;max-width:70vw;cursor:default}
+.start-fotos button{padding:1.1vh 1.4vw;border-radius:1.2vh;border:2px solid var(--gold);color:var(--gold3);font-weight:800;font-size:1.9vh;cursor:pointer}
+.start-fotos button.ghost{border-color:rgba(255,255,255,.25);color:var(--muted)}
+.start-fotos .fl{width:100%;text-align:center;color:var(--muted);font-weight:700;font-size:1.7vh}
+.start-fotos .fl b{color:#bbf7d0}
+.start-fotos select{padding:1vh 1vw;border-radius:1.2vh;border:2px solid rgba(255,255,255,.25);background:#111a36;color:#fff;font:inherit;font-weight:700;font-size:1.8vh;max-width:32vw}
+.start-fotos .fl-lbl{color:var(--gold3);font-weight:800;font-size:1.9vh}
 /* open */
 .open{flex-direction:column;gap:2.4vh}
 .open-top{display:flex;align-items:center;gap:1.4vw}
@@ -164,8 +184,132 @@ body.urgent .ring-num{color:#fecdd3;text-shadow:0 0 4vh rgba(239,35,60,.9);anima
 .rcard.scored .rc-pts{opacity:1;transform:scale(1)}
 .empty{grid-column:1/-1;text-align:center;font-size:3vh;color:var(--muted);font-weight:800}
 
-/* banner */
-#banner{position:fixed;inset:0;display:grid;place-items:center;pointer-events:none;z-index:50}
+/* premios curiosos */
+.awards{flex-direction:column;gap:3vh;align-items:center;justify-content:center}
+.aw-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:3vh 2vw;width:88vw;perspective:1200px}
+.aw{text-align:center;padding:2.6vh 1.4vw;border-radius:2.4vh;background:linear-gradient(180deg,rgba(251,191,36,.18),rgba(17,25,52,.92) 60%);border:.3vh solid rgba(251,191,36,.55);
+  box-shadow:0 0 4vh rgba(251,191,36,.18);opacity:0;transform:rotateY(80deg) scale(.8);transition:all .8s cubic-bezier(.2,1.3,.3,1)}
+.aw.show{opacity:1;transform:none}
+.aw-e{font-size:7vh;line-height:1}
+.aw-t{font-weight:900;letter-spacing:.12em;text-transform:uppercase;color:var(--gold3);font-size:2vh;margin-top:1vh}
+.aw-who{font-family:var(--disp);font-size:4.2vh;line-height:1.1;margin-top:.8vh;color:#fff;text-shadow:0 0 2vh rgba(251,191,36,.6)}
+.aw-d{font-weight:700;color:var(--muted);font-size:2vh;margin-top:.8vh}
+
+/* cortinilla entre rondas */
+.stinger{position:fixed!important;inset:0;z-index:45!important;pointer-events:none;display:none;overflow:hidden}
+.stinger.go{display:block}
+.st-band{position:absolute;top:-10%;bottom:-10%;left:0;width:150%;transform:translateX(-110%) skewX(-16deg);
+  background:linear-gradient(90deg,#7f1d1d 0%,#c81e2c 18%,#ef233c 50%,#c81e2c 82%,#7f1d1d 100%);box-shadow:0 0 8vh rgba(0,0,0,.6)}
+.st-stripe{position:absolute;top:-10%;bottom:-10%;left:0;width:5vw;transform:translateX(-30vw) skewX(-16deg);background:linear-gradient(90deg,var(--gold2),var(--gold3),var(--gold2));box-shadow:0 0 6vh rgba(251,191,36,.9)}
+.stinger.go .st-band{animation:stBand 5s cubic-bezier(.75,0,.25,1) forwards}
+.stinger.go .st-stripe{animation:stStripe 5s cubic-bezier(.75,0,.25,1) forwards}
+@keyframes stBand{0%{transform:translateX(-110%) skewX(-16deg)}12%,85%{transform:translateX(-18%) skewX(-16deg)}100%{transform:translateX(80%) skewX(-16deg)}}
+@keyframes stStripe{0%{transform:translateX(-30vw) skewX(-16deg)}12%{transform:translateX(118vw) skewX(-16deg)}25%,85%{transform:translateX(-30vw) skewX(-16deg)}100%{transform:translateX(118vw) skewX(-16deg)}}
+.st-txt{position:absolute;inset:0;display:grid;place-content:center;text-align:center;opacity:0}
+.stinger.go .st-txt{animation:stTxt 5s ease forwards}
+@keyframes stTxt{0%,9%{opacity:0;transform:scale(1.8)}14%{opacity:1;transform:scale(1)}80%{opacity:1;transform:scale(1.05)}88%,100%{opacity:0;transform:scale(.85)}}
+.st-txt span{font-family:var(--disp);font-size:20vh;line-height:1;color:#fff;text-shadow:0 1vh 0 #7f1d1d,0 0 5vh rgba(251,191,36,.8)}
+.st-txt small{font-weight:900;letter-spacing:.3em;font-size:3.6vh;color:var(--gold3);margin-bottom:1vh}
+
+/* intro del programa */
+.intro{position:fixed!important;inset:0;z-index:46!important;display:none;place-items:center;overflow:hidden;background:radial-gradient(ellipse at 50% 45%,#1d2d63 0%,#060a18 70%)}
+.intro.go{display:grid;animation:inOut 8.2s ease forwards}
+@keyframes inOut{0%{opacity:0}4%{opacity:1}90%{opacity:1}100%{opacity:0}}
+.in-rays{position:absolute;left:50%;top:50%;width:220vmax;height:220vmax;margin:-110vmax 0 0 -110vmax;opacity:0;
+  background:repeating-conic-gradient(from 0deg,rgba(251,191,36,.14) 0 6deg,transparent 6deg 18deg);-webkit-mask:radial-gradient(circle,#000 0%,transparent 55%)}
+.intro.go .in-rays{animation:rays 8.2s linear forwards}
+@keyframes rays{0%{opacity:0;transform:rotate(0)}22%{opacity:1}100%{opacity:1;transform:rotate(60deg)}}
+.in-box{position:relative;text-align:center;display:grid;gap:2vh}
+.in-pre{font-weight:900;letter-spacing:.5em;font-size:3.4vh;color:#fecdd3;opacity:0}
+.intro.go .in-pre{animation:fadeUp .9s ease .5s forwards}
+.in-logo{font-size:19vh;line-height:.95;opacity:0}
+.intro.go .in-logo{animation:logoIn 1.3s cubic-bezier(.2,1.4,.3,1) 1.5s forwards, shine 4s linear 2.8s infinite;background-image:linear-gradient(100deg,#d97706 0%,#fbbf24 30%,#fffbe6 45%,#fbbf24 60%,#d97706 100%);background-size:250% 100%}
+@keyframes logoIn{from{opacity:0;transform:scale(.15) rotate(-8deg);filter:blur(2vh)}to{opacity:1;transform:none;filter:none}}
+.in-sub{font-size:4vh;font-weight:800;color:#fff;opacity:0}
+.intro.go .in-sub{animation:fadeUp .9s ease 3.2s forwards}
+@keyframes fadeUp{from{opacity:0;transform:translateY(3vh)}to{opacity:1;transform:none}}
+
+/* regla del precio (revelación) */
+.ruler{position:relative;flex:none;height:19vh;margin:0 4vw}
+.ruler .track{position:absolute;left:0;right:0;top:50%;height:1.4vh;transform:translateY(-50%);border-radius:999px;background:linear-gradient(90deg,rgba(34,197,94,.15),rgba(34,197,94,.45));box-shadow:inset 0 0 0 1px rgba(255,255,255,.12)}
+.ruler .ticks{position:absolute;left:0;right:0;top:50%;height:3vh;transform:translateY(-50%);background:repeating-linear-gradient(90deg,rgba(255,255,255,.18) 0 2px,transparent 2px 5%);pointer-events:none;-webkit-mask:linear-gradient(90deg,transparent,#000 3%,#000 97%,transparent)}
+.ruler .over-zone{position:absolute;top:6%;bottom:6%;right:0;width:0;border-radius:1.2vh;transition:width 1s ease-out;
+  background:repeating-linear-gradient(45deg,rgba(239,35,60,.32) 0 1vh,rgba(239,35,60,.14) 1vh 2vh);box-shadow:inset 0 0 0 2px rgba(239,35,60,.5)}
+.ruler .over-zone{overflow:hidden}
+.ruler .over-zone::after{content:'SE PASAN';position:absolute;right:1vw;top:50%;transform:translateY(-50%);font-family:var(--disp);font-size:2vh;color:rgba(254,205,211,.8);letter-spacing:.1em;white-space:nowrap}
+.ruler .needle{position:absolute;top:-4.2vh;bottom:-1vh;width:.7vh;margin-left:-.35vh;left:0;opacity:0;border-radius:999px;z-index:3;
+  background:linear-gradient(180deg,var(--gold3),var(--gold2));box-shadow:0 0 3vh rgba(251,191,36,.95);transition:left 1.6s cubic-bezier(.25,.9,.25,1),opacity .3s}
+.ruler .needle b{position:absolute;bottom:100%;left:50%;transform:translateX(-50%);white-space:nowrap;font-family:var(--disp);font-size:1.7vh;color:#1a1203;background:var(--gold);padding:.2vh .7vw;border-radius:.8vh;margin-bottom:.4vh}
+.pin{position:absolute;top:50%;width:0;height:0;z-index:2;opacity:0;animation:pinIn .45s cubic-bezier(.2,1.6,.4,1) forwards;animation-delay:var(--d)}
+@keyframes pinIn{from{opacity:0;transform:translateY(-4vh)}to{opacity:1;transform:none}}
+.pin i{position:absolute;left:-1.2vh;top:-1.2vh;width:2.4vh;height:2.4vh;border-radius:50%;background:#e2e8f0;border:.35vh solid #0b1230;box-shadow:0 0 1.4vh rgba(255,255,255,.4);transition:all .4s}
+.pin em{position:absolute;left:-.1vh;width:.2vh;background:rgba(255,255,255,.35)}
+.pin span{position:absolute;left:0;transform:translateX(-50%);white-space:nowrap;font-weight:900;font-size:1.65vh;line-height:1.15;text-align:center;padding:.3vh .7vw;border-radius:.9vh;background:rgba(17,25,52,.92);border:1px solid var(--line);transition:all .4s}
+.pin span small{display:block;font-family:var(--disp);font-weight:400;color:var(--gold3);font-size:1.6vh}
+.pin.l0 span{bottom:2vh}.pin.l0 em{bottom:1.2vh;height:.8vh}
+.pin.l1 span{top:2vh}.pin.l1 em{top:1.2vh;height:.8vh}
+.pin.l2 span{bottom:5.6vh}.pin.l2 em{bottom:1.2vh;height:4.4vh}
+.pin.l3 span{top:5.6vh}.pin.l3 em{top:1.2vh;height:4.4vh}
+.pin.edge span::before{content:'◀ ';color:var(--muted)}
+.pin.edge.right span::before{content:''}.pin.edge.right span::after{content:' ▶';color:var(--muted)}
+.pin.over i{background:var(--red);box-shadow:0 0 1.6vh rgba(239,35,60,.9)}
+.pin.over span{color:#fecdd3;opacity:.75}
+.pin.over span small{color:#fca5a5;text-decoration:line-through}
+.pin.win{z-index:4}
+.pin.win i{background:var(--gold);transform:scale(1.5);box-shadow:0 0 3vh rgba(251,191,36,1)}
+.pin.win span{border:.3vh solid var(--gold);background:linear-gradient(180deg,rgba(251,191,36,.35),rgba(17,25,52,.95));box-shadow:0 0 3vh rgba(251,191,36,.6);transform:translateX(-50%) scale(1.12)}
+.reveal.has-ruler .rgrid{grid-template-columns:repeat(auto-fit,minmax(12vw,1fr));gap:1.4vh 1vw}
+.reveal.has-ruler .rcard{padding:1.1vh .8vw}
+.reveal.has-ruler .rc-val{font-size:3.4vh;margin-top:.4vh}
+.reveal.has-ruler .ans{font-size:10vh}
+
+/* rondas «¿Más o menos?» y «Ordena» */
+.hilo-ref{font-family:var(--disp);font-size:6vh;color:#fff;line-height:1.1}
+.hilo-ref b{color:var(--gold3)}
+.hilo-ref span{display:inline-block;padding:.2vh 1.2vw;border-radius:1.4vh;background:var(--gold);color:#1a1203}
+.order-items{display:grid;grid-template-columns:repeat(4,1fr);gap:1.4vw;width:86vw;margin-top:1vh}
+.order-items div{padding:2vh 1vw;border-radius:2vh;background:var(--panel);border:.3vh solid rgba(251,191,36,.5);font-size:3vh;font-weight:900;color:#fff;line-height:1.15}
+.order-items b{display:block;font-family:var(--disp);font-size:6vh;color:var(--gold3);line-height:1;margin-bottom:.8vh}
+.ans.order-ans{display:flex;gap:1.2vw;justify-content:center;font-size:inherit;white-space:normal}
+.oc{display:grid;gap:.3vh;padding:1.2vh 1vw;border-radius:1.6vh;background:rgba(17,25,52,.9);border:.3vh solid var(--gold);min-width:14vw;animation:pop .5s;text-shadow:none}
+.oc b{font-family:var(--disp);font-size:5vh;color:var(--gold3);line-height:1}
+.oc span{font-family:'Outfit',sans-serif;font-weight:800;font-size:2vh;color:#fff;line-height:1.15}
+.oc em{font-style:normal;font-family:var(--disp);font-size:3vh;color:#86efac}
+.rcard.over.miss::after{content:'FALLO'}
+.olist{display:grid;gap:8px}
+.orow{display:grid;grid-template-columns:auto auto 1fr auto auto;gap:8px;align-items:center;padding:10px 12px;border-radius:14px;background:var(--panel2);border:1px solid var(--line)}
+.orow .opos{font-weight:900;color:var(--muted);font-size:13px;width:28px}
+.orow b{font-family:var(--disp);color:var(--gold3);font-size:22px}
+.orow .oname{font-weight:800;line-height:1.2}
+.orow button{width:42px;height:42px;border-radius:12px;background:rgba(255,255,255,.1);font-size:18px;font-weight:900}
+.orow button:disabled{opacity:.25}
+.hilo-ref-m{text-align:center;font-weight:900;font-size:20px;margin-bottom:6px}
+.hilo-ref-m b{color:var(--gold3);font-family:var(--disp);font-size:26px}
+#pb-alt .btn.sel{outline:4px solid #fff;transform:scale(1.03)}
+
+/* carrera de puntos */
+.ranking{position:relative}
+.rk-list.race{display:block;position:relative;flex:none;align-self:center}
+.rk-list.race .rrow{position:absolute;left:0;right:0;top:0;opacity:1;animation:none;
+  transition:transform .75s cubic-bezier(.3,1.25,.4,1),background .4s,border-color .4s,box-shadow .4s}
+.rk-list.race .rbar i{transition:width .75s cubic-bezier(.3,1,.4,1);transition-delay:0s}
+.rk-list.race.still .rrow,.rk-list.race.still .rbar i{transition:none}
+.rk-step{position:absolute;right:3vw;top:1vh;font-family:var(--disp);font-size:4.4vh;color:var(--gold3);text-shadow:0 0 3vh rgba(251,191,36,.6)}
+.rk-step:empty{display:none}
+
+.rc-joker{position:absolute;top:-1.5vh;left:-.6vw;background:linear-gradient(180deg,var(--gold3),var(--gold2));color:#1a1203;font-weight:900;font-size:1.9vh;padding:.2vh .7vw;border-radius:999px;box-shadow:0 0 2vh rgba(251,191,36,.7);transform:rotate(-8deg)}
+.btn.ghost.pb-joker.on{background:linear-gradient(180deg,var(--gold3),var(--gold2));color:#1a1203;border-color:transparent;box-shadow:0 0 18px rgba(251,191,36,.6)}
+#px{position:fixed;inset:0;width:100vw;height:100vh;z-index:48;pointer-events:none;image-rendering:pixelated}
+.reveal.has-ruler .rgrid .rc-val{font-size:2.9vh}
+
+/* color de cada mesa (personalización) */.chip{box-shadow:inset 0 .7vh 0 var(--tc,transparent)}
+.rcard{box-shadow:inset 0 .7vh 0 var(--tc,transparent)}
+.rrow{border-left:.9vh solid var(--tc,var(--line))}
+.rrow[style*="--tc"] .rbar i{background:linear-gradient(90deg,color-mix(in srgb,var(--tc) 55%,#0b1230),var(--tc))}
+.pin i{background:var(--tc,#e2e8f0)}
+.pcol[style*="--tc"] .pname{text-shadow:0 0 2.4vh var(--tc)}
+
+/* banner */#banner{position:fixed;inset:0;display:grid;place-items:center;pointer-events:none;z-index:50}
 #banner .b{text-align:center;padding:3vh 4vw;border-radius:3vh;background:rgba(6,10,24,.75);backdrop-filter:blur(6px);border:.5vh solid var(--gold);box-shadow:0 0 10vh rgba(251,191,36,.5);animation:stamp .55s cubic-bezier(.2,1.6,.4,1)}
 #banner .b.red{border-color:var(--red);box-shadow:0 0 10vh rgba(239,35,60,.6)}
 #banner .b small{display:block;font-weight:900;letter-spacing:.12em;font-size:2.8vh;color:var(--gold3);margin-bottom:1vh}
@@ -209,16 +353,71 @@ body.urgent .ring-num{color:#fecdd3;text-shadow:0 0 4vh rgba(239,35,60,.9);anima
 .fin-win{font-family:var(--disp);font-size:5.6vh;min-height:7vh;color:#fff;text-shadow:0 0 3vh rgba(251,191,36,.8)}
 .fin-rest{display:flex;flex-wrap:wrap;justify-content:center;gap:.8vh 1.4vw;font-weight:800;color:var(--muted);font-size:2vh;max-width:80vw}
 
+/* escaparate final (telón + desfile de productos) */
+.showcase{position:fixed!important;inset:0;z-index:2!important;flex-direction:column;align-items:center;justify-content:center;gap:3vh;overflow:hidden;background:radial-gradient(ellipse at 50% 0%,#2b1747 0%,#060a18 72%)}
+.sc-spot{position:absolute;inset:0;pointer-events:none;background:radial-gradient(38vw 62vh at 50% 38%,rgba(255,236,190,.20),transparent 70%);animation:spot 5s ease-in-out infinite alternate}
+@keyframes spot{from{transform:translateX(-7vw)}to{transform:translateX(7vw)}}
+.curtain{position:absolute;top:0;bottom:0;width:51%;z-index:5;transition:transform 2s cubic-bezier(.7,0,.3,1);
+  background:repeating-linear-gradient(90deg,#5f0f16 0 1.2vw,#a3121f 1.2vw 3.4vw,#c81e2c 3.4vw 4.2vw,#7f1d1d 4.2vw 6vw);box-shadow:inset 0 -14vh 14vh rgba(0,0,0,.55),0 0 6vh rgba(0,0,0,.8)}
+.curtain::after{content:'';position:absolute;left:0;right:0;top:0;height:7vh;background:linear-gradient(180deg,#fbbf24,#b45309);box-shadow:0 1vh 2vh rgba(0,0,0,.5)}
+.curtain.l{left:0}.curtain.r{right:0}
+.showcase.open .curtain.l{transform:translateX(-102%)}
+.showcase.open .curtain.r{transform:translateX(102%)}
+.sc-title{position:absolute;inset:0;z-index:6;display:grid;place-content:center;text-align:center;gap:1vh;transition:opacity .7s,transform .9s;pointer-events:none}
+.sc-title small{font-weight:900;letter-spacing:.5em;color:var(--gold3);font-size:3.2vh}
+.sc-title span{font-size:14vh;line-height:1}
+.showcase.open .sc-title{opacity:0;transform:scale(1.5)}
+.sc-slide{position:relative;z-index:1;display:grid;place-items:center;min-height:0}
+.sc-card{display:flex;flex-direction:column;align-items:center;gap:2vh;animation:scIn .9s cubic-bezier(.2,1.25,.3,1) both}
+.sc-card.out{animation:scOut .55s cubic-bezier(.6,0,.8,.4) forwards}
+@keyframes scIn{from{opacity:0;transform:translateX(65vw) rotate(10deg) scale(.6)}to{opacity:1;transform:none}}
+@keyframes scOut{to{opacity:0;transform:translateX(-65vw) rotate(-10deg) scale(.6)}}
+.sc-card img{max-height:58vh;max-width:70vw;object-fit:contain;border-radius:2.4vh;border:.6vh solid var(--gold);background:#fff;box-shadow:0 0 10vh rgba(251,191,36,.45),0 3vh 6vh rgba(0,0,0,.6)}
+.sc-card .sc-emoji{font-size:30vh;line-height:1;filter:drop-shadow(0 2vh 4vh rgba(0,0,0,.6))}
+.sc-n{font-weight:900;color:var(--gold3);letter-spacing:.25em;font-size:2.2vh}
+.sc-name{font-family:var(--disp);font-size:6.4vh;line-height:1.05;color:#fff;text-shadow:0 0 3vh rgba(251,191,36,.8);text-align:center;max-width:85vw;text-wrap:balance}
+.sc-grid{position:relative;z-index:1;display:grid;gap:1.6vh 1.2vw;width:86vw}
+.sc-grid figure{background:#fff;border-radius:1.6vh;border:.4vh solid var(--gold);overflow:hidden;aspect-ratio:4/3;opacity:0;animation:scPop .55s cubic-bezier(.2,1.5,.4,1) forwards;animation-delay:var(--d);box-shadow:0 0 3vh rgba(251,191,36,.3)}
+@keyframes scPop{from{opacity:0;transform:scale(.5) translateY(3vh)}to{opacity:1;transform:none}}
+@keyframes ctaIn{from{opacity:0;transform:scale(1.6)}to{opacity:1;transform:none}}
+.sc-grid img{width:100%;height:100%;object-fit:contain}
+.sc-cta{position:relative;z-index:1;text-align:center;animation:ctaIn .7s cubic-bezier(.2,1.4,.4,1) both;animation-delay:.6s}
+.sc-cta .sc-pre{font-weight:900;letter-spacing:.2em;color:#fecdd3;font-size:2.6vh}
+.sc-cta .sc-big{font-size:8vh;line-height:1.05}
+.sc-cta .sc-who{display:inline-block;margin-top:1.6vh;padding:1vh 2vw;border-radius:999px;background:linear-gradient(180deg,var(--gold3),var(--gold2));color:#1a1203;font-weight:900;font-size:3.2vh;box-shadow:0 0 5vh rgba(251,191,36,.6)}
+.sc-rule{font-weight:800;color:var(--muted);font-size:2.2vh;margin-top:1.2vh}
+
+/* final: puja y veredicto */
+.o-mosaic{display:grid;grid-template-columns:repeat(5,4.6vw);gap:.8vh .5vw}
+.o-mosaic img{width:100%;aspect-ratio:1;object-fit:contain;background:#fff;border-radius:.8vh;border:.25vh solid var(--gold)}
+.o-rule{font-weight:800;color:var(--gold3);font-size:2.2vh;text-align:center}
+.verdict{flex-direction:column;gap:2vh}
+.v-main{flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.6vh;text-align:center;overflow:hidden;padding-top:1vh}
+.v-who{font-size:3.6vh;font-weight:900;color:#fecdd3}
+.v-bid{font-family:var(--disp);font-size:11vh;line-height:1;color:var(--gold3);text-shadow:0 0 4vh rgba(251,191,36,.6);font-variant-numeric:tabular-nums}
+.v-stamp{font-family:var(--disp);font-size:6.4vh;padding:.6vh 2.4vw;border-radius:2vh;transform:rotate(-3deg)}
+.verdict .ans-box{padding:1.2vh 2vw;min-width:40vw}
+.verdict .ans{font-size:9vh}
+.v-stamp:empty{display:none}
+.v-bid.pulse{animation:pulse 1s infinite}
+.v-stamp.ok{background:var(--green);color:#052e16;box-shadow:0 0 8vh rgba(34,197,94,.7);animation:stamp .55s cubic-bezier(.2,1.6,.4,1)}
+.v-stamp.bad{background:var(--red);color:#fff;box-shadow:0 0 8vh rgba(239,35,60,.7);animation:stamp .55s cubic-bezier(.2,1.6,.4,1)}
+.v-sub{font-weight:800;font-size:2.8vh;color:#fff;min-height:3.4vh}
+.v-rule{font-weight:800;font-size:2vh;color:var(--gold3)}
+.v-tries{display:flex;gap:1vw;flex-wrap:wrap;justify-content:center;font-weight:800;color:var(--muted);font-size:2vh}
+.v-tries span{padding:.6vh 1vw;border-radius:1vh;background:var(--panel);border:1px solid var(--line)}
+
 /* start overlay */
 .tv-start{position:fixed!important;inset:0;z-index:100!important;display:grid;place-items:center;background:rgba(3,6,16,.86);backdrop-filter:blur(8px);cursor:pointer}
-.start-card{text-align:center;display:flex;flex-direction:column;align-items:center;gap:3vh}
+.start-card{text-align:center;display:flex;flex-direction:column;align-items:center;gap:2.2vh}
 .start-card .logo{font-size:11vh}
 .start-btn{font-family:var(--disp);font-size:4vh;padding:2vh 4vw;border-radius:2vh;background:linear-gradient(180deg,var(--gold3),var(--gold2));color:#1a1203;box-shadow:0 1vh 0 #92400e,0 0 6vh rgba(251,191,36,.5);animation:pulse 1.6s infinite}
 .start-hint{color:var(--muted);font-weight:700;font-size:1.8vh}
 .start-remote{display:flex;align-items:center;gap:2vw;padding:2vh 2vw;border:1px dashed rgba(255,255,255,.2);border-radius:2vh;text-align:left}
 .start-remote .qr{width:16vh;padding:.8vh}
-.pin{font-size:3vh;font-weight:800;margin:.6vh 0}
-.pin b{font-family:var(--disp);color:var(--gold3);letter-spacing:.15em;font-size:1.3em}
+.pin-code{font-size:3vh;font-weight:800;margin:.6vh 0}
+.pin-code b{font-family:var(--disp);color:var(--gold3);letter-spacing:.15em;font-size:1.3em}
+#dup-tv{position:fixed;left:50%;top:3vh;transform:translateX(-50%);z-index:300;background:#7f1d1d;border:3px solid #fecaca;color:#fff;border-radius:2vh;padding:2vh 3vw;font-weight:800;font-size:2.6vh;text-align:center;box-shadow:0 1vh 4vh rgba(0,0,0,.6)}
 #pin-peek{position:fixed!important;top:9vh;right:3vw;z-index:60!important;background:#111a36;border:2px solid var(--gold);border-radius:1.6vh;padding:1.2vh 1.6vw;font-weight:800;font-size:2.4vh}
 
 /* =========================== MÓVIL (comunes) =========================== */
@@ -276,6 +475,12 @@ h2.m-title{font-size:24px;font-weight:900;text-align:center;line-height:1.2}
 .kv span{color:var(--muted)}
 .linkbtn{color:var(--muted);text-decoration:underline;font-weight:700;font-size:14px;align-self:center;padding:8px}
 
+.pick{display:grid;grid-template-columns:repeat(8,1fr);gap:6px}
+.pick button{aspect-ratio:1;border-radius:12px;background:rgba(255,255,255,.06);font-size:22px;border:2px solid transparent;display:grid;place-items:center}
+.pick button.sel{border-color:var(--gold);background:rgba(251,191,36,.2);transform:scale(1.08)}
+.pick.colors button{border-radius:50%}
+.pick.colors button.sel{border-color:#fff;box-shadow:0 0 0 3px var(--gold)}
+
 /* mando */
 .r-now .ph{font-family:var(--disp);font-size:20px;color:var(--gold3)}
 .r-now .row{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:8px;font-weight:700}
@@ -283,7 +488,7 @@ h2.m-title{font-size:24px;font-weight:900;text-align:center;line-height:1.2}
 .secret.show{filter:none}
 .r-actions{display:grid;gap:12px}
 .r-actions .two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.r-sec{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.r-sec{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 details.card summary{font-weight:900;font-size:17px;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center}
 details.card summary::after{content:'▾';color:var(--muted)}
 details[open].card summary::after{content:'▴'}
@@ -315,6 +520,19 @@ details.card > div{margin-top:14px}
 </head>
 <body>
 
+<!-- ============================ BLOQUEO (sin código de sala) ============================ -->
+<div id="lock" class="mob hidden">
+  <section class="card center" style="margin-top:10vh;display:grid;gap:14px">
+    <div class="big-emoji">🎄</div>
+    <h2 class="m-title">Cena de Navidad 2026</h2>
+    <p class="m-sub" id="lock-msg">Escanea el QR de la pantalla o de la tarjeta de tu mesa.</p>
+    <div id="lock-form" class="hidden" style="display:grid;gap:10px">
+      <input class="field center" id="lock-code" placeholder="Código de sala" autocomplete="off" autocapitalize="off">
+      <button class="btn gold" id="lock-ok">Entrar</button>
+    </div>
+  </section>
+</div>
+
 <!-- ============================ PANTALLA TV ============================ -->
 <div id="tv" class="hidden">
   <canvas id="snow"></canvas>
@@ -326,6 +544,7 @@ details.card > div{margin-top:14px}
     <div class="tv-sub">🎄 Cena de Navidad 2026</div>
     <div class="grow"></div>
     <div id="tv-round" class="badge red hidden"></div>
+    <div id="tv-ensayo" class="badge gold hidden">🤖 MODO ENSAYO</div>
     <div id="tv-conn" class="conn"><i></i><span>Conectando…</span></div>
   </header>
 
@@ -352,9 +571,10 @@ details.card > div{margin-top:14px}
   <section id="s-question" class="scene question">
     <div class="q-badges"><span class="badge red" id="q-round"></span><span class="badge gold hidden" id="q-mult"></span></div>
     <div class="q-emoji" id="q-emoji"></div>
+    <img class="q-photo" id="q-photo" alt="">
     <h1 class="q-text" id="q-text"></h1>
     <div class="q-unit" id="q-unit"></div>
-    <div class="q-foot">📱 Portavoces, móvil en mano… ¡las apuestas están a punto de abrirse!</div>
+    <div class="q-foot" id="q-foot">📱 Portavoces, móvil en mano… ¡las apuestas están a punto de abrirse!</div>
     <div class="qr-mini"><div class="qr" id="qr-mini"></div>¿Aún no estáis?</div>
   </section>
 
@@ -362,6 +582,8 @@ details.card > div{margin-top:14px}
     <div class="open-top"><span class="badge red" id="o-round"></span><span class="badge gold hidden" id="o-mult"></span><h2 id="o-text"></h2></div>
     <div class="open-mid">
       <div class="open-side">
+        <img class="o-photo hidden" id="o-photo" alt="">
+        <div class="o-mosaic hidden" id="o-mosaic"></div>
         <div class="big-count"><span id="o-count">0</span><small>/<span id="o-total">0</span></small></div>
         <div class="lbl">mesas han apostado</div>
       </div>
@@ -374,12 +596,14 @@ details.card > div{margin-top:14px}
         <div class="open-qr"><div class="qr" id="qr-open"></div><div class="cap">¿AÚN NO ESTÁIS? ESCANEA</div></div>
       </div>
     </div>
+    <div class="o-rule hidden" id="o-rule"></div>
     <div class="chips" id="open-chips"></div>
   </section>
 
   <section id="s-reveal" class="scene reveal">
     <div class="open-top"><span class="badge red" id="r-round"></span><h2 id="r-text"></h2></div>
     <div class="ans-box"><div class="ans-lbl" id="ans-lbl">¿CUÁL SERÁ LA CIFRA?</div><div class="ans" id="ans">?</div></div>
+    <div class="ruler hidden" id="ruler"></div>
     <div class="rgrid" id="rgrid"></div>
   </section>
 
@@ -387,6 +611,7 @@ details.card > div{margin-top:14px}
     <h1 class="logo sect">CLASIFICACIÓN</h1>
     <div class="rk-sub" id="rk-sub"></div>
     <div class="rk-list" id="rk-list"></div>
+    <div class="rk-step" id="rk-step"></div>
   </section>
 
   <section id="s-final" class="scene final">
@@ -396,6 +621,47 @@ details.card > div{margin-top:14px}
     <div class="fin-rest" id="fin-rest"></div>
   </section>
 
+  <section id="s-awards" class="scene awards">
+    <h1 class="logo sect">PREMIOS DE LA NOCHE</h1>
+    <div class="aw-grid" id="aw-grid"></div>
+  </section>
+
+  <section id="s-showcase" class="scene showcase">
+    <div class="sc-spot"></div>
+    <div class="sc-slide" id="sc-slide"></div>
+    <div class="sc-grid hidden" id="sc-grid"></div>
+    <div class="sc-cta hidden" id="sc-cta">
+      <div class="sc-pre">TODO ESTO PUEDE SER VUESTRO</div>
+      <div class="logo sc-big">¿CUÁNTO VALE LA CESTA?</div>
+      <div class="sc-who" id="sc-who"></div>
+      <div class="sc-rule" id="sc-rule"></div>
+    </div>
+    <div class="curtain l"></div><div class="curtain r"></div>
+    <div class="sc-title"><small>🎁 GRAN FINAL 🎁</small><span class="logo">EL ESCAPARATE</span></div>
+  </section>
+
+  <section id="s-verdict" class="scene verdict">
+    <div class="open-top"><span class="badge red">🎁 Escaparate final</span><h2 id="v-text"></h2></div>
+    <div class="v-main">
+      <div class="v-who" id="v-who"></div>
+      <div class="v-bid" id="v-bid"></div>
+      <div class="v-stamp" id="v-stamp"></div>
+      <div class="v-sub" id="v-sub"></div>
+      <div class="ans-box hidden" id="v-ansbox"><div class="ans-lbl">EL PRECIO JUSTO ES</div><div class="ans" id="v-ans"></div></div>
+      <div class="v-rule" id="v-rule"></div>
+      <div class="v-tries" id="v-tries"></div>
+    </div>
+  </section>
+
+  <div id="stinger" class="stinger"><div class="st-band"></div><div class="st-stripe"></div><div class="st-txt"><small id="st-small"></small><span id="st-big"></span></div></div>
+  <div id="intro" class="intro">
+    <div class="in-rays"></div>
+    <div class="in-box">
+      <div class="in-pre">Bienvenidos a…</div>
+      <div class="logo in-logo">EL PRECIO<br>JUSTO</div>
+      <div class="in-sub">🎄 Edición Cena de Navidad 2026 🎁</div>
+    </div>
+  </div>
   <div id="banner"></div>
   <div id="pin-peek" class="hidden"></div>
 
@@ -403,12 +669,44 @@ details.card > div{margin-top:14px}
     <div class="start-card">
       <div class="logo">EL PRECIO JUSTO</div>
       <button class="start-btn">▶ PULSA PARA EMPEZAR</button>
-      <div class="start-hint">Activa el sonido y la pantalla completa · Teclas: <b>F</b> pantalla completa · <b>M</b> silencio · <b>P</b> ver PIN</div>
+      <div class="start-hint">Teclas: <b>F</b> pantalla completa · <b>M</b> silencio · <b>P</b> PIN · <b>S</b> sala</div>
+      <div class="start-fotos" id="start-voz">
+        <span class="fl-lbl">🗣️ Presentador:</span>
+        <select id="voz-sel"></select>
+        <select id="voz-rate"><option value="0.9">Pausada</option><option value="1">Normal</option><option value="1.1">Rápida</option></select>
+        <button type="button" id="voz-test">▶ Probar voz</button>
+        <button type="button" class="ghost" id="voz-toggle"></button>
+      </div>
+      <details class="start-setup" id="start-setup">
+      <summary>⚙️ Preparar fotos, cesta y sonidos <span id="setup-sum"></span></summary>
+      <div class="start-fotos" id="start-fotos">
+        <span class="fl-lbl">📸 Rondas:</span>
+        <button type="button" id="fotos-btn">🖼️ Cargar fotos de las rondas</button>
+        <button type="button" class="ghost" id="fotos-clear">Borrar fotos</button>
+        <input type="file" id="fotos-in" accept="image/*" multiple hidden>
+        <div class="fl" id="fotos-list"></div>
+      </div>
+      <div class="start-fotos" id="start-cesta">
+        <span class="fl-lbl">🎁 Escaparate final:</span>
+        <button type="button" id="cesta-btn">🎁 Cargar productos de la cesta</button>
+        <button type="button" class="ghost" id="cesta-clear">Borrar</button>
+        <input type="file" id="cesta-in" accept="image/*" multiple hidden>
+        <div class="fl" id="cesta-list"></div>
+      </div>
+      <div class="start-fotos" id="start-son">
+        <span class="fl-lbl">🎵 Sonidos:</span>
+        <button type="button" id="son-btn">🎵 Cargar música y efectos</button>
+        <button type="button" class="ghost" id="son-clear">Borrar</button>
+        <input type="file" id="son-in" accept="audio/*" multiple hidden>
+        <div class="fl" id="son-list"></div>
+      </div>
+      </details>
       <div class="start-remote">
         <div class="qr" id="qr-remote"></div>
         <div>
           <div class="muted">Mando del presentador (escanéalo tú)</div>
-          <div class="pin">PIN <b id="tv-pin"></b></div>
+          <div class="pin-code">PIN <b id="tv-pin"></b></div>
+          <div class="muted small">Sala: <b id="tv-sala" style="color:var(--gold3)"></b></div>
           <div class="muted small" id="remote-url"></div>
         </div>
       </div>
@@ -443,6 +741,10 @@ details.card > div{margin-top:14px}
     <p class="m-sub">Saldrá en la pantalla gigante. Opcional.</p>
     <input class="field" id="p-name-in" maxlength="22" placeholder="Ej: Los Turrones Blandos" autocomplete="off">
     <button class="btn gold" id="p-name-ok">Guardar nombre</button>
+    <p class="m-sub" style="margin-top:4px">Vuestro emoji</p>
+    <div class="pick" id="p-emojis"></div>
+    <p class="m-sub">Vuestro color</p>
+    <div class="pick colors" id="p-colors"></div>
     <button class="btn ghost" id="p-name-skip">Seguir como «Mesa»</button>
   </section>
 
@@ -465,7 +767,9 @@ details.card > div{margin-top:14px}
       <span class="bid-unit" id="pb-unit"></span>
     </div>
     <div class="preview" id="pb-prev"></div>
+    <div id="pb-alt" class="hidden" style="display:grid;gap:12px"></div>
     <button class="btn gold" id="pb-send">ENVIAR APUESTA</button>
+    <button class="btn ghost pb-joker hidden" id="pb-joker"></button>
     <div class="status" id="pb-status"></div>
   </section>
 
@@ -525,6 +829,7 @@ details.card > div{margin-top:14px}
       <button class="btn ghost" data-act="ranking">📊 Ranking</button>
       <button class="btn ghost" data-act="lobby">🏠 Inicio</button>
       <button class="btn ghost" data-act="sound">🔊 Sonido</button>
+      <button class="btn ghost" data-act="music">🎵 Sintonía</button>
     </div>
 
     <details class="card" id="r-tables-box" open>
@@ -533,6 +838,11 @@ details.card > div{margin-top:14px}
         <div class="stepper"><button id="r-tminus">−</button><b id="r-tcount">8</b><button id="r-tplus">+</button></div>
         <p class="m-sub small">Número de mesas que se ven en la pantalla y en los móviles.</p>
         <div class="tlist" id="r-tlist"></div>
+        <div class="two" style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+          <button class="btn ghost" id="r-bots">🤖 Añadir 6 mesas de ensayo</button>
+          <button class="btn ghost" id="r-botsoff">Quitar mesas de ensayo</button>
+        </div>
+        <p class="m-sub small">Modo ensayo: mesas automáticas que pujan solas para probar el juego sin gente. <b>Quítalas antes de la cena.</b></p>
       </div>
     </details>
 
@@ -542,6 +852,7 @@ details.card > div{margin-top:14px}
         <div class="warn" id="r-demo-warn">Son preguntas y precios <b>inventados</b> de ejemplo. Los precios solo se guardan en <b>este móvil</b>: no van en el código ni en GitHub.</div>
         <div id="r-qlist" style="display:grid;gap:10px"></div>
         <button class="btn ghost" id="r-qadd">➕ Añadir ronda</button>
+        <div id="r-extra" style="display:grid;gap:10px"></div>
         <details>
           <summary class="muted" style="font-weight:800;cursor:pointer;padding:6px 0">Copia de seguridad (importar / exportar)</summary>
           <div style="display:grid;gap:8px;margin-top:8px">
@@ -562,6 +873,7 @@ details.card > div{margin-top:14px}
         <button class="btn ghost" id="r-reset">🔄 Reiniciar partida (borra puntos, mantiene mesas)</button>
         <button class="btn ghost" id="r-releaseall">🚪 Liberar todas las mesas</button>
         <button class="btn ghost" id="r-changepin">🔐 Cambiar PIN</button>
+        <button class="btn ghost" id="r-changesala">🚪 Cambiar código de sala</button>
       </div>
     </details>
   </div>
@@ -575,7 +887,7 @@ details.card > div{margin-top:14px}
    ===================================================================== */
 const SUPABASE_URL = 'https://zsiybimuicenbejqblrp.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_Vj0QnLFI8AoU92buxt4NIg_qehwOSUS';
-const CHANNEL      = 'room-precio-justo';
+const CHANNEL_BASE = 'room-precio-justo';   // el canal real es este + el código de sala
 
 const POINTS       = [100, 50, 25]; // 1º, 2º y 3º más cercanos SIN pasarse
 const EXACT_BONUS  = 100;           // extra si clavan la cifra exacta
@@ -586,30 +898,45 @@ const MAX_TABLES   = 20;
 // se guardan solo en el móvil del presentador.
 const DEMO_QUESTIONS = [
   { emoji:'☕', text:'¿Cuántos cafés se han tomado en la oficina durante 2026?', unit:'cafés', decimals:0, time:30, mult:1, answer:4320 },
-  { emoji:'🖨️', text:'¿Cuántos folios se han impreso en la empresa este año?', unit:'folios', decimals:0, time:30, mult:1, answer:38500 },
+  { type:'hilo', emoji:'🧀', text:'Un queso de tetilla de 1 kg en la plaza de abastos', unit:'€', decimals:2, shown:9.95, time:15, mult:1, answer:12.40 },
   { emoji:'🦐', text:'¿Cuánto cuesta 1 kg de percebes en Lugo la semana de Navidad?', unit:'€', decimals:2, time:30, mult:1, answer:119.90 },
-  { emoji:'📧', text:'¿Cuántos correos ha enviado la plantilla en 2026?', unit:'correos', decimals:0, time:30, mult:1, answer:182340 },
-  { emoji:'🎄', text:'¿Cuántas bombillas tiene el árbol de Navidad de la oficina?', unit:'bombillas', decimals:0, time:30, mult:1, answer:850 },
+  { type:'order', emoji:'🔢', text:'Ordenad de MÁS BARATO a MÁS CARO', unit:'€', decimals:2, time:30, mult:1, answer:null,
+    items:[ { n:'Un café en la Plaza Mayor', p:1.40 }, { n:'Una entrada de cine', p:8.90 }, { n:'Una caña con tapa', p:2.50 }, { n:'Un menú del día', p:13.50 } ] },
   { emoji:'🚗', text:'¿Cuántos kilómetros han hecho los coches de empresa este año?', unit:'km', decimals:0, time:40, mult:2, answer:125000 },
-  { emoji:'🍫', text:'¿Cuánto cuesta una tableta de turrón de Jijona de 300 g?', unit:'€', decimals:2, time:30, mult:2, answer:12.50 },
-  { emoji:'🎁', text:'GRAN FINAL: ¿Cuánto cuesta la Cesta de Navidad completa?', unit:'€', decimals:2, time:45, mult:3, answer:234.85 }
+  { emoji:'🍫', text:'¿Cuánto cuesta una tableta de turrón de Jijona de 300 g?', unit:'€', decimals:2, time:30, mult:2, answer:12.50 }
 ];
+// Escaparate final y desempate de EJEMPLO (inventados; los de verdad, en el mando)
+const DEMO_EXTRA = {
+  final: { text:'¿Cuánto vale la Cesta de Navidad completa?', time:45, answer:230 },
+  tie:   { emoji:'⚡', text:'¿Cuántos escalones tiene la escalera de la oficina?', unit:'escalones', decimals:0, time:20, answer:48 },
+  practice: { emoji:'🍇', text:'Para calentar: ¿cuántas uvas nos comemos en Nochevieja?', unit:'uvas', decimals:0, time:25, answer:12 }
+};
+const BOT_NAMES = ['Los Polvorones 🤖', 'Turrón Duro 🤖', 'Los Mantecados 🤖', 'Renos Locos 🤖', 'Uvas a Deshora 🤖', 'Villancicos FC 🤖', 'Los Langostinos 🤖', 'Cuñados Unidos 🤖', 'Roscón Team 🤖', 'Las Zambombas 🤖', 'Belén Viviente 🤖', 'Cava y Pa’lante 🤖'];
+const FINAL_MARGIN = 0.30;  // escaparate: se la lleva si NO se pasa y se queda a menos de un 30 % por debajo
+
+// Etiqueta de ronda (normal, desempate o escaparate)
+const roundLabel = st => st.stage === 'practice' ? '🧪 Ronda de práctica · no puntúa' : st.stage === 'tiebreak' ? '⚡ Ronda rápida de desempate' : st.stage === 'final' ? '🎁 Escaparate final' : `Ronda ${st.round} de ${st.total}`;
+const pctTxt = Math.round(FINAL_MARGIN * 100) + ' %';
 
 /* =====================================================================
    UTILIDADES
    ===================================================================== */
-const MODE = new URLSearchParams(location.search).get('mode') || 'tv';
+const QS = new URLSearchParams(location.search);
+const MODE = QS.get('mode') || 'tv';
 const $  = s => document.querySelector(s);
 const $$ = s => [...document.querySelectorAll(s)];
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
 const hash = s => { let h = 2166136261; for (const c of String(s)) { h ^= c.charCodeAt(0); h = Math.imul(h, 16777619); } return (h >>> 0).toString(36); };
+// Pruebas: ?dev=2 hace que esta pestaña sea un «móvil» distinto (su propio id, mesa y apuestas)
+const DEV = (QS.get('dev') || '').replace(/[^\w-]/g, '').slice(0, 12);
+const sk = k => DEV && /^pj_(device|table|bid_)/.test(k) ? k + '@' + DEV : k;
 const store = {
-  get(k){ try { return localStorage.getItem(k); } catch(e){ return null; } },
-  set(k,v){ try { localStorage.setItem(k, v); } catch(e){} },
-  del(k){ try { localStorage.removeItem(k); } catch(e){} },
-  json(k){ try { return JSON.parse(localStorage.getItem(k)); } catch(e){ return null; } }
+  get(k){ try { return localStorage.getItem(sk(k)); } catch(e){ return null; } },
+  set(k,v){ try { localStorage.setItem(sk(k), v); } catch(e){} },
+  del(k){ try { localStorage.removeItem(sk(k)); } catch(e){} },
+  json(k){ try { return JSON.parse(localStorage.getItem(sk(k))); } catch(e){ return null; } }
 };
 function fmtNum(v, dec = 0){
   if (v === null || v === undefined || isNaN(v)) return '—';
@@ -618,6 +945,14 @@ function fmtNum(v, dec = 0){
 function fmtVal(v, q){
   const dec = q && q.decimals ? 2 : 0, u = (q && q.unit) || '';
   return fmtNum(v, dec) + (u ? (u === '€' ? ' €' : ' ' + u) : '');
+}
+// Rondas especiales: «¿Más o menos?» (respuesta 1 = más, 0 = menos) y «Ordena» (respuesta = 4 cifras, p. ej. 2143 = B,A,D,C)
+const ORDER_L = ['A', 'B', 'C', 'D'];
+const isPerm4 = v => /^(?!.*(.).*\1)[1-4]{4}$/.test(String(v));
+function fmtBid(v, q){
+  if (q && q.type === 'hilo') return +v ? '⬆ MÁS' : '⬇ MENOS';
+  if (q && q.type === 'order') return String(v).split('').map(d => ORDER_L[d - 1]).join(' ');
+  return fmtVal(v, q);
 }
 // Acepta "1.500", "1500", "234,85", "234.85", "1.234,5"…
 function parseNum(str, decimals){
@@ -637,7 +972,12 @@ function parseNum(str, decimals){
   return v;
 }
 const cleanName = s => String(s || '').replace(/[<>]/g, '').replace(/\s+/g, ' ').trim().slice(0, 22);
-const labelOf = (t, names) => (names && names[t]) || ('Mesa ' + t);
+// Personalización de cada mesa: emoji y color elegidos por el portavoz
+const MESA_EMOJIS = ['🎅','🦌','⛄','🎄','🌟','🔔','🍷','🍾','🥂','🍪','🧀','🦐','🐙','🔥','⚡','👑','🚀','🎸','🦊','🐧','🍇','🎁','🤠','🦄'];
+const MESA_COLORS = ['#ef4444','#f97316','#eab308','#22c55e','#14b8a6','#3b82f6','#a855f7','#ec4899'];
+const labelOf = (t, names, looks) => { const n = (names && names[t]) || ('Mesa ' + t), e = looks && looks[t] && looks[t].e; return e ? e + ' ' + n : n; };
+const colorOf = (t, looks) => (looks && looks[t] && looks[t].c) || '';
+const tcStyle = (t, looks) => { const c = colorOf(t, looks); return c ? '--tc:' + c + ';' : ''; };
 function deviceId(){
   let id = store.get('pj_device');
   if (!id) { id = 'd' + Math.random().toString(36).slice(2, 10) + Date.now().toString(36); store.set('pj_device', id); }
@@ -659,9 +999,15 @@ function makeQR(el, text, size = 512){
   if (!window.QRCode) { el.innerHTML = `<div class="qr-fallback">${esc(text)}</div>`; return; }
   new QRCode(el, { text, width: size, height: size, colorDark: '#0b1230', colorLight: '#ffffff', correctLevel: QRCode.CorrectLevel.M });
 }
+// Código de sala: sin él no se ve el juego ni se conecta nadie. Viaja dentro de los QR.
+const cleanSala = s => String(s || '').toLowerCase().replace(/[^a-z0-9-]/g, '').slice(0, 40);
+let SALA = cleanSala(QS.get('sala') || (location.hash.match(/sala=([^&]+)/) || [])[1] || store.get('pj_sala'));
+if (SALA.length < 6) SALA = '';
+if (SALA) store.set('pj_sala', SALA);
+const CHANNEL    = CHANNEL_BASE + '-' + SALA;
 const BASE_URL   = location.origin + location.pathname;
-const PLAYER_URL = BASE_URL + '?mode=player';
-const REMOTE_URL = BASE_URL + '?mode=remote';
+const PLAYER_URL = BASE_URL + '?mode=player&sala=' + SALA;
+const REMOTE_URL = BASE_URL + '?mode=remote&sala=' + SALA;
 const shortUrl = u => u.replace(/^https?:\/\//, '');
 
 // Clasificación: puntos, luego rondas ganadas. Empates comparten puesto.
@@ -671,7 +1017,8 @@ function standings(st){
   Object.keys(st.scores || {}).forEach(t => { if (st.scores[t]) ids.add(+t); });
   const rows = [...ids].map(t => ({ t, s: (st.scores || {})[t] || 0, w: (st.wins || {})[t] || 0 }))
     .sort((a, b) => b.s - a.s || b.w - a.w || a.t - b.t);
-  rows.forEach((r, i) => { r.pos = (i > 0 && rows[i-1].s === r.s && rows[i-1].w === r.w) ? rows[i-1].pos : i + 1; });
+  // Mismo puesto = mismos puntos (las rondas ganadas solo ordenan la lista). Empate a puntos arriba → ronda rápida.
+  rows.forEach((r, i) => { r.pos = (i > 0 && rows[i-1].s === r.s) ? rows[i-1].pos : i + 1; });
   return rows;
 }
 const medal = p => p === 1 ? '🥇' : p === 2 ? '🥈' : p === 3 ? '🥉' : p + 'º';
@@ -725,6 +1072,7 @@ const Sfx = (() => {
   }
   return {
     init, toggle(){ on = !on; return on; }, get on(){ return on; },
+    duck(d){ if (ctx && master) master.gain.setTargetAtTime(d ? .18 : .55, ctx.currentTime, .08); },
     pop(){ tone(880, .08, 'triangle', .25); tone(1320, .12, 'triangle', .22, .06); },
     ding(){ [1046, 1318, 1568, 2093].forEach((f, i) => tone(f, .4, 'sine', .2, i * .07)); },
     tick(){ tone(1500, .03, 'square', .05); },
@@ -743,27 +1091,407 @@ const Sfx = (() => {
   };
 })();
 
-function fireworks(ms = 5000){
-  if (!window.confetti) return;
-  const end = Date.now() + ms, colors = ['#fbbf24', '#ef233c', '#ffffff', '#22c55e', '#fde68a'];
-  (function f(){
-    confetti({ particleCount: 5, angle: 60, spread: 60, origin: { x: 0, y: .75 }, colors });
-    confetti({ particleCount: 5, angle: 120, spread: 60, origin: { x: 1, y: .75 }, colors });
-    if (Math.random() < .07) confetti({ particleCount: 110, spread: 110, startVelocity: 42, origin: { x: .2 + Math.random() * .6, y: .15 + Math.random() * .3 }, colors });
-    if (Date.now() < end) requestAnimationFrame(f);
-  })();
+/* =====================================================================
+   LOCUCIÓN (voz integrada del navegador, sin archivos ni servicios extra)
+   ===================================================================== */
+const VOZ_ACTIVA = false;   // locución en stand-by: las voces del navegador no convencen
+const Voz = (() => {
+  const ss = VOZ_ACTIVA ? window.speechSynthesis : null;
+  let on = store.get('pj_tv_voz') !== '0', voice = null, rate = +store.get('pj_tv_voz_rate') || 1, active = 0;
+  const list = () => ss ? ss.getVoices().filter(v => /^es/i.test(v.lang)) : [];
+  const score = v => (/es[-_]ES/i.test(v.lang) ? 4 : 0) + (/natural|online/i.test(v.name) ? 2 : 0) + (v.localService ? 1 : 0);
+  function pick(){
+    const vs = list(), saved = store.get('pj_tv_voz_uri');
+    voice = vs.find(v => v.voiceURI === saved) || vs.slice().sort((a, b) => score(b) - score(a))[0] || null;
+    return voice;
+  }
+  // Quita emojis (si no, la voz los lee: «cara sonriente»…)
+  const clean = s => String(s || '').replace(/\p{Extended_Pictographic}|️|‍/gu, '').replace(/\s+/g, ' ').trim();
+  function one(text, last){
+    return new Promise(res => {
+      const u = new SpeechSynthesisUtterance(text);
+      u.lang = voice ? voice.lang : 'es-ES'; if (voice) u.voice = voice; u.rate = rate;
+      let started = false, done = false;
+      const fin = () => { if (done) return; done = true; if (started) active--; if (!active) Sfx.duck(false); res(); };
+      u.onstart = () => { started = true; active++; Sfx.duck(true); };
+      u.onend = fin; u.onerror = fin;
+      setTimeout(fin, 1500 + text.length * 95 / rate);   // por si el navegador nunca avisa del final
+      ss.speak(u);
+    });
+  }
+  // Devuelve una promesa que se resuelve al terminar de hablar. queue:true → no corta lo que se esté diciendo.
+  async function speak(text, { queue = false } = {}){
+    text = clean(text);
+    if (!ss || !on || !text) return;
+    if (!queue) stop();
+    if (!voice) pick();
+    // Frases cortas: Chrome corta las locuciones largas a los ~15 s
+    const parts = text.match(/[^.!?;:…]+[.!?;:…]*/g) || [text];
+    await Promise.all(parts.map(p => p.trim()).filter(Boolean).map(p => one(p)));
+  }
+  function stop(){ if (ss) ss.cancel(); active = 0; Sfx.duck(false); }
+  // 335700 € → «335700 euros»; 234,85 € → «234 euros con 85»
+  function val(v, q){
+    const dec = q && q.decimals, u = (q && q.unit) || '', a = Math.abs(+v || 0);
+    const ent = Math.floor(a + 1e-9), cts = dec ? Math.round((a - ent) * 100) : 0;
+    if (u === '€') return `${ent} ${ent === 1 ? 'euro' : 'euros'}${cts ? ` con ${cts}` : ''}`;
+    return (cts ? `${ent} coma ${String(cts).padStart(2, '0')}` : `${ent}`) + (u ? ' ' + u : '');
+  }
+  function fill(sel){
+    const vs = list(); pick();
+    sel.innerHTML = vs.length
+      ? vs.map(v => `<option value="${esc(v.voiceURI)}" ${voice && v.voiceURI === voice.voiceURI ? 'selected' : ''}>${esc(v.name)} · ${esc(v.lang)}${v.localService ? '' : ' (internet)'}</option>`).join('')
+      : '<option value="">No hay voces en español en este navegador</option>';
+    return vs.length;
+  }
+  return {
+    speak, stop, val, fill, pick,
+    get on(){ return on; },
+    get supported(){ return !!ss; },
+    toggle(){ on = !on; store.set('pj_tv_voz', on ? '1' : '0'); if (!on) stop(); return on; },
+    setVoice(uri){ store.set('pj_tv_voz_uri', uri); pick(); },
+    get rate(){ return rate; },
+    setRate(r){ rate = clamp(+r || 1, .6, 1.6); store.set('pj_tv_voz_rate', String(rate)); },
+    onVoices(fn){ if (ss) ss.addEventListener('voiceschanged', fn); },
+  };
+})();
+
+/* =====================================================================
+   PIXEL ART: mascota «Cestín», árbol, monedas, estrellas y regalos (diseño propio).
+   Sustituye al confeti. Un solo lienzo encima de todo (#px).
+   ===================================================================== */
+const Pixel = (() => {
+  const PAL = { k:'#1a1203', b:'#8b5a2b', B:'#c68642', r:'#ef233c', R:'#9b1c1c', y:'#fbbf24', Y:'#fff3b0', O:'#b45309',
+    g:'#16a34a', G:'#0f5132', w:'#ffffff', o:'#ff4d6d', u:'#38bdf8', s:'#dbeafe' };
+  const SPR = {
+    cestin1: [
+      '.....kkkkkk.....', '....k......k....', '...k...rr...k...', '...k..rRRr..k...', '.kkkkkkkkkkkkkk.',
+      'kBBBBBBBBBBBBBBk', 'kbBbBbBbBbBbBbBk', 'kBwwBBBBBBBBwwBk', 'kBwkBBBBBBBBwkBk', 'kbBbBbBkkbBbBbBk',
+      '.kBBBBBBBBBBBBk.', '..kbBbBbBbBbBk..', '...kkkkkkkkkk...', '....k......k....', '...kk......kk...' ],
+    cestin2: [
+      '.....kkkkkk.....', '....k......k....', '...k...rr...k...', '...k..rRRr..k...', '.kkkkkkkkkkkkkk.',
+      'kBBBBBBBBBBBBBBk', 'kbBbBbBbBbBbBbBk', 'kBwwBBBBBBBBwwBk', 'kBwkBBBBBBBBwkBk', 'kbBbBbBkkbBbBbBk',
+      '.kBBBBBBBBBBBBk.', '..kbBbBbBbBbBk..', '...kkkkkkkkkk...', '.....k....k.....', '.....kk...kk....' ],
+    coin:  [ '..kkkk..', '.kYYyyk.', 'kYYyyyyk', 'kYyykyyk', 'kyykyyyk', 'kyyyyyOk', '.kyOOOk.', '..kkkk..' ],
+    star:  [ '...k...', '..kYk..', 'kkkYkkk', 'kYYyYYk', '.kyyyk.', '.kyky k'.replace(' ', 'y'), '.kk.kk.' ],
+    gift:  [ '..r.r..', '.rRrRr.', 'kkkrkkk', 'kggrggk', 'krrrrrk', 'kggrggk', 'kkkkkkk' ],
+    snow:  [ '.s.', 'sws', '.s.' ],
+    tree:  [ '......y......', '.....yYy.....', '......y......', '.....gGg.....', '....gGoGg....', '...gGgGgug...',
+             '.....gGg.....', '....guggGg...', '...gGgGgoGg..', '..gGgogGgGug.', '....gGgGg....', '...gGugGgog..',
+             '..gGgGgGgGug.', '.gogGgGugGgog', '.....bbb.....', '.....bBb.....', '....kkkkk....' ]
+  };
+  const cache = {};
+  function sprite(name, swap){
+    const key = name + (swap ? '*' : ''); if (cache[key]) return cache[key];
+    const rows = SPR[name], w = Math.max(...rows.map(r => r.length)), c = document.createElement('canvas');
+    c.width = w; c.height = rows.length; const x = c.getContext('2d');
+    rows.forEach((r, j) => [...r].forEach((ch, i) => {
+      if (ch === '.' || ch === ' ') return;
+      let col = PAL[ch]; if (swap && ch === 'o') col = PAL.u; else if (swap && ch === 'u') col = PAL.o;
+      if (col) { x.fillStyle = col; x.fillRect(i, j, 1, 1); }
+    }));
+    return (cache[key] = c);
+  }
+  let cv = null, cx, W, H, P = 5, parts = [], walkers = [], lobby = false, last = 0;
+  function init(){
+    if (cv) return;
+    cv = document.createElement('canvas'); cv.id = 'px'; document.body.appendChild(cv);
+    cx = cv.getContext('2d');
+    const size = () => { W = cv.width = innerWidth; H = cv.height = innerHeight; P = Math.max(3, Math.round(H / 170)); cx.imageSmoothingEnabled = false; };
+    size(); addEventListener('resize', size);
+    requestAnimationFrame(loop);
+  }
+  function blit(name, x, y, scale, opt = {}){
+    const s = sprite(name, opt.swap), w = s.width * scale, h = s.height * scale;
+    cx.save(); cx.globalAlpha = opt.a ?? 1; cx.translate(Math.round(x), Math.round(y));
+    if (opt.rot) cx.rotate(opt.rot);
+    cx.scale(opt.sx ?? 1, 1);
+    cx.drawImage(s, -w / 2, -h / 2, w, h); cx.restore();
+  }
+  function loop(now){
+    const dt = Math.min(50, now - (last || now)) / 16.7; last = now;
+    cx.clearRect(0, 0, W, H);
+    // escena del lobby: árbol con luces y Cestín dando saltitos
+    if (lobby) {
+      // en el hueco libre entre las instrucciones y el QR
+      const sc = P * 2.2, blink = Math.floor(now / 500) % 2 === 1, base = H * .69;
+      blit('tree', W * .535, base - 17 * sc / 2, sc, { swap: blink });
+      const hop = Math.abs(Math.sin(now / 260)) * P * 4;
+      blit(Math.floor(now / 260) % 2 ? 'cestin1' : 'cestin2', W * .455, base - 15 * P * 1.8 / 2 - hop, P * 1.8);
+    }
+    // Cestín cruzando la pantalla
+    walkers = walkers.filter(w => w.x < W + 200);
+    for (const w of walkers) {
+      w.x += w.v * dt; w.t += dt;
+      const bob = Math.abs(Math.sin(w.t / 4)) * P * 2;
+      blit(Math.floor(w.t / 5) % 2 ? 'cestin1' : 'cestin2', w.x, w.y - bob, w.s);
+      if (w.trail && Math.random() < .35 * dt) parts.push({ k: 'coin', x: w.x - w.s * 7, y: w.y, vx: -1 - Math.random() * 2, vy: -4 - Math.random() * 4, sc: P * 1.1, spin: Math.random() * 6, life: 90 });
+    }
+    // partículas con gravedad
+    parts = parts.filter(p => p.life > 0 && p.y < H + 60);
+    for (const p of parts) {
+      p.vy += .32 * dt; p.vx *= .99; p.x += p.vx * dt; p.y += p.vy * dt; p.life -= dt * (p.fade || 0); p.spin += .18 * dt;
+      const a = p.fade ? Math.max(0, Math.min(1, p.life / 30)) : 1;
+      if (p.k === 'sq') { cx.globalAlpha = a; cx.fillStyle = p.c; cx.fillRect(Math.round(p.x), Math.round(p.y), p.sc, p.sc); cx.globalAlpha = 1; }
+      else blit(p.k, p.x, p.y, p.sc, { a, sx: p.k === 'coin' ? Math.cos(p.spin) || .05 : 1 });
+    }
+    requestAnimationFrame(loop);
+  }
+  const KINDS = ['coin', 'coin', 'coin', 'star', 'star', 'gift', 'sq', 'sq'];
+  const SQC = ['#fbbf24', '#ef233c', '#22c55e', '#ffffff', '#38bdf8'];
+  function burst(fx = .5, fy = .45, n = 60, power = 1){
+    init();
+    for (let i = 0; i < n; i++) {
+      const ang = Math.random() * Math.PI * 2, sp = (3 + Math.random() * 9) * power, k = KINDS[i % KINDS.length];
+      parts.push({ k, x: fx * W, y: fy * H, vx: Math.cos(ang) * sp, vy: Math.sin(ang) * sp - 6 * power, sc: k === 'sq' ? P * 1.2 : P * (k === 'gift' ? 1.3 : 1.1), spin: Math.random() * 6, c: SQC[i % SQC.length], life: 120, fade: .55 });
+    }
+  }
+  // lluvia de monedas desde arriba + explosiones
+  function fireworks(ms = 4000){
+    init();
+    const end = Date.now() + ms;
+    (function f(){
+      if (Date.now() > end) return;
+      // lluvia suave por los laterales para no tapar el centro de la pantalla
+      const side = Math.random() < .5 ? Math.random() * .22 : .78 + Math.random() * .22;
+      parts.push({ k: Math.random() < .75 ? 'coin' : 'star', x: side * W, y: -20, vx: (Math.random() - .5) * 1.5, vy: Math.random() * 2, sc: P * 1.1, spin: Math.random() * 6, life: 200 });
+      if (Math.random() < .05) burst(Math.random() < .5 ? .12 : .88, .25 + Math.random() * .2, 24, .7);
+      setTimeout(f, 110);
+    })();
+  }
+  function parade(opt = {}){ init(); const s = P * (opt.big ? 3.2 : 2.2); walkers.push({ x: -120, y: opt.y ? opt.y * H : H * .82, v: (opt.fast ? 16 : 6) * (W / 1600), s, t: 0, trail: opt.trail !== false }); }
+  return { init, burst, fireworks, parade, setLobby(on){ init(); lobby = on; } };
+})();
+
+function fireworks(ms = 5000){ Pixel.fireworks(ms); }
+function burst(){ Pixel.burst(.5, .3, 45, .9); }
+
+/* =====================================================================
+   FOTOS DE LAS RONDAS (solo en el portátil de la TV, nunca en el repo)
+   ===================================================================== */
+const Fotos = (() => {
+  let db = null, urls = {};
+  const open = () => new Promise(res => {
+    if (db) return res(db);
+    try { const r = indexedDB.open('pj_fotos', 1); r.onupgradeneeded = () => r.result.createObjectStore('f'); r.onsuccess = () => { db = r.result; res(db); }; r.onerror = () => res(null); }
+    catch(e){ res(null); }
+  });
+  async function loadAll(){
+    await open(); if (!db) return;
+    await new Promise(res => { try { const req = db.transaction('f', 'readonly').objectStore('f').openCursor();
+      req.onsuccess = () => { const c = req.result; if (c) { urls[c.key] = URL.createObjectURL(c.value); c.continue(); } else res(); }; req.onerror = () => res(); } catch(e){ res(); } });
+  }
+  async function add(files){
+    await open(); let n = 0;
+    for (const f of files) {
+      const m = f.name.match(/\d+/); if (!m) continue; const k = +m[0];
+      if (db) await new Promise(r => { try { const tx = db.transaction('f', 'readwrite'); tx.objectStore('f').put(f, k); tx.oncomplete = r; tx.onerror = r; } catch(e){ r(); } });
+      if (urls[k]) URL.revokeObjectURL(urls[k]);
+      urls[k] = URL.createObjectURL(f); n++;
+    }
+    return n;
+  }
+  async function clear(){
+    await open();
+    if (db) await new Promise(r => { try { const tx = db.transaction('f', 'readwrite'); tx.objectStore('f').clear(); tx.oncomplete = r; tx.onerror = r; } catch(e){ r(); } });
+    Object.values(urls).forEach(u => URL.revokeObjectURL(u)); urls = {};
+  }
+  // Si no hay foto cargada en el portátil, se busca en la carpeta fotos/ del repositorio (fotos/1.jpg, fotos/2.png…)
+  const repo = {};
+  function probe(k){
+    if (k in repo) return Promise.resolve(repo[k]);
+    const exts = ['jpg', 'jpeg', 'png', 'webp', 'JPG', 'PNG'];
+    return new Promise(res => {
+      const tryExt = i => {
+        if (i >= exts.length) { repo[k] = null; return res(null); }
+        const img = new Image(), src = `fotos/${k}.${exts.at(i)}`;
+        img.onload = () => { repo[k] = src; res(src); };
+        img.onerror = () => tryExt(i + 1);
+        img.src = src;
+      };
+      tryExt(0);
+    });
+  }
+  async function resolve(k){ return urls[k] || await probe(k); }
+  return { loadAll, add, clear, resolve, get: k => urls[k] || repo[k] || null, list: () => Object.keys(urls).map(Number).sort((a, b) => a - b) };
+})();
+
+/* =====================================================================
+   CARPETAS DEL REPO (cesta/, sonidos/). En GitHub Pages se listan con la API
+   de GitHub; en local (python -m http.server) se lee el listado de la carpeta.
+   ===================================================================== */
+async function listFolder(folder, re){
+  try {
+    const gh = location.hostname.match(/^([\w-]+)\.github\.io$/);
+    if (gh) {
+      const repo = location.pathname.split('/').filter(Boolean)[0];
+      if (!repo || /\.html?$/.test(repo)) return [];
+      const r = await fetch(`https://api.github.com/repos/${gh[1]}/${repo}/contents/${folder}`, { cache: 'no-store' });
+      if (!r.ok) return [];
+      return (await r.json()).filter(f => f.type === 'file' && re.test(f.name)).map(f => f.name);
+    }
+    const r = await fetch(folder + '/', { cache: 'no-store' }); if (!r.ok) return [];
+    const html = await r.text();
+    return [...new Set([...html.matchAll(/href="([^"?#\/]+)"/g)].map(x => decodeURIComponent(x[1])))].filter(n => re.test(n));
+  } catch(e){ return []; }
 }
-function burst(){ if (window.confetti) confetti({ particleCount: 160, spread: 100, startVelocity: 50, origin: { y: .45 }, colors: ['#fbbf24','#fde68a','#ef233c','#fff'] }); }
+
+/* =====================================================================
+   SONIDOS PROPIOS (opcionales). Si existe el archivo, suena en lugar del efecto
+   sintetizado. Desde la carpeta sonidos/ del repo o cargados en el portátil
+   (los del portátil mandan). Nombre del archivo = nombre del momento.
+   ===================================================================== */
+const SONIDOS = {
+  sintonia: 'Pantalla de inicio, intro y podio · botón 🎵 en el mando',
+  apuestas: 'Al abrir las apuestas',
+  tiempo: '¡Tiempo!',
+  redoble: 'Antes de revelar',
+  acierto: 'Gana una mesa',
+  fallo: 'Todos se pasan · rebote',
+  escaparate: 'Música del desfile de la cesta',
+  cesta: 'Una mesa se lleva la cesta'
+};
+const Sonidos = (() => {
+  let db = null, els = {}, from = {}, muted = false;
+  const open = () => new Promise(res => {
+    if (db) return res(db);
+    try { const r = indexedDB.open('pj_sonidos', 1); r.onupgradeneeded = () => r.result.createObjectStore('s'); r.onsuccess = () => { db = r.result; res(db); }; r.onerror = () => res(null); }
+    catch(e){ res(null); }
+  });
+  const baseOf = n => n.replace(/\.[^.]+$/, '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z]/g, '');
+  const tx = fn => new Promise(r => { try { const t = db.transaction('s', 'readwrite'); fn(t.objectStore('s')); t.oncomplete = r; t.onerror = r; } catch(e){ r(); } });
+  async function loadAll(){
+    Object.values(els).forEach(a => { a.pause(); if (a.src.startsWith('blob:')) URL.revokeObjectURL(a.src); });
+    els = {}; from = {};
+    const src = {};
+    (await listFolder('sonidos', /\.(mp3|m4a|aac|ogg|wav)$/i)).forEach(n => { const b = baseOf(n); if (b in SONIDOS) { src[b] = 'sonidos/' + encodeURIComponent(n); from[b] = 'repo'; } });
+    await open();
+    if (db) await new Promise(res => { try { const req = db.transaction('s', 'readonly').objectStore('s').openCursor();
+      req.onsuccess = () => { const c = req.result; if (c) { src[c.key] = URL.createObjectURL(c.value); from[c.key] = 'portátil'; c.continue(); } else res(); }; req.onerror = () => res(); } catch(e){ res(); } });
+    for (const b in src) { const a = new Audio(src[b]); a.preload = 'auto'; els[b] = a; }
+  }
+  async function add(files){
+    const ok = [], bad = [];
+    await open();
+    for (const f of files) { const b = baseOf(f.name); if (b in SONIDOS) { if (db) await tx(s => s.put(f, b)); ok.push(b); } else bad.push(f.name); }
+    await loadAll();
+    return { ok, bad };
+  }
+  async function clear(){ await open(); if (db) await tx(s => s.clear()); await loadAll(); }
+  // Devuelve true si hay sonido propio (aunque esté silenciado), para no tocar además el sintetizado
+  function play(name, { loop = false, vol = 1 } = {}){
+    const a = els[name]; if (!a) return false;
+    if (muted) return true;
+    if (a._fade) { clearInterval(a._fade); a._fade = null; }
+    try { a.pause(); a.currentTime = 0; a.loop = loop; a.volume = vol; a.play().catch(() => {}); } catch(e){}
+    return true;
+  }
+  function stop(name, fade = 700){
+    const a = els[name]; if (!a || a.paused) return;
+    // Con temporizadores (no requestAnimationFrame): si la pestaña de la TV no está visible, rAF se congela y la música no paraba
+    if (a._fade) { clearInterval(a._fade); a.volume = a._v0; }
+    const v0 = a._v0 = a.volume, t0 = Date.now();
+    const end = () => { clearInterval(a._fade); a._fade = null; a.pause(); a.volume = v0; };
+    a._fade = setInterval(() => { const k = Math.min(1, (Date.now() - t0) / fade); a.volume = v0 * (1 - k); if (k >= 1) end(); }, 50);
+  }
+  return {
+    loadAll, add, clear, play, stop,
+    has: n => !!els[n], playing: n => !!els[n] && !els[n].paused,
+    list: () => Object.keys(SONIDOS).filter(n => els[n]).map(n => ({ n, from: from[n] })),
+    setMuted(m){ muted = m; if (m) Object.values(els).forEach(a => a.pause()); }
+  };
+})();
+// Sonido propio si existe; si no, el sintetizado
+const fx = (name, fallback) => { if (!Sonidos.play(name) && fallback) fallback(); };
+
+/* =====================================================================
+   FOTOS DE LA CESTA (escaparate final). El nombre del archivo es el nombre del
+   producto: «1 Jamón ibérico.jpg» → «Jamón ibérico». Orden por nombre.
+   ===================================================================== */
+const Cesta = (() => {
+  let db = null, items = [];
+  const open = () => new Promise(res => {
+    if (db) return res(db);
+    try { const r = indexedDB.open('pj_cesta', 1); r.onupgradeneeded = () => r.result.createObjectStore('p'); r.onsuccess = () => { db = r.result; res(db); }; r.onerror = () => res(null); }
+    catch(e){ res(null); }
+  });
+  const nice = n => n.replace(/\.[^.]+$/, '').replace(/^\s*\d+\s*[-_.)]*\s*/, '').replace(/[_]+/g, ' ').trim() || n;
+  let source = '';   // 'portátil' | 'repo' | ''
+  function build(entries, src = 'portátil'){
+    items.forEach(i => i.url.startsWith('blob:') && URL.revokeObjectURL(i.url));
+    items = entries.sort((a, b) => a.key.localeCompare(b.key, 'es', { numeric: true, sensitivity: 'base' }))
+      .map(e => ({ name: nice(e.key), url: e.url || URL.createObjectURL(e.file) }));
+    items.forEach(i => { const im = new Image(); im.src = i.url; });   // precarga: el desfile no da tirones
+    source = items.length ? src : '';
+  }
+  const listRepo = () => listFolder('cesta', /\.(jpe?g|png|webp)$/i);
+  const tx = fn => new Promise(r => { try { const t = db.transaction('p', 'readwrite'); fn(t.objectStore('p')); t.oncomplete = r; t.onerror = r; } catch(e){ r(); } });
+  async function loadAll(){
+    await open(); if (!db) return;
+    const entries = [];
+    await new Promise(res => { try { const req = db.transaction('p', 'readonly').objectStore('p').openCursor();
+      req.onsuccess = () => { const c = req.result; if (c) { entries.push({ key: String(c.key), file: c.value }); c.continue(); } else res(); }; req.onerror = () => res(); } catch(e){ res(); } });
+    if (entries.length) return build(entries, 'portátil');
+    const names = await listRepo();
+    build(names.map(n => ({ key: n, url: 'cesta/' + encodeURIComponent(n) })), 'repo');
+  }
+  // Sustituye la cesta entera por los archivos elegidos
+  async function set(files){
+    files = files.filter(f => /^image\//.test(f.type)); if (!files.length) return 0;
+    await open();
+    if (db) await tx(s => { s.clear(); files.forEach(f => s.put(f, f.name)); });
+    build(files.map(f => ({ key: f.name, file: f })));
+    return items.length;
+  }
+  // Al borrar las del portátil, vuelven a usarse las del repo (si las hay)
+  async function clear(){ await open(); if (db) await tx(s => s.clear()); build([]); await loadAll(); }
+  return { loadAll, set, clear, items: () => items, get source(){ return source; } };
+})();
 
 /* =====================================================================
    PANTALLA TV  — fuente de verdad del juego
    ===================================================================== */
 const TV = (() => {
   const KEY = 'pj_tv_state_v2';
-  let PIN, S, shown = { phase: null, round: null }, animTok = 0, lastSec = null;
+  let PIN, S, shown = { phase: null, round: null, sc: 0 }, animTok = 0, lastSec = null;
 
   const fresh = () => ({ phase:'lobby', round:0, total:0, q:null, deadline:0, tables:DEFAULT_TABLES,
-    claims:{}, names:{}, bids:{}, bidTimes:{}, result:null, scores:{}, wins:{}, history:[], seq:0 });
+    claims:{}, names:{}, bids:{}, bidTimes:{}, result:null, scores:{}, wins:{}, history:[], seq:0,
+    // stage: normal | tiebreak | final · eligible: mesas que pueden pujar (null = todas)
+    stage:'normal', eligible:null, tieOrder:null, jokers:{},
+    finalOrder:null, finalIdx:0, finalTries:[], prize:null, finalDone:false, finalAns:null, showSeq:0 });
+  const finalist = () => S.stage === 'final' && S.finalOrder ? S.finalOrder[S.finalIdx] ?? null : null;
+  const topTied = () => standings(S).filter(r => r.pos === 1 && r.s > 0).map(r => r.t);
+  function cleanQ(q, over = {}){
+    q = q || {};
+    const type = ['hilo', 'order'].includes(q.type) ? q.type : 'price';
+    return Object.assign({ text: String(q.text || '').slice(0, 300), unit: String(q.unit || '').slice(0, 20), decimals: q.decimals ? 2 : 0,
+      time: clamp(+q.time || 30, 5, 300), mult: clamp(+q.mult || 1, 1, 10), emoji: String(q.emoji || '').slice(0, 8),
+      type, shown: type === 'hilo' && isFinite(+q.shown) ? +q.shown : null,
+      items: type === 'order' && Array.isArray(q.items) ? q.items.slice(0, 4).map(n => String(n || '').slice(0, 50)) : null }, over);
+  }
+  const jx = t => S.stage === 'normal' && S.jokers && S.jokers[t] === S.round ? 2 : 1;   // comodín x2
+  const jokList = () => Object.keys(S.jokers || {}).filter(t => S.jokers[t] === S.round && S.stage === 'normal').map(Number);
+  // «¿Más o menos?»: 100 puntos (× multiplicador × comodín) a quien acierte
+  function computeHilo(answer){
+    const mult = S.q.mult || 1, correct = answer > S.q.shown ? 1 : 0, awards = {}, winners = [], over = [];
+    for (const [k, v] of Object.entries(S.bids)) { const t = +k; if (v === correct) { awards[t] = 100 * mult * jx(t); winners.push(t); } else over.push(t); }
+    const n = Object.keys(S.bids).length;
+    return { kind: 'hilo', answer, correct, awards, winners, over, mult, exact: false, none: !n, allOver: n > 0 && !winners.length, jokers: jokList() };
+  }
+  // «Ordena»: 25 por posición acertada + 50 si las 4 (× multiplicador × comodín)
+  function computeOrder(prices){
+    const mult = S.q.mult || 1, correct = [0, 1, 2, 3].sort((a, b) => prices[a] - prices[b]).map(i => i + 1).join('');
+    const hits = {}, awards = {}; let best = 0;
+    for (const [k, v] of Object.entries(S.bids)) {
+      const s = String(v); let h = 0; for (let i = 0; i < 4; i++) if (s[i] === correct[i]) h++;
+      hits[k] = h; if (h) awards[k] = (h * 25 + (h === 4 ? 50 : 0)) * mult * jx(+k); best = Math.max(best, h);
+    }
+    const ts = Object.keys(S.bids).map(Number);
+    return { kind: 'order', answer: null, prices, correct, hits, best, awards, winners: best ? ts.filter(t => hits[t] === best) : [],
+      over: ts.filter(t => !hits[t]), mult, exact: best === 4, none: !ts.length, allOver: ts.length > 0 && !best, jokers: jokList() };
+  }
+  const newBidding = () => { S.bids = {}; S.bidTimes = {}; S.result = null; S.deadline = 0; };
 
   function getPin(){
     const m = location.hash.match(/pin=(\d{4,8})/);
@@ -782,13 +1510,18 @@ const TV = (() => {
       tables:S.tables, claims, names:S.names, received:Object.keys(S.bids).map(Number),
       bids: showBids ? S.bids : null,
       result: ['reveal','ranking','final'].includes(S.phase) ? S.result : null,
-      scores:S.scores, wins:S.wins };
+      scores:S.scores, wins:S.wins,
+      stage:S.stage, eligible:S.eligible, finalist:finalist(), tries:S.finalTries, prize:S.prize, finalDone:S.finalDone,
+      finalAns: S.finalDone ? S.finalAns : null,     // el precio de la cesta no sale de la TV hasta el final
+      bots: S.bots || [], looks: S.looks || {}, jokers: S.jokers || {} };
   }
   const broadcast = () => Bus.send('state', pub());
   function commit(){ S.seq++; save(); render(); broadcast(); }
 
   /* ---------- reglas ---------- */
   function computeResult(answer){
+    if (S.q && S.q.type === 'hilo') return computeHilo(answer);
+    if (S.q && S.q.type === 'order') return computeOrder(answer);
     const mult = (S.q && S.q.mult) || 1, EPS = 1e-9;
     const entries = Object.entries(S.bids).map(([t, v]) => ({ t: +t, v }));
     const valid = entries.filter(e => e.v <= answer + EPS).sort((a, b) => b.v - a.v);
@@ -799,7 +1532,7 @@ const TV = (() => {
       if (place < POINTS.length) {
         let p = POINTS[place];
         if (Math.abs(e.v - answer) < EPS) p += EXACT_BONUS;
-        awards[e.t] = p * mult;
+        awards[e.t] = p * mult * (S.stage === 'normal' && S.jokers && S.jokers[e.t] === S.round ? 2 : 1);   // comodín x2
       }
     });
     const winners = distinct.length ? valid.filter(e => e.v === distinct[0]).map(e => e.t) : [];
@@ -807,7 +1540,22 @@ const TV = (() => {
       exact: distinct.length > 0 && Math.abs(distinct[0] - answer) < EPS,
       allOver: entries.length > 0 && valid.length === 0,
       none: entries.length === 0,
-      over: entries.filter(e => e.v > answer + EPS).sort((a, b) => b.v - a.v).map(e => e.t) };
+      over: entries.filter(e => e.v > answer + EPS).sort((a, b) => b.v - a.v).map(e => e.t),
+      jokers: Object.keys(S.jokers || {}).filter(t => S.jokers[t] === S.round && S.stage === 'normal').map(Number) };
+  }
+  // Desempate: gana el más cercano sin pasarse; si todos se pasan, el que menos se pasó. Sin puntos.
+  function computeTie(answer){
+    const EPS = 1e-9, el = S.eligible || [];
+    const ent = el.map(t => ({ t, v: (t in S.bids) ? S.bids[t] : null }));
+    const key = e => e.v === null ? [2, 0] : e.v <= answer + EPS ? [0, answer - e.v] : [1, e.v - answer];
+    ent.sort((a, b) => { const ka = key(a), kb = key(b); return ka[0] - kb[0] || ka[1] - kb[1]; });
+    const k0 = ent.length ? key(ent[0]) : null;
+    const winners = ent.length && ent[0].v !== null ? ent.filter(e => { const k = key(e); return k[0] === k0[0] && Math.abs(k[1] - k0[1]) < EPS; }).map(e => e.t) : [];
+    return { answer, awards: {}, winners, mult: 1, tie: true,
+      exact: winners.length > 0 && Math.abs(ent[0].v - answer) < EPS, allOver: false,
+      none: ent.every(e => e.v === null),
+      over: ent.filter(e => e.v !== null && e.v > answer + EPS && !winners.includes(e.t)).map(e => e.t),
+      order: ent.map(e => e.t) };
   }
 
   /* ---------- mensajes entrantes ---------- */
@@ -827,18 +1575,35 @@ const TV = (() => {
     rename(p){
       const t = +p.table; if (S.claims[t] !== p.device) return;
       const n = cleanName(p.name); if (n) S.names[t] = n; else delete S.names[t];
+      S.looks = S.looks || {};
+      const lk = { ...(S.looks[t] || {}) };
+      if (MESA_EMOJIS.includes(p.emoji)) lk.e = p.emoji; else if (p.emoji === '') delete lk.e;
+      if (MESA_COLORS.includes(p.color)) lk.c = p.color;
+      if (lk.e || lk.c) S.looks[t] = lk; else delete S.looks[t];
       commit(); flashChip(t);
     },
-    leave(p){ const t = +p.table; if (S.claims[t] !== p.device) return; delete S.claims[t]; delete S.names[t]; commit(); },
+    // Comodín x2: una vez por partida, solo en rondas normales y con las apuestas abiertas
+    joker(p){
+      const t = +p.table; if (S.claims[t] !== p.device) return;
+      if (S.phase !== 'open' || S.stage !== 'normal' || +p.round !== S.round) return;
+      S.jokers = S.jokers || {};
+      if (p.on) { if (S.jokers[t] && S.jokers[t] !== S.round) return; S.jokers[t] = S.round; }
+      else if (S.jokers[t] === S.round) delete S.jokers[t];
+      commit(); flashChip(t); if (p.on) Sfx.ding();
+    },
+    leave(p){ const t = +p.table; if (S.claims[t] !== p.device) return; delete S.claims[t]; delete S.names[t]; if (S.looks) delete S.looks[t]; commit(); },
     bid(p){
       const t = +p.table, d = String(p.device || '');
       const fail = r => Bus.send('bid-ack', { device: d, round: p.round, ok: false, reason: r });
       if (S.claims[t] !== d) return fail('Este móvil ya no es el portavoz de la mesa');
       if (S.phase !== 'open' || +p.round !== S.round) return fail('Las apuestas están cerradas');
+      if (S.eligible && !S.eligible.includes(t)) return fail(S.stage === 'final' ? 'El escaparate lo juega otra mesa' : 'Este desempate lo juegan otras mesas');
       if (Date.now() > S.deadline + 1000) return fail('¡Se acabó el tiempo!');
       let v = Number(p.value);
       if (!isFinite(v) || v < 0 || v > 1e12) return fail('Cifra no válida');
       v = S.q && S.q.decimals ? Math.round(v * 100) / 100 : Math.round(v);
+      if (S.q && S.q.type === 'hilo' && v !== 0 && v !== 1) return fail('Respuesta no válida');
+      if (S.q && S.q.type === 'order' && !isPerm4(v)) return fail('Orden no válido');
       const isNew = !(t in S.bids);
       S.bids[t] = v; S.bidTimes[t] = Date.now();
       commit(); Bus.send('bid-ack', { device: d, round: S.round, ok: true, value: v });
@@ -849,15 +1614,94 @@ const TV = (() => {
       if (String(p.pin) !== PIN) return reply(false, 'pin');
       switch (p.action) {
         case 'question': {
-          const q = p.q || {};
           S.round = +p.round || S.round + 1; S.total = +p.total || S.total;
-          S.q = { text: String(q.text || '').slice(0, 300), unit: String(q.unit || '').slice(0, 20), decimals: q.decimals ? 2 : 0,
-                  time: clamp(+q.time || 30, 5, 300), mult: clamp(+q.mult || 1, 1, 10), emoji: String(q.emoji || '').slice(0, 8) };
-          S.phase = 'question'; S.bids = {}; S.bidTimes = {}; S.result = null; S.deadline = 0;
+          S.q = cleanQ(p.q);
+          Object.assign(S, { stage: 'normal', eligible: null, tieOrder: null, finalOrder: null, finalIdx: 0, finalTries: [], prize: null, finalDone: false, finalAns: null });
+          S.phase = 'question'; newBidding();
           break;
+        }
+        case 'practice': {
+          if (S.round > 0 && S.stage !== 'practice') return reply(false, 'La práctica es solo antes de la ronda 1');
+          S.round = 0; S.q = cleanQ(p.q, { mult: 1 });
+          Object.assign(S, { stage: 'practice', eligible: null, tieOrder: null });
+          S.phase = 'question'; newBidding(); S.practiceSeq = (S.practiceSeq || 0) + 1;
+          break;
+        }
+        case 'tiebreak': {
+          // Repetición: si el desempate anterior sigue empatado, juegan solo los que siguen empatados
+          let tied = S.stage === 'tiebreak' && S.result ? (S.result.winners.length > 1 ? S.result.winners : S.eligible) : topTied();
+          if (!tied || tied.length < 2) return reply(false, 'No hay empate en cabeza');
+          S.stage = 'tiebreak'; S.eligible = tied.map(Number); S.tieOrder = null;
+          S.round = Math.max(S.round, S.total) + 1;
+          S.q = cleanQ(p.q, { mult: 1 });
+          S.phase = 'question'; newBidding();
+          break;
+        }
+        case 'showcase': {
+          if (S.stage !== 'final') {
+            if (S.stage === 'tiebreak') { if (!S.result || S.result.winners.length !== 1) return reply(false, 'El desempate aún no tiene ganador'); }
+            else if (topTied().length > 1) return reply(false, 'Hay empate en cabeza: primero la ronda rápida');
+            let order = standings(S).map(r => r.t);
+            if (S.tieOrder) order = [...S.tieOrder, ...order.filter(t => !S.tieOrder.includes(t))];
+            if (!order.length) return reply(false, 'No hay mesas jugando');
+            Object.assign(S, { stage: 'final', finalOrder: order, finalIdx: 0, finalTries: [], prize: null, finalDone: false, finalAns: null, eligible: [order[0]] });
+            newBidding();
+          }
+          S.showSeq = (S.showSeq || 0) + 1; S.phase = 'showcase';
+          break;
+        }
+        case 'finalopen': {
+          if (S.stage !== 'final') return reply(false, 'Primero muestra el escaparate');
+          if (S.finalDone) return reply(false, 'La final ya ha terminado');
+          if (['open', 'closed'].includes(S.phase)) return reply(false, 'La puja ya está en marcha');
+          const t = finalist(); if (!t) return reply(false, 'No quedan mesas');
+          S.round = Math.max(S.round, S.total) + 1;
+          S.q = cleanQ(p.q, { unit: '€', decimals: 2, mult: 1, emoji: '🎁' });
+          S.eligible = [t]; newBidding();
+          S.deadline = Date.now() + S.q.time * 1000; S.phase = 'open';
+          break;
+        }
+        case 'finalcheck': {
+          if (S.stage !== 'final' || !['open', 'closed'].includes(S.phase)) return reply(false, 'Primero abre la puja final');
+          let ans = Number(p.answer);
+          if (!isFinite(ans) || ans <= 0) return reply(false, 'Falta el precio de la cesta');
+          ans = Math.round(ans * 100) / 100;
+          const t = finalist(), v = (t in S.bids) ? S.bids[t] : null, EPS = 1e-9;
+          const verdict = v === null ? 'none' : v > ans + EPS ? 'over' : v < ans * (1 - FINAL_MARGIN) - EPS ? 'short' : 'win';
+          S.finalTries.push({ t, v, verdict });
+          S.finalAns = ans;
+          if (verdict === 'win') { S.prize = t; S.finalDone = true; }
+          else { S.finalIdx++; if (S.finalIdx >= S.finalOrder.length) S.finalDone = true; else S.eligible = [finalist()]; }
+          S.phase = 'verdict';
+          break;
+        }
+        case 'finaluncheck': {
+          if (S.phase !== 'verdict' || !S.finalTries.length) return reply(false, 'No hay nada que deshacer');
+          const last = S.finalTries.pop();
+          if (last.verdict !== 'win') S.finalIdx = Math.max(0, S.finalIdx - 1);
+          S.prize = null; S.finalDone = false; S.eligible = [finalist()]; S.phase = 'closed';
+          break;
+        }
+        case 'bots': {
+          const n = clamp(+p.n || 6, 1, 12); let added = 0;
+          S.bots = S.bots || [];
+          for (let t = 1; added < n && t <= MAX_TABLES; t++) {
+            if (S.claims[t]) continue;
+            if (t > S.tables) S.tables = t;
+            S.claims[t] = 'bot:' + t; S.names[t] = BOT_NAMES[(S.bots.length) % BOT_NAMES.length];
+            S.looks = S.looks || {}; S.looks[t] = { c: MESA_COLORS[S.bots.length % MESA_COLORS.length] };
+            S.bots.push(t); added++;
+          }
+          commit(); reply(true, added ? `🤖 ${added} mesas de ensayo añadidas` : 'No quedan mesas libres'); return;
+        }
+        case 'botsoff': {
+          (S.bots || []).forEach(t => { delete S.claims[t]; delete S.names[t]; if (S.looks) delete S.looks[t]; delete S.scores[t]; delete S.wins[t]; delete S.bids[t]; });
+          S.bots = []; delete S.botHint;
+          commit(); reply(true, '🤖 Mesas de ensayo quitadas'); return;
         }
         case 'open':
           if (!S.q || S.result) return reply(false, 'No hay ninguna ronda pendiente');
+          if (S.phase !== 'closed') S.openedAt = Date.now();   // para los premios (la mesa más rápida…)
           S.deadline = Date.now() + (S.phase === 'closed' ? 15000 : S.q.time * 1000);
           S.phase = 'open'; break;
         case 'close':
@@ -868,87 +1712,231 @@ const TV = (() => {
           S.deadline += 15000; break;
         case 'reveal': {
           if (S.result) return reply(false, 'Esta ronda ya está revelada');
+          if (S.stage === 'final') return reply(false, 'En el escaparate usa «Comprobar puja»');
           if (!['open', 'closed'].includes(S.phase)) return reply(false, 'Primero abre y cierra las apuestas');
           if (+p.round !== S.round) return reply(false, 'El mando y la TV no están en la misma ronda');
-          let ans = Number(p.answer);
-          if (!isFinite(ans)) return reply(false, 'Falta el precio de esta ronda');
-          ans = S.q.decimals ? Math.round(ans * 100) / 100 : Math.round(ans);
-          const r = computeResult(ans);
+          const isOrder = S.q.type === 'order';
+          let ans = isOrder ? null : Number(p.answer);
+          if (isOrder) { if (!Array.isArray(p.prices) || p.prices.length !== 4 || p.prices.some(x => !isFinite(+x))) return reply(false, 'Faltan los precios de los 4 productos'); }
+          else { if (!isFinite(ans)) return reply(false, 'Falta el precio de esta ronda'); ans = S.q.decimals ? Math.round(ans * 100) / 100 : Math.round(ans); }
+          if (S.stage === 'tiebreak') { const r = computeTie(ans); S.result = r; S.tieOrder = r.order; S.phase = 'reveal'; break; }
+          if (S.stage === 'practice') { const r = computeResult(ans); r.awards = {}; r.practice = true; S.result = r; S.phase = 'reveal'; break; }
+          const r = computeResult(isOrder ? p.prices.map(Number) : ans);
           for (const t in r.awards) S.scores[t] = (S.scores[t] || 0) + r.awards[t];
           r.winners.forEach(t => S.wins[t] = (S.wins[t] || 0) + 1);
-          S.history.push({ round: S.round, awards: r.awards, winners: r.winners });
+          const times = {}; for (const t in S.bidTimes) if (S.openedAt) times[t] = Math.max(0, (S.bidTimes[t] - S.openedAt) / 1000);
+          S.history.push({ round: S.round, awards: r.awards, winners: r.winners, answer: ans, bids: { ...S.bids }, times,
+            type: S.q.type || 'price', q: { unit: S.q.unit, decimals: S.q.decimals, time: S.q.time } });
           S.result = r; S.phase = 'reveal'; break;
         }
         case 'unreveal': {
           if (!S.result || S.phase !== 'reveal') return reply(false, 'No hay nada que deshacer');
+          if (S.result.tie) { S.result = null; S.tieOrder = null; S.phase = 'closed'; break; }
+          if (S.result.practice) { S.result = null; S.phase = 'closed'; break; }
           for (const t in S.result.awards) S.scores[t] = (S.scores[t] || 0) - S.result.awards[t];
           S.result.winners.forEach(t => S.wins[t] = Math.max(0, (S.wins[t] || 0) - 1));
           S.history.pop(); S.result = null; S.phase = 'closed'; break;
         }
         case 'ranking': S.phase = 'ranking'; break;
+        case 'awards':
+          if (!computeAwards().length) return reply(false, 'Todavía no hay datos para los premios');
+          S.phase = 'awards'; break;
         case 'final':   S.phase = 'final'; break;
         case 'lobby':   S.phase = 'lobby'; break;
         case 'tables':
           S.tables = clamp(+p.n || DEFAULT_TABLES, 1, MAX_TABLES);
           for (const t in S.claims) if (+t > S.tables) { delete S.claims[t]; delete S.names[t]; }
           break;
-        case 'release':    delete S.claims[p.table]; delete S.names[p.table]; break;
-        case 'releaseAll': S.claims = {}; S.names = {}; break;
+        case 'release':    delete S.claims[p.table]; delete S.names[p.table]; if (S.looks) delete S.looks[p.table]; break;
+        case 'releaseAll': S.claims = {}; S.names = {}; S.looks = {}; break;
         case 'score':      S.scores[+p.table] = (S.scores[+p.table] || 0) + (+p.delta || 0); break;
-        case 'sound':      { const on = Sfx.toggle(); reply(true, on ? '🔊 Sonido activado' : '🔇 Sonido silenciado'); return; }
+        case 'sound':      { const on = Sfx.toggle(); Sonidos.setMuted(!on); reply(true, on ? '🔊 Sonido activado' : '🔇 Sonido silenciado'); return; }
+        case 'intro':      playIntro(); reply(true, '🎬 Intro en pantalla'); return;
+        case 'music': {
+          if (!Sonidos.has('sintonia')) return reply(false, 'No hay sintonía (sonidos/sintonia.mp3)');
+          if (Sonidos.playing('sintonia')) { Sonidos.stop('sintonia', 1500); reply(true, '⏹ Sintonía parada'); }
+          else { Sonidos.play('sintonia'); reply(true, '🎵 Sonando la sintonía'); }
+          return;
+        }
+        case 'voice':      { const on = Voz.toggle(); syncVozUI(); reply(true, on ? '🗣️ Voz activada' : '🤐 Voz desactivada'); if (on) Voz.speak('Voz activada'); return; }
         case 'ping':       reply(true, '✅ Mando conectado a la TV'); broadcast(); return;
         case 'reset': {
-          const keep = { tables: S.tables, claims: S.claims, names: S.names, seq: S.seq };
+          const keep = { tables: S.tables, claims: S.claims, names: S.names, seq: S.seq, bots: S.bots || [], looks: S.looks || {} };
           S = Object.assign(fresh(), keep); break;
         }
         default: return reply(false, 'Acción desconocida');
       }
+      if (Array.isArray(p.hint)) S.botHint = p.hint.map(Number);                                         // solo llega en modo ensayo
+      else if (p.hint !== undefined && p.hint !== null && isFinite(+p.hint)) S.botHint = +p.hint;
       commit(); reply(true);
+      if (S.phase === 'open') scheduleBots();
     }
   };
 
+  /* ---------- modo ensayo: mesas automáticas que pujan solas ---------- */
+  let botTimers = [];
+  const gauss = () => { let u = 0, v = 0; while (!u) u = Math.random(); while (!v) v = Math.random(); return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v); };
+  function scheduleBots(){
+    botTimers.forEach(clearTimeout); botTimers = [];
+    if (!S.bots || !S.bots.length || S.phase !== 'open') return;
+    const round = S.round, span = Math.max(1500, S.deadline - Date.now() - 2000);
+    S.bots.filter(t => (!S.eligible || S.eligible.includes(t)) && !(t in S.bids))
+      .forEach(t => botTimers.push(setTimeout(() => botBid(t, round), 700 + Math.random() * span)));
+  }
+  function botBid(t, round){
+    if (S.phase !== 'open' || S.round !== round || !S.claims[t]) return;
+    if (S.q && S.q.type === 'hilo') {
+      const ok = +S.botHint > S.q.shown ? 1 : 0, v = Math.random() < .65 ? ok : 1 - ok;
+      if (!(S.jokers || {})[t] && Math.random() < .15) handlers.joker({ table: t, device: S.claims[t], round, on: true });
+      return handlers.bid({ table: t, device: S.claims[t], round, value: v });
+    }
+    if (S.q && S.q.type === 'order') {
+      const pr = Array.isArray(S.botHint) ? S.botHint : [1, 2, 3, 4];
+      const v = +[0, 1, 2, 3].map(i => ({ i, k: pr[i] * Math.exp(gauss() * .45) })).sort((a, b) => a.k - b.k).map(x => x.i + 1).join('');
+      return handlers.bid({ table: t, device: S.claims[t], round, value: v });
+    }
+    const h = +S.botHint;
+    let v = !(h > 0) ? 50 + Math.random() * 950
+      : S.stage === 'final' ? h * (0.6 + Math.random() * 0.55)        // a veces dentro, a veces corta o pasada
+      : h * Math.exp(gauss() * 0.3);
+    v = S.q && S.q.decimals ? Math.round(v * 100) / 100 : Math.max(0, Math.round(v));
+    if (S.stage === 'normal' && !(S.jokers || {})[t] && Math.random() < .2) handlers.joker({ table: t, device: S.claims[t], round, on: true });
+    handlers.bid({ table: t, device: S.claims[t], round, value: v });
+  }
+
   /* ---------- render ---------- */
-  const L = t => labelOf(t, S.names);
-  function sceneOf(ph){ return { lobby:'s-lobby', question:'s-question', open:'s-open', closed:'s-reveal', reveal:'s-reveal', ranking:'s-ranking', final:'s-final' }[ph]; }
+  const L = t => labelOf(t, S.names, S.looks), TC = t => tcStyle(t, S.looks);
+  function sceneOf(ph){ return { lobby:'s-lobby', question:'s-question', open:'s-open', closed:'s-reveal', reveal:'s-reveal', ranking:'s-ranking', final:'s-final', showcase:'s-showcase', verdict:'s-verdict', awards:'s-awards' }[ph]; }
 
   function render(){
-    const ph = S.phase, changed = shown.phase !== ph || shown.round !== S.round;
+    const ph = S.phase, changed = shown.phase !== ph || shown.round !== S.round || (ph === 'showcase' && shown.sc !== S.showSeq);
     const tv = $('#tv'); tv.className = 'ph-' + ph;
     const rp = $('#tv-round');
     rp.classList.add('hidden');
-    if (changed) { const prev = shown.phase, anim = prev !== null; shown = { phase: ph, round: S.round }; enter(ph, prev, anim); }
+    $('#tv-ensayo').classList.toggle('hidden', !(S.bots && S.bots.length));
+    if (changed) { const prev = shown.phase, anim = prev !== null; shown = { phase: ph, round: S.round, sc: S.showSeq }; enter(ph, prev, anim); }
     else update(ph);
   }
 
   function enter(ph, prev, anim){
     animTok++; document.body.classList.remove('urgent'); lastSec = null;
-    $$('.scene').forEach(s => s.classList.remove('on'));
-    $('#' + sceneOf(ph)).classList.add('on');
+    const tok = animTok, swap = () => { $$('.scene').forEach(s => s.classList.remove('on')); $('#' + sceneOf(ph)).classList.add('on'); };
+    // Cortinilla: tapa la escena anterior y descubre la pregunta nueva
+    if (anim && ph === 'question') { stinger(); setTimeout(() => tok === animTok && swap(), 620); }
+    else swap();
+    if (anim) Voz.stop();
+    Pixel.setLobby(ph === 'lobby' && $('#tv-start').classList.contains('hidden') && !$('#intro').classList.contains('go'));
     if (ph === 'lobby') renderChips('#lobby-chips', 'lobby');
-    if (ph === 'question') { renderQuestion(); if (anim) Sfx.whoosh(); }
-    if (ph === 'open') { renderOpen(); if (anim) { Sfx.ding(); showBanner('¡APUESTAS ABIERTAS!', '', 'gold', 1400); } }
-    if (ph === 'closed') renderReveal(anim && prev === 'open' ? 'flip' : 'static');
-    if (ph === 'reveal') { if (anim && prev === 'closed') playReveal(); else renderReveal('done'); }
+    if (anim) { Sonidos.stop('redoble', 300); if (ph !== 'showcase') Sonidos.stop('escaparate', 1500); }
+    if (ph === 'question') { renderQuestion(); if (anim) { Sfx.whoosh(); Sonidos.stop('sintonia', 1500); sayQuestion(); } }
+    if (ph === 'open') { renderOpen(); if (anim) { Sonidos.stop('sintonia', 1800); fx('apuestas', Sfx.ding); showBanner('¡APUESTAS ABIERTAS!', '', 'gold', 1400); const s = Math.round(Math.max(0, S.deadline - Date.now()) / 1000); Voz.speak(`¡Apuestas abiertas! Tenéis ${s} segundos.`); } }
+    if (ph === 'closed') { renderReveal(anim && prev === 'open' ? 'flip' : 'static'); if (anim && prev === 'open') { fx('tiempo', Sfx.buzzer); showBanner('¡TIEMPO!', '', 'red', 1600); Voz.speak('¡Tiempo!'); } }
+    if (ph === 'reveal') { const alt = S.result && S.result.kind; if (anim && prev === 'closed') (alt ? playRevealAlt : playReveal)(); else (alt ? revealAltDone : () => renderReveal('done'))(); }
     if (ph === 'ranking') renderRanking(anim);
     if (ph === 'final') renderFinal(anim);
+    if (ph === 'showcase') playShowcase(anim);
+    if (ph === 'awards') renderAwards(anim);
+    if (ph === 'verdict') playVerdict(anim && ['open', 'closed'].includes(prev));
   }
   function update(ph){
     if (ph === 'lobby') renderChips('#lobby-chips', 'lobby');
-    if (ph === 'open') { renderChips('#open-chips', 'open'); $('#o-count').textContent = Object.keys(S.bids).length; $('#o-total').textContent = claimedCount(); }
-    if (ph === 'ranking') renderRanking(false);
+    if (ph === 'open') { renderChips('#open-chips', 'open'); $('#o-count').textContent = Object.keys(S.bids).length; $('#o-total').textContent = playingCount(); }
+    if (ph === 'ranking' && !racing) renderRanking(false);
     if (ph === 'final') renderFinal(false);
     if (ph === 'reveal' || ph === 'closed') { /* sin cambios en vivo */ }
   }
   const claimedCount = () => Object.keys(S.claims).filter(t => +t <= S.tables).length;
+  const playingCount = () => S.eligible ? S.eligible.length : claimedCount();
+  const rLabel = () => S.stage === 'normal' && S.round === S.total && S.total > 1 ? `🔥 Última ronda · ${S.round} de ${S.total}` : roundLabel(S);
+
+  /* --- premios curiosos de la noche (con los datos de las rondas normales) --- */
+  const pctF = x => (x * 100 < 10 ? (x * 100).toFixed(1).replace('.', ',') : Math.round(x * 100)) + ' %';
+  function computeAwards(){
+    const H = (S.history || []).filter(h => h.bids && h.answer > 0 && (!h.type || h.type === 'price'));
+    const per = {}, P = t => per[t] || (per[t] = { t, over: 0, n: 0, shortSum: 0, shortN: 0, tSum: 0, tN: 0, last: 0 });
+    let best = null, crazy = null;
+    for (const h of H) for (const [k, v] of Object.entries(h.bids)) {
+      const t = +k, p = P(t), rel = (v - h.answer) / h.answer; p.n++;
+      if (rel > 1e-9) p.over++; else { p.shortSum += -rel; p.shortN++; }
+      const tm = h.times && h.times[k];
+      if (tm !== undefined) { p.tSum += tm; p.tN++; if (h.q && tm > h.q.time - 3) p.last++; }
+      const err = Math.abs(rel), wild = v > 0 ? Math.max(v / h.answer, h.answer / v) : Infinity;
+      if (!best || err < best.err) best = { t, err, h };
+      if (!crazy || wild > crazy.wild) crazy = { t, wild, v, h };
+    }
+    const arr = Object.values(per), pick = (f, cmp) => arr.filter(f).sort(cmp)[0];
+    const opt = pick(p => p.over > 0, (a, b) => b.over - a.over || a.n - b.n);
+    const pru = pick(p => p.shortN > 1, (a, b) => b.shortSum / b.shortN - a.shortSum / a.shortN);
+    const fast = pick(p => p.tN > 1, (a, b) => a.tSum / a.tN - b.tSum / b.tN);
+    const lim = pick(p => p.last > 0, (a, b) => b.last - a.last);
+    const out = [];
+    if (best) out.push({ e: '🎯', t: 'La puja más certera', who: best.t, d: best.err < 1e-9 ? `¡Clavó el precio en la ronda ${best.h.round}!` : `Ronda ${best.h.round}: a solo un ${pctF(best.err)} del precio` });
+    if (opt) out.push({ e: '🚀', t: 'La mesa más optimista', who: opt.t, d: `Se pasó ${opt.over} ${opt.over === 1 ? 'vez' : 'veces'} del precio` });
+    if (pru) out.push({ e: '🐢', t: 'La mesa más prudente', who: pru.t, d: `Se quedaba de media un ${pctF(pru.shortSum / pru.shortN)} por debajo` });
+    if (fast) out.push({ e: '⚡', t: 'La mesa más rápida', who: fast.t, d: `Pujaba de media en ${(fast.tSum / fast.tN).toFixed(1).replace('.', ',')} segundos` });
+    if (lim) out.push({ e: '⏱️', t: 'Al límite', who: lim.t, d: `${lim.last} ${lim.last === 1 ? 'puja' : 'pujas'} en los últimos 3 segundos` });
+    if (crazy && crazy.wild > 1.4) out.push({ e: '🤪', t: 'La puja más loca', who: crazy.t, d: `Dijo ${fmtVal(crazy.v, crazy.h.q)} y era ${fmtVal(crazy.h.answer, crazy.h.q)}` });
+    return out;
+  }
+  async function renderAwards(anim){
+    const tok = animTok, list = computeAwards();
+    $('#aw-grid').innerHTML = list.map(a => `<div class="aw"><div class="aw-e">${a.e}</div><div class="aw-t">${esc(a.t)}</div><div class="aw-who">${esc(L(a.who))}</div><div class="aw-d">${esc(a.d)}</div></div>`).join('');
+    const cards = $$('#aw-grid .aw');
+    if (!anim) { cards.forEach(c => c.classList.add('show')); return; }
+    Sfx.whoosh(); await sleep(1200);
+    for (const c of cards) {
+      if (tok !== animTok) return;
+      c.classList.add('show'); Sfx.pop(); setTimeout(() => tok === animTok && Sfx.ding(), 250);
+      { const r = c.getBoundingClientRect(); Pixel.burst((r.left + r.width / 2) / innerWidth, (r.top + r.height / 2) / innerHeight, 30, .7); }
+      await sleep(2600);
+    }
+  }
+
+  /* --- cortinilla entre rondas --- */
+  let stingerTimer;
+  function stinger(){
+    const el = $('#stinger'), m = S.q && S.q.mult > 1 ? ` · ⭐ PUNTOS x${S.q.mult}` : '';
+    const [big, small] = S.stage === 'practice' ? ['PRÁCTICA', '🧪 PARA CALENTAR · NO PUNTÚA'] : S.stage === 'tiebreak' ? ['DESEMPATE', '⚡ RONDA RÁPIDA']
+      : S.round === S.total && S.total > 1 ? [`RONDA ${S.round}`, '🔥 ÚLTIMA RONDA' + m] : [`RONDA ${S.round}`, `DE ${S.total}` + m];
+    $('#st-big').textContent = big; $('#st-small').textContent = small;
+    el.classList.remove('go'); void el.offsetWidth; el.classList.add('go');
+    Sfx.whoosh(); setTimeout(() => Sfx.ding(), 650);
+    Pixel.parade({ fast: true, big: true, y: .66 });
+    clearTimeout(stingerTimer); stingerTimer = setTimeout(() => el.classList.remove('go'), 5100);
+  }
+  /* --- intro del programa (la lanza el presentador desde el mando) --- */
+  let introTimer;
+  function playIntro(){
+    const el = $('#intro');
+    el.classList.remove('go'); void el.offsetWidth; el.classList.add('go');
+    Pixel.setLobby(false);                                   // Cestín y el árbol se apartan durante la intro (si no, pisan el título)
+    setTimeout(() => Pixel.setLobby(S.phase === 'lobby' && $('#tv-start').classList.contains('hidden') && !el.classList.contains('go')), 8300);
+    if (!Sonidos.play('sintonia')) { Sfx.drumroll(1.6); setTimeout(() => { Sfx.fanfare(); setTimeout(() => Sfx.jingle(), 900); }, 1700); }
+    setTimeout(() => { burst(); fireworks(3500); }, 1900);
+    clearTimeout(introTimer); introTimer = setTimeout(() => el.classList.remove('go'), 8200);
+  }
+
+  /* --- locución --- */
+  const joinY = a => a.length > 1 ? a.slice(0, -1).join(', ') + ' y ' + a[a.length - 1] : (a[0] || '');
+  function sayQuestion(){
+    const q = S.q || {}, m = q.mult || 1;
+    const head = S.round === S.total && S.total > 1 ? `¡Última ronda!` : `Ronda ${S.round}.`;
+    const mult = m > 1 ? ` ¡Ojo: esta ronda los puntos valen ${({ 2: 'el doble', 3: 'el triple' })[m] || `por ${m}`}!` : '';
+    Voz.speak(`${head}${mult} ${q.text || ''}`);
+  }
+  function syncVozUI(){
+    const b = $('#voz-toggle'); if (b) b.textContent = Voz.on ? '🤐 Desactivar voz' : '🗣️ Activar voz';
+  }
 
   function renderChips(sel, mode){
     let html = '';
     for (let t = 1; t <= S.tables; t++) {
+      if (mode === 'open' && S.eligible && !S.eligible.includes(t)) continue;
       const claimed = !!S.claims[t], sent = t in S.bids;
       let cls = 'chip', sub;
       if (mode === 'lobby') { if (claimed) cls += ' on'; sub = claimed ? '✓ ¡Lista!' : 'Esperando…'; }
-      else { if (sent) cls += ' sent'; else if (!claimed) cls += ' off'; sub = sent ? '🔒 Apuesta secreta' : (claimed ? 'Pensando… 🤔' : 'Sin portavoz'); }
-      html += `<div class="${cls}" data-t="${t}"><div class="cn">${esc(L(t))}</div><div class="cs">${sub}</div></div>`;
+      else { if (sent) cls += ' sent'; else if (!claimed) cls += ' off'; sub = sent ? '🔒 Apuesta secreta' : (claimed ? 'Pensando… 🤔' : 'Sin portavoz'); if (S.jokers && S.jokers[t] === S.round && S.stage === 'normal') sub += ' · ⚡x2'; }
+      html += `<div class="${cls}" data-t="${t}" style="${TC(t)}"><div class="cn">${esc(L(t))}</div><div class="cs">${sub}</div></div>`;
     }
     $(sel).innerHTML = html;
   }
@@ -957,16 +1945,36 @@ const TV = (() => {
   function multBadge(el){ const m = S.q && S.q.mult > 1; el.classList.toggle('hidden', !m); if (m) el.textContent = `⭐ Puntos x${S.q.mult}`; }
   function renderQuestion(){
     const q = S.q || {};
-    $('#q-round').textContent = S.round === S.total && S.total > 1 ? `🔥 Última ronda · ${S.round} de ${S.total}` : `Ronda ${S.round} de ${S.total}`;
+    $('#q-round').textContent = rLabel();
     multBadge($('#q-mult'));
     $('#q-emoji').textContent = q.emoji || '💰';
+    const r = S.round;
+    $('#s-question').classList.remove('has-photo'); $('#q-photo').removeAttribute('src');
+    $('#q-foot').textContent = S.stage === 'tiebreak'
+      ? `⚡ Solo juegan ${joinY(S.eligible.map(L))} · gana quien más se acerque y pasa a la gran final`
+      : '📱 Portavoces, móvil en mano… ¡las apuestas están a punto de abrirse!';
+    if (S.stage === 'normal' || S.stage === 'practice') Fotos.resolve(r).then(foto => { if (!foto || S.round !== r) return; $('#q-photo').src = foto; $('#s-question').classList.add('has-photo'); });
     $('#q-text').textContent = q.text || '';
-    $('#q-unit').textContent = q.unit ? `Respuesta en ${q.unit === '€' ? 'euros (con céntimos)' : q.unit}` : '';
+    $('#q-unit').textContent = q.unit ? `Respuesta en ${q.unit === '€' ? (q.decimals ? 'euros (con céntimos)' : 'euros') : q.unit}` : '';
+    if (q.type === 'hilo') $('#q-unit').innerHTML = `<div class="hilo-ref">¿Vale <b>MÁS</b> o <b>MENOS</b> de <span>${esc(fmtVal(q.shown, q))}</span>?</div>`;
+    if (q.type === 'order') $('#q-unit').innerHTML = `<div class="order-items">${(q.items || []).map((n, i) => `<div><b>${ORDER_L[i]}</b>${esc(n)}</div>`).join('')}</div>`;
   }
   function renderOpen(){
-    $('#o-round').textContent = `Ronda ${S.round} de ${S.total}`; multBadge($('#o-mult'));
-    $('#o-text').textContent = (S.q.emoji ? S.q.emoji + ' ' : '') + S.q.text;
-    $('#o-count').textContent = Object.keys(S.bids).length; $('#o-total').textContent = claimedCount();
+    $('#o-round').textContent = rLabel(); multBadge($('#o-mult'));
+    const fin = S.stage === 'final';
+    $('#o-text').textContent = fin ? `Juega ${L(finalist())}: ${S.q.text}` : (S.q.emoji ? S.q.emoji + ' ' : '') + S.q.text;
+    const r = S.round, op = $('#o-photo'), mo = $('#o-mosaic');
+    op.classList.add('hidden'); op.removeAttribute('src');
+    const items = fin ? Cesta.items().slice(0, 10) : [];
+    mo.classList.toggle('hidden', !items.length);
+    mo.innerHTML = items.map(i => `<img src="${i.url}" alt="">`).join('');
+    const ruleTxt = fin ? `🎯 Para llevarse la cesta: no pasarse… y quedarse a menos de un ${pctTxt} del precio`
+      : S.q.type === 'hilo' ? `⬆⬇ ¿Vale MÁS o MENOS de ${fmtVal(S.q.shown, S.q)}?`
+      : S.q.type === 'order' ? (S.q.items || []).map((n, i) => ORDER_L[i] + ') ' + n).join('   ·   ') : '';
+    $('#o-rule').classList.toggle('hidden', !ruleTxt);
+    $('#o-rule').textContent = ruleTxt;
+    if (S.stage === 'normal' || S.stage === 'practice') Fotos.resolve(r).then(foto => { if (!foto || S.round !== r) return; op.src = foto; op.classList.remove('hidden'); });
+    $('#o-count').textContent = Object.keys(S.bids).length; $('#o-total').textContent = playingCount();
     renderChips('#open-chips', 'open'); tick();
   }
   function tick(){
@@ -981,15 +1989,15 @@ const TV = (() => {
       else { document.body.classList.remove('urgent'); if (sec > 0) Sfx.tick(); }
     }
     if (rem <= 0) {
-      S.phase = 'closed'; commit();
-      Sfx.buzzer(); showBanner('¡TIEMPO!', '', 'red', 1600);
+      S.phase = 'closed'; commit();   // el sonido y el cartel de ¡TIEMPO! salen al entrar en 'closed'
     }
   }
 
   /* --- revelación --- */
   function revealEntries(){
     const ids = new Set();
-    for (let t = 1; t <= S.tables; t++) if (S.claims[t]) ids.add(t);
+    if (S.eligible) S.eligible.forEach(t => ids.add(t));
+    else for (let t = 1; t <= S.tables; t++) if (S.claims[t]) ids.add(t);
     Object.keys(S.bids).forEach(t => ids.add(+t));
     return [...ids].map(t => ({ t, v: (t in S.bids) ? S.bids[t] : null }))
       .sort((a, b) => (a.v === null) - (b.v === null) || (a.v ?? 0) - (b.v ?? 0) || a.t - b.t);
@@ -997,30 +2005,64 @@ const TV = (() => {
   function renderRevealGrid(hidden){
     const list = revealEntries();
     $('#rgrid').innerHTML = list.length ? list.map(e => `
-      <div class="rcard ${e.v === null ? 'nobid' : ''} ${hidden && e.v !== null ? 'hid' : ''}" data-t="${e.t}">
+      <div class="rcard ${e.v === null ? 'nobid' : ''} ${hidden && e.v !== null ? 'hid' : ''}" data-t="${e.t}" style="${TC(e.t)}">
         <div class="rc-name">${esc(L(e.t))}</div>${S.names[e.t] ? `<div class="rc-sub">Mesa ${e.t}</div>` : '<div class="rc-sub">&nbsp;</div>'}
-        <div class="rc-val">${e.v === null ? 'Sin apuesta' : fmtVal(e.v, S.q)}</div><div class="rc-pts"></div>
+        <div class="rc-val">${e.v === null ? 'Sin apuesta' : fmtBid(e.v, S.q)}</div><div class="rc-pts"></div>${S.stage === 'normal' && S.jokers && S.jokers[e.t] === S.round ? '<div class="rc-joker">⚡x2</div>' : ''}
       </div>`).join('') : '<div class="empty">Ninguna mesa ha apostado 😶</div>';
   }
   const card = t => $(`#rgrid .rcard[data-t="${t}"]`);
   function applyResult(){
     const r = S.result; if (!r) return;
-    r.over.forEach(t => card(t) && card(t).classList.add('over'));
+    r.over.forEach(t => card(t) && card(t).classList.add('over', ...(r.kind ? ['miss'] : [])));
     r.winners.forEach(t => card(t) && card(t).classList.add('win'));
+    if (r.kind === 'order') for (const t in r.hits) { const c = card(t); if (c) c.querySelector('.rc-sub').textContent = `🎯 ${r.hits[t]} de 4 en su sitio`; }
     for (const t in r.awards) { const c = card(t); if (c) { c.querySelector('.rc-pts').textContent = '+' + r.awards[t]; c.classList.add('scored'); } }
   }
   function revealHead(){
-    $('#r-round').textContent = `Ronda ${S.round} de ${S.total}`;
+    $('#r-round').textContent = rLabel();
     $('#r-text').textContent = (S.q.emoji ? S.q.emoji + ' ' : '') + S.q.text;
   }
+  /* --- regla del precio: todas las pujas sobre una escala y la aguja en el precio justo --- */
+  function renderRuler(){
+    const r = S.result, el = $('#ruler'), sc = $('#s-reveal');
+    const ents = r ? revealEntries().filter(e => e.v !== null) : [];
+    if (!r || !ents.length) { el.innerHTML = ''; el.classList.add('hidden'); sc.classList.remove('has-ruler'); return null; }
+    const a = r.answer, vals = ents.map(e => e.v).concat(a);
+    let lo = Math.min(...vals), hi = Math.max(...vals);
+    if (a > 0) { hi = Math.min(hi, a * 2.5); lo = Math.max(lo, a / 4); }   // pujas disparatadas: al borde con flecha
+    const pad = (hi - lo) * 0.07 || Math.max(1, Math.abs(a) * 0.15);
+    lo = Math.max(0, lo - pad); hi += pad;
+    const pos = v => clamp((v - lo) / (hi - lo) * 100, 0, 100);
+    // Etiquetas en 4 alturas (arriba/abajo) para que no se pisen
+    const sorted = ents.map(e => ({ ...e, p: pos(e.v) })).sort((x, y) => x.p - y.p);
+    const lastAt = [-99, -99, -99, -99];
+    sorted.forEach(e => { let lv = [0, 1, 2, 3].find(l => e.p - lastAt[l] > 13); if (lv === undefined) lv = [0, 1, 2, 3].sort((x, y) => lastAt[x] - lastAt[y])[0]; e.lv = lv; lastAt[lv] = e.p; });
+    el.innerHTML = '<div class="track"></div><div class="ticks"></div><div class="over-zone"></div>' +
+      sorted.map((e, i) => `<div class="pin l${e.lv}${e.p <= 0 ? ' edge' : e.p >= 100 ? ' edge right' : ''}" data-t="${e.t}" style="left:${e.p.toFixed(2)}%;--d:${(i * .12).toFixed(2)}s;${TC(e.t)}"><em></em><i></i><span>${esc(L(e.t))}<small>${esc(fmtVal(e.v, S.q))}</small></span></div>`).join('') +
+      '<div class="needle"><b>PRECIO JUSTO</b></div>';
+    el.classList.remove('hidden'); sc.classList.add('has-ruler');
+    return pos(a);
+  }
+  function rulerResult(ap){
+    const r = S.result, el = $('#ruler'), n = el.querySelector('.needle'); if (!n) return;
+    n.style.opacity = 1; n.style.left = ap + '%';
+    el.querySelector('.over-zone').style.width = (100 - ap) + '%';
+    r.over.forEach(t => { const p = el.querySelector(`.pin[data-t="${t}"]`); if (p) p.classList.add('over'); });
+    r.winners.forEach(t => { const p = el.querySelector(`.pin[data-t="${t}"]`); if (p) p.classList.add('win'); });
+  }
+
   async function renderReveal(mode){
     const tok = animTok; revealHead();
     const ans = $('#ans');
     if (mode === 'done') {
       renderRevealGrid(false); $('#ans-lbl').textContent = 'EL PRECIO JUSTO ES';
-      ans.className = 'ans'; ans.textContent = fmtVal(S.result.answer, S.q); applyResult(); return;
+      ans.className = 'ans'; ans.textContent = fmtVal(S.result.answer, S.q); applyResult();
+      const ap = renderRuler(); if (ap !== null) { $$('#ruler .pin').forEach(p => p.style.animationDelay = '0s'); $('#ruler .needle').style.transition = 'none'; rulerResult(ap); }
+      return;
     }
-    $('#ans-lbl').textContent = '¿CUÁL SERÁ LA CIFRA?'; ans.className = 'ans pulse'; ans.textContent = '?';
+    $('#ruler').classList.add('hidden'); $('#s-reveal').classList.remove('has-ruler');
+    $('#ans-lbl').textContent = S.q.type === 'hilo' ? `¿MÁS O MENOS DE ${fmtVal(S.q.shown, S.q)}?` : S.q.type === 'order' ? '¿CUÁL ES EL ORDEN CORRECTO?' : '¿CUÁL SERÁ LA CIFRA?';
+    ans.className = 'ans pulse'; ans.textContent = '?';
     renderRevealGrid(mode === 'flip');
     if (mode !== 'flip') return;
     await sleep(1500);
@@ -1042,50 +2084,147 @@ const TV = (() => {
     const tok = animTok, r = S.result, ans = $('#ans');
     revealHead(); renderRevealGrid(false);
     $('#ans-lbl').textContent = 'Y EL PRECIO JUSTO ES…'; ans.className = 'ans pulse'; ans.textContent = '?';
-    Sfx.drumroll(2.6); await sleep(2700); if (tok !== animTok) return;
+    fx('redoble', () => Sfx.drumroll(2.6));
+    await Promise.all([sleep(2700), Voz.speak('Y el precio justo es…')]); if (tok !== animTok) return;
     ans.className = 'ans'; await roll(ans, r.answer, 1900, tok); if (tok !== animTok) return;
-    ans.className = 'ans slam'; Sfx.fanfare(); burst();
-    await sleep(1100);
-    for (const t of r.over) { if (tok !== animTok) return; const c = card(t); if (c) { c.classList.add('over'); Sfx.buzz(); } await sleep(420); }
+    ans.className = 'ans slam'; Sonidos.stop('redoble', 300); Sfx.fanfare(); burst();
+    Voz.speak(Voz.val(r.answer, S.q));
+    await sleep(900); if (tok !== animTok) return;
+    // La regla: caen las pujas y la aguja recorre la escala hasta el precio justo
+    const ap = renderRuler();
+    if (ap !== null) {
+      const pins = $$('#ruler .pin').length;
+      await sleep(450 + pins * 120); if (tok !== animTok) return;
+      const n = $('#ruler .needle'); n.style.opacity = 1; Sfx.whoosh();
+      requestAnimationFrame(() => { n.style.left = ap + '%'; });
+      await sleep(1700); if (tok !== animTok) return;
+      $('#ruler .over-zone').style.width = (100 - ap) + '%';
+    }
+    await sleep(400);
+    for (const t of r.over) { if (tok !== animTok) return; const c = card(t), p = $(`#ruler .pin[data-t="${t}"]`); if (c) c.classList.add('over'); if (p) p.classList.add('over'); if (c || p) Sfx.buzz(); await sleep(420); }
     await sleep(500); if (tok !== animTok) return;
     applyResult();
-    if (r.none) showBanner('NADIE APOSTÓ', '🤷', '', 2500);
-    else if (r.allOver) { Sfx.sad(); showBanner('¡TODOS SE PASARON!', 'NADIE PUNTÚA', 'red', 3200); }
+    r.winners.forEach(t => { const p = $(`#ruler .pin[data-t="${t}"]`); if (p) p.classList.add('win'); });
+    const names = r.winners.map(L), who = names.join(' y ');
+    if (r.tie) {
+      if (r.winners.length === 1) { fx('acierto', Sfx.fanfare); fireworks(4000); showBanner(who, '¡PASA A LA GRAN FINAL!', 'gold', 4200); }
+      else { fx('fallo', Sfx.sad); showBanner('¡SIGUE EL EMPATE!', 'OTRA RONDA RÁPIDA', 'red', 3200); }
+      return;
+    }
+    if (r.practice && !r.none && !r.allOver) {
+      fx('acierto', Sfx.fanfare); burst();
+      showBanner(who, '🧪 ¡HABRÍA GANADO! (ES PRÁCTICA: NO PUNTÚA)', 'gold', 3800);
+      return;
+    }
+    if (r.none) { showBanner('NADIE APOSTÓ', '🤷', '', 2500); Voz.speak('Nadie ha apostado en esta ronda.', { queue: true }); }
+    else if (r.allOver) { fx('fallo', Sfx.sad); showBanner('¡TODOS SE PASARON!', 'NADIE PUNTÚA', 'red', 3200); Voz.speak('¡Todos os habéis pasado! Nadie puntúa en esta ronda.', { queue: true }); }
     else {
-      Sfx.fanfare(); fireworks(r.exact ? 6000 : 3000);
-      const who = r.winners.map(L).join(' y ');
-      if (r.exact) showBanner('¡PRECIO EXACTO!', `🎯 ${who} · +${r.awards[r.winners[0]]}`, 'gold', 4200);
-      else showBanner(who, r.winners.length > 1 ? 'EMPATE EN CABEZA · GANAN LA RONDA' : 'GANA LA RONDA', 'gold', 3400);
+      fx('acierto', Sfx.fanfare); fireworks(r.exact ? 6000 : 3000);
+      if (r.exact) { showBanner('¡PRECIO EXACTO!', `🎯 ${who} · +${r.awards[r.winners[0]]}`, 'gold', 4200); Voz.speak(`¡Precio exacto! ¡Enhorabuena, ${joinY(names)}!`, { queue: true }); }
+      else { showBanner(who, r.winners.length > 1 ? 'EMPATE EN CABEZA · GANAN LA RONDA' : 'GANA LA RONDA', 'gold', 3400); Voz.speak(names.length > 1 ? `¡Empate! Ganan la ronda ${joinY(names)}.` : `¡Gana la ronda ${who}!`, { queue: true }); }
     }
   }
 
   /* --- clasificación --- */
+  /* --- revelación de «¿Más o menos?» y «Ordena» --- */
+  const orderChip = (i, r) => `<div class="oc"><b>${ORDER_L[i]}</b><span>${esc((S.q.items || [])[i] || '')}</span><em>${esc(fmtVal(r.prices[i], S.q))}</em></div>`;
+  function altHead(r){ return r.kind === 'hilo' ? (r.correct ? `⬆ ¡ERA MÁS DE ${fmtVal(S.q.shown, S.q)}!` : `⬇ ¡ERA MENOS DE ${fmtVal(S.q.shown, S.q)}!`) : 'EL ORDEN CORRECTO ES'; }
+  function revealAltDone(){
+    const r = S.result, ans = $('#ans'); revealHead(); renderRevealGrid(false);
+    $('#ruler').classList.add('hidden'); $('#s-reveal').classList.remove('has-ruler');
+    $('#ans-lbl').textContent = altHead(r);
+    if (r.kind === 'hilo') { ans.className = 'ans'; ans.textContent = fmtVal(r.answer, S.q); }
+    else { ans.className = 'ans order-ans'; ans.innerHTML = r.correct.split('').map(d => orderChip(+d - 1, r)).join(''); }
+    applyResult();
+  }
+  async function playRevealAlt(){
+    const tok = animTok, r = S.result, ans = $('#ans');
+    revealHead(); renderRevealGrid(false);
+    $('#ruler').classList.add('hidden'); $('#s-reveal').classList.remove('has-ruler');
+    if (r.kind === 'hilo') {
+      $('#ans-lbl').textContent = `¿MÁS O MENOS DE ${fmtVal(S.q.shown, S.q)}? EL PRECIO REAL ES…`; ans.className = 'ans pulse'; ans.textContent = '?';
+      fx('redoble', () => Sfx.drumroll(2.6)); await sleep(2700); if (tok !== animTok) return;
+      ans.className = 'ans'; await roll(ans, r.answer, 1700, tok); if (tok !== animTok) return;
+      ans.className = 'ans slam'; Sonidos.stop('redoble', 300); Sfx.fanfare(); burst();
+      $('#ans-lbl').textContent = altHead(r);
+    } else {
+      $('#ans-lbl').textContent = 'EL ORDEN CORRECTO ES…'; ans.className = 'ans order-ans'; ans.innerHTML = '';
+      fx('redoble', () => Sfx.drumroll(2)); await sleep(2100); if (tok !== animTok) return;
+      Sonidos.stop('redoble', 300);
+      for (const d of r.correct.split('')) {
+        if (tok !== animTok) return;
+        ans.insertAdjacentHTML('beforeend', orderChip(+d - 1, r)); Sfx.pop(); await sleep(950);
+      }
+      Sfx.fanfare(); burst();
+    }
+    await sleep(900); if (tok !== animTok) return;
+    for (const t of r.over) { if (tok !== animTok) return; const c = card(t); if (c) { c.classList.add('over', 'miss'); Sfx.buzz(); } await sleep(300); }
+    await sleep(400); if (tok !== animTok) return;
+    applyResult();
+    const n = r.winners.length, who = r.winners.map(L).join(' y ');
+    if (r.none) showBanner('NADIE CONTESTÓ', '🤷', '', 2500);
+    else if (!n) { fx('fallo', Sfx.sad); showBanner('¡NADIE ACIERTA!', r.kind === 'order' ? 'NI UNA EN SU SITIO' : 'TODOS SE EQUIVOCARON', 'red', 3200); }
+    else if (r.kind === 'hilo') { fx('acierto', Sfx.fanfare); fireworks(2500); showBanner(n === 1 ? who : `${n} MESAS`, n === 1 ? '¡LA ÚNICA QUE ACIERTA!' : `ACIERTAN · +${100 * (r.mult || 1)} PUNTOS`, 'gold', 3400); }
+    else { fx('acierto', Sfx.fanfare); fireworks(r.exact ? 5000 : 2500); showBanner(n > 2 ? `${n} MESAS` : who, r.exact ? '🎯 ¡ORDEN PERFECTO!' : `EL MEJOR ORDEN · ${r.best} DE 4`, 'gold', 3600); }
+  }
+
+  let racing = false;
   function renderRanking(anim){
-    animTok++; const tok = animTok;
+    animTok++; const tok = animTok; racing = false;
     const rows = standings(S), max = Math.max(1, ...rows.map(r => r.s));
-    const left = S.total - S.round;
+    const done = Math.min(S.round, S.total), left = S.total - done;
     $('#rk-sub').textContent = S.round
-      ? `Tras la ronda ${S.round} de ${S.total}${left > 0 ? ` · quedan ${left}` : ''} · 🎁 La cesta es para quien lidere al final`
-      : '🎁 La cesta es para la mesa con más puntos al final';
-    const n = rows.length;
-    $('#rk-list').style.gridAutoRows = `minmax(0, ${Math.min(7.5, 62 / Math.max(1, n)).toFixed(2)}vh)`;
-    $('#rk-list').innerHTML = n ? rows.map((r, i) => `
-      <div class="rrow ${r.pos === 1 && r.s > 0 ? 'lead' : ''}" style="--d:${anim ? ((n - 1 - i) * .22).toFixed(2) : 0}s">
-        <div class="rpos">${medal(r.pos)}</div>
+      ? `Tras la ronda ${done} de ${S.total}${left > 0 ? ` · quedan ${left}` : ''} · 🎁 Quien lidere al final juega el escaparate de la cesta`
+      : '🎁 La mesa con más puntos al final juega el escaparate de la cesta';
+    const n = rows.length, list = $('#rk-list');
+    $('#rk-step').textContent = '';
+    if (!n) { list.classList.remove('race'); list.style.height = ''; list.innerHTML = '<div class="empty">Todavía no hay mesas jugando</div>'; return; }
+    // «Carrera de puntos»: se reproduce la partida ronda a ronda y las barras se adelantan
+    const ids = rows.map(r => r.t), steps = [];
+    if (anim) {
+      const acc = Object.fromEntries(ids.map(t => [t, 0]));
+      steps.push({ lbl: 'SALIDA', sc: { ...acc } });
+      (S.history || []).forEach(h => { for (const t in h.awards) if (t in acc) acc[t] += h.awards[t]; steps.push({ lbl: `RONDA ${h.round}`, sc: { ...acc } }); });
+    }
+    steps.push({ lbl: '', sc: Object.fromEntries(rows.map(r => [r.t, r.s])) });   // marcador real (incluye ajustes manuales)
+    const rowH = Math.min(7.5, 64 / n - 1), gap = 1;
+    list.classList.add('race'); list.style.height = (n * (rowH + gap)) + 'vh';
+    list.innerHTML = rows.map(r => `
+      <div class="rrow" data-t="${r.t}" style="${TC(r.t)}height:${rowH.toFixed(2)}vh">
+        <div class="rpos"></div>
         <div class="rname">${esc(L(r.t))}${S.names[r.t] ? `<small>Mesa ${r.t}</small>` : ''}</div>
-        <div class="rbar"><i style="--w:${(r.s / max * 100).toFixed(1)}%"></i></div>
-        <div class="rpts" data-v="${r.s}">${anim ? 0 : fmtNum(r.s)}</div>
-      </div>`).join('') : '<div class="empty">Todavía no hay mesas jugando</div>';
-    requestAnimationFrame(() => $$('#rk-list .rrow').forEach(e => e.classList.add('go')));
-    if (!anim) return;
-    Sfx.whoosh();
-    $$('#rk-list .rrow').forEach((row, i) => {
-      const el = row.querySelector('.rpts'), target = +el.dataset.v, delay = (n - 1 - i) * 220 + 300;
-      setTimeout(() => {
-        if (tok !== animTok) return; const t0 = performance.now();
-        (function f(now){ if (tok !== animTok) return; const k = Math.min(1, (now - t0) / 1200); el.textContent = fmtNum(Math.round(target * (1 - Math.pow(1 - k, 3)))); if (k < 1) requestAnimationFrame(f); else if (i === 0) Sfx.ding(); })(t0);
-      }, delay);
-    });
+        <div class="rbar"><i></i></div>
+        <div class="rpts">0</div>
+      </div>`).join('');
+    const shownPts = {};
+    const apply = sc => {
+      const order = [...ids].sort((a, b) => sc[b] - sc[a] || ids.indexOf(a) - ids.indexOf(b));
+      const max = Math.max(1, ...Object.values(sc));
+      order.forEach((t, i) => {
+        const row = list.querySelector(`.rrow[data-t="${t}"]`), pos = 1 + order.filter(o => sc[o] > sc[t]).length;
+        row.style.transform = `translateY(${(i * (rowH + gap)).toFixed(2)}vh)`;
+        row.querySelector('.rbar i').style.width = (sc[t] / max * 100).toFixed(1) + '%';
+        row.querySelector('.rpos').textContent = medal(pos);
+        row.classList.toggle('lead', pos === 1 && sc[t] > 0);
+        const el = row.querySelector('.rpts'), from = shownPts[t] || 0, to = sc[t], t0 = performance.now(); shownPts[t] = to;
+        if (from === to) { el.textContent = fmtNum(to); return; }
+        (function f(now){ if (tok !== animTok) return; const k = Math.min(1, (now - t0) / 650); el.textContent = fmtNum(Math.round(from + (to - from) * k)); if (k < 1) requestAnimationFrame(f); })(t0);
+      });
+    };
+    if (!anim) { list.classList.add('still'); apply(steps[0].sc); return; }
+    list.classList.add('still'); apply(steps[0].sc);
+    requestAnimationFrame(() => list.classList.remove('still'));
+    racing = true;
+    (async () => {
+      Sfx.whoosh(); await sleep(900);
+      for (let i = 1; i < steps.length; i++) {
+        if (tok !== animTok) break;
+        $('#rk-step').textContent = steps[i].lbl; apply(steps[i].sc); Sfx.pop();
+        await sleep(steps.length > 7 ? 950 : 1150);
+      }
+      if (tok === animTok) { $('#rk-step').textContent = ''; Sfx.ding(); }
+      racing = false;
+    })();
   }
 
   /* --- gran final --- */
@@ -1094,20 +2233,110 @@ const TV = (() => {
     const rows = standings(S), top = rows.filter(r => r.pos === 1 && r.s > 0);
     const byPos = p => rows.find(r => r.pos === p);
     const ranked = rows.filter(r => r.s > 0), p1 = ranked[0], p2 = ranked[1], p3 = ranked[2];
-    const col = (r, cls, n) => r ? `<div class="pcol ${cls}"><div class="pname">${esc(L(r.t))}</div><div class="ppts">${fmtNum(r.s)} pts</div><div class="pblock">${n}</div></div>` : `<div class="pcol ${cls}"></div>`;
+    const col = (r, cls, n) => r ? `<div class="pcol ${cls}" style="${TC(r.t)}"><div class="pname">${esc(L(r.t))}</div><div class="ppts">${fmtNum(r.s)} pts</div><div class="pblock">${n}</div></div>` : `<div class="pcol ${cls}"></div>`;
     $('#podium').innerHTML = col(p2, 'p2', 2) + col(p1, 'p1', 1) + col(p3, 'p3', 3);
     $('#fin-rest').innerHTML = ranked.slice(3).map(r => `<span>${r.pos}º ${esc(L(r.t))} · ${fmtNum(r.s)}</span>`).join('');
-    const tie = top.length > 1;
-    const winText = !top.length ? 'Todavía no hay puntos' : tie ? `¡EMPATE ENTRE ${top.map(r => L(r.t)).join(' Y ')}! → RONDA DE DESEMPATE` : `🎁 ¡LA CESTA ES PARA ${L(top[0].t)}! 🎁`;
+    const played = S.stage === 'final' && S.finalDone, tie = !played && top.length > 1;
+    const winText = played ? (S.prize ? `🎁 ¡LA CESTA ES PARA ${L(S.prize)}! 🎁` : 'Nadie se lleva la cesta… 😱')
+      : !top.length ? 'Todavía no hay puntos' : tie ? `¡EMPATE ENTRE ${top.map(r => L(r.t)).join(' Y ')}! → RONDA DE DESEMPATE` : `🏆 ¡${L(top[0].t)} PASA AL ESCAPARATE FINAL!`;
+    $('#fin-pre').textContent = played ? 'Y la Cesta de Navidad es para…' : 'Y la mesa que juega el escaparate final es…';
     const cols = { p3: $('#podium .p3'), p2: $('#podium .p2'), p1: $('#podium .p1') };
     if (!anim) { $('#fin-pre').classList.add('show'); Object.values(cols).forEach(c => c.classList.add('show')); $('#fin-win').textContent = winText; return; }
     $('#fin-pre').classList.remove('show'); $('#fin-win').textContent = '';
     await sleep(400); $('#fin-pre').classList.add('show');
-    Sfx.drumroll(3.4); await sleep(3500); if (tok !== animTok) return;
+    fx('redoble', () => Sfx.drumroll(3.4)); Voz.speak(top.length ? 'Ha llegado el momento. La cesta de Navidad es para…' : '');
+    await sleep(3500); if (tok !== animTok) return;
     cols.p3.classList.add('show'); Sfx.pop(); await sleep(1000); if (tok !== animTok) return;
     cols.p2.classList.add('show'); Sfx.pop(); await sleep(1300); if (tok !== animTok) return;
-    cols.p1.classList.add('show'); Sfx.fanfare(); $('#fin-win').textContent = winText;
-    if (!tie && top.length) { fireworks(12000); setTimeout(() => Sfx.jingle(), 1800); }
+    cols.p1.classList.add('show'); Sonidos.stop('redoble', 300); if (played && S.prize) fx('cesta', Sfx.fanfare); else Sfx.fanfare(); $('#fin-win').textContent = winText;
+    Voz.speak(!top.length ? 'Todavía no hay puntos.'
+      : tie ? `¡Hay empate en cabeza entre ${joinY(top.map(r => L(r.t)))}! Vamos a una ronda de desempate.`
+      : `¡${L(top[0].t)}! ¡Enhorabuena!`, { queue: true });
+    if (played) setTimeout(() => tok === animTok && Sonidos.play('sintonia'), 5000);   // la sintonía cierra la noche
+    if (played ? S.prize : (!tie && top.length)) { fireworks(12000); if (!(played && Sonidos.has('cesta'))) setTimeout(() => Sfx.jingle(), 1800); }
+  }
+
+  /* --- escaparate final: telón + desfile de productos --- */
+  function showcaseEnd(){
+    const items = Cesta.items(), g = $('#sc-grid');
+    const cols = items.length <= 5 ? Math.max(1, items.length) : Math.ceil(items.length / 2);
+    g.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
+    g.style.width = Math.min(86, cols * 17) + 'vw';
+    g.innerHTML = items.map((it, i) => `<figure style="--d:${(i * .12).toFixed(2)}s"><img src="${it.url}" alt=""></figure>`).join('');
+    g.classList.toggle('hidden', !items.length);
+    $('#sc-who').textContent = `Juega: 🥇 ${L(finalist())}`;
+    $('#sc-rule').textContent = `Sin pasarse… y a menos de un ${pctTxt} del precio`;
+    $('#sc-cta').classList.remove('hidden');
+  }
+  async function playShowcase(anim){
+    const tok = animTok, sc = $('#s-showcase'), slide = $('#sc-slide');
+    $('#sc-grid').classList.add('hidden'); $('#sc-cta').classList.add('hidden'); slide.innerHTML = '';
+    if (!anim) { sc.classList.add('open'); showcaseEnd(); return; }
+    sc.classList.remove('open');
+    fx('redoble', () => Sfx.drumroll(2.4)); await sleep(2700); if (tok !== animTok) return;
+    sc.classList.add('open'); Sonidos.stop('redoble', 300); Sfx.whoosh(); Sfx.fanfare(); burst();
+    Sonidos.play('escaparate', { loop: true, vol: .85 });
+    await sleep(2100); if (tok !== animTok) return;
+    const items = Cesta.items();
+    if (!items.length) toast('No hay productos de la cesta: recarga la TV y usa «🎁 Cargar productos de la cesta»', 'err');
+    const list = items.length ? items : [{ name: 'La Cesta de Navidad', url: null }];
+    for (let i = 0; i < list.length; i++) {
+      const it = list[i], c = document.createElement('div');
+      c.className = 'sc-card';
+      c.innerHTML = (it.url ? `<img src="${it.url}" alt="">` : '<div class="sc-emoji">🎁</div>') +
+        (items.length ? `<div class="sc-n">${i + 1} / ${items.length}</div>` : '') + `<div class="sc-name">${esc(it.name)}</div>`;
+      slide.replaceChildren(c); Sfx.whoosh(); if (!Sonidos.has('escaparate')) setTimeout(() => tok === animTok && Sfx.ding(), 380);
+      setTimeout(() => tok === animTok && Pixel.burst(.5, .5, 28, .7), 450);
+      await sleep(2900); if (tok !== animTok) return;
+      c.classList.add('out'); await sleep(520); if (tok !== animTok) return;
+    }
+    slide.innerHTML = ''; showcaseEnd();
+    Sfx.fanfare(); fireworks(2500); if (!Sonidos.has('escaparate')) setTimeout(() => tok === animTok && Sfx.jingle(), 1400);
+  }
+
+  /* --- escaparate final: veredicto de la puja --- */
+  async function playVerdict(anim){
+    const tok = animTok, tries = S.finalTries, last = tries[tries.length - 1]; if (!last) return;
+    const q = S.q || { unit: '€', decimals: 2 };
+    $('#v-text').textContent = q.text || '';
+    $('#v-who').textContent = `${L(last.t)} dice…`;
+    $('#v-bid').textContent = last.v === null ? 'Sin puja' : fmtVal(last.v, q);
+    $('#v-rule').textContent = `Para llevársela: no pasarse y quedarse a menos de un ${pctTxt} del precio`;
+    $('#v-tries').innerHTML = tries.slice(0, -1).map(x => `<span>${esc(L(x.t))}: ${x.v === null ? 'sin puja' : esc(fmtVal(x.v, q))} · ${{ over: 'se pasó', short: 'se quedó corto', none: 'no pujó', win: '¡dentro!' }[x.verdict]}</span>`).join('');
+    const stamp = $('#v-stamp'), sub = $('#v-sub'), box = $('#v-ansbox'), ans = $('#v-ans');
+    stamp.className = 'v-stamp'; stamp.textContent = ''; sub.textContent = ''; box.classList.add('hidden');
+    const next = !S.finalDone ? finalist() : null, win = last.verdict === 'win';
+    const txt = { win: '¡DENTRO! 🎉', over: '¡SE HA PASADO!', short: '¡SE HA QUEDADO CORTO!', none: '¡NO HA PUJADO!' }[last.verdict];
+    const why = { over: 'Ha dicho más de lo que vale la cesta', short: `Se ha quedado a más de un ${pctTxt} por debajo`, none: 'No llegó a enviar su puja' }[last.verdict] || '';
+    const nextTxt = next ? `↪️ ¡REBOTE! Ahora juega ${L(next)}` : '';
+    if (!anim) {
+      stamp.className = 'v-stamp ' + (win ? 'ok' : 'bad'); stamp.textContent = txt;
+      sub.textContent = win ? `🎁 ¡La cesta es para ${L(last.t)}!` : (next ? nextTxt : why);
+      if (S.finalDone) { box.classList.remove('hidden'); ans.className = 'ans'; ans.textContent = fmtVal(S.finalAns, q); $('#v-rule').textContent = ''; }
+      return;
+    }
+    $('#v-bid').classList.add('pulse');
+    fx('redoble', () => Sfx.drumroll(2.8)); await sleep(3000); if (tok !== animTok) return;
+    $('#v-bid').classList.remove('pulse');
+    stamp.className = 'v-stamp ' + (win ? 'ok' : 'bad'); stamp.textContent = txt;
+    if (win) {
+      Sonidos.stop('redoble', 300); fx('cesta', Sfx.fanfare); burst(); await sleep(1400); if (tok !== animTok) return;
+      $('#v-rule').textContent = '';
+      box.classList.remove('hidden'); ans.className = 'ans';
+      await roll(ans, S.finalAns, 1900, tok); if (tok !== animTok) return;
+      ans.className = 'ans slam'; fireworks(9000); if (!Sonidos.has('cesta')) { Sfx.fanfare(); setTimeout(() => tok === animTok && Sfx.jingle(), 1500); }
+      sub.textContent = `🎁 ¡La cesta es para ${L(last.t)}!`;
+      showBanner(L(last.t), '🎁 ¡SE LLEVA LA CESTA!', 'gold', 4500);
+      return;
+    }
+    Sonidos.stop('redoble', 300); Sfx.buzz(); fx('fallo', Sfx.sad); sub.textContent = why;
+    await sleep(2200); if (tok !== animTok) return;
+    if (next) { sub.textContent = nextTxt; showBanner(L(next), '↪️ ¡REBOTE! AHORA JUEGA…', 'red', 3600); Sfx.whoosh(); return; }
+    // Nadie más: se descubre el precio
+    box.classList.remove('hidden'); ans.className = 'ans';
+    await roll(ans, S.finalAns, 1900, tok); if (tok !== animTok) return;
+    ans.className = 'ans slam'; Sfx.fanfare();
+    sub.textContent = 'Nadie se lleva la cesta… 😱';
   }
 
   /* --- banner --- */
@@ -1128,7 +2357,7 @@ const TV = (() => {
     for (let i = 0; i < 140; i++) flakes.push({ x: Math.random() * W, y: Math.random() * H, r: Math.random() * 2.4 + .6, s: Math.random() * .6 + .25, w: Math.random() * 6.28 });
     (function f(){
       cx.clearRect(0, 0, W, H); cx.fillStyle = 'rgba(255,255,255,.75)';
-      for (const p of flakes) { p.y += p.s; p.w += .01; p.x += Math.sin(p.w) * .35; if (p.y > H + 5) { p.y = -5; p.x = Math.random() * W; } cx.beginPath(); cx.arc(p.x, p.y, p.r, 0, 6.28); cx.fill(); }
+      for (const p of flakes) { p.y += p.s; p.w += .01; p.x += Math.sin(p.w) * .35; if (p.y > H + 5) { p.y = -5; p.x = Math.random() * W; } const s = Math.max(2, Math.round(p.r * 1.7)); cx.fillRect(Math.round(p.x / s) * s, Math.round(p.y / s) * s, s, s); }
       requestAnimationFrame(f);
     })();
   }
@@ -1141,19 +2370,80 @@ const TV = (() => {
     makeQR($('#qr-lobby'), PLAYER_URL); makeQR($('#qr-mini'), PLAYER_URL, 256); makeQR($('#qr-open'), PLAYER_URL, 384);
     makeQR($('#qr-remote'), REMOTE_URL, 256);
     $('#qr-url').textContent = shortUrl(PLAYER_URL);
-    $('#tv-pin').textContent = PIN; $('#remote-url').textContent = shortUrl(REMOTE_URL);
+    $('#tv-pin').textContent = PIN; $('#tv-sala').textContent = SALA; $('#remote-url').textContent = shortUrl(BASE_URL + '?mode=remote');
+    const updSum = () => { $('#setup-sum').textContent = `· 📸 ${Fotos.list().length} fotos · 🎁 ${Cesta.items().length} productos · 🎵 ${Sonidos.list().length} sonidos`; };
+    $('#start-setup').addEventListener('click', e => e.stopPropagation());
+    const listFotos = () => { setTimeout(updSum); const l = Fotos.list(); $('#fotos-list').innerHTML = l.length ? `Fotos cargadas para las rondas: <b>${l.join(', ')}</b>` : 'Opcional · nombra cada archivo con el número de su ronda: 1.jpg, 5.png…'; };
+    ['#fotos-btn', '#fotos-clear', '#fotos-in'].forEach(sel => $(sel).addEventListener('click', e => e.stopPropagation()));
+    $('#fotos-btn').onclick = () => $('#fotos-in').click();
+    $('#fotos-in').onchange = async e => { const n = await Fotos.add([...e.target.files]); e.target.value = ''; listFotos(); toast(n ? `${n} foto${n > 1 ? 's' : ''} cargada${n > 1 ? 's' : ''} ✓` : 'Ningún archivo lleva número de ronda en el nombre', n ? 'ok' : 'err'); shown = { phase: null, round: null }; render(); };
+    $('#fotos-clear').onclick = async () => { if (!confirm('¿Borrar todas las fotos cargadas en este portátil?')) return; await Fotos.clear(); listFotos(); shown = { phase: null, round: null }; render(); };
+    // --- sonidos propios ---
+    const listSon = () => { setTimeout(updSum);
+      const l = Sonidos.list();
+      $('#son-list').innerHTML = l.length
+        ? 'Propios: ' + l.map(x => `<b>${x.n}</b> (${x.from})`).join(' · ') + ' · el resto, sintetizados'
+        : `Opcional · nombres: ${Object.keys(SONIDOS).map(n => n + '.mp3').join(', ')}`;
+    };
+    $('#start-son').addEventListener('click', e => e.stopPropagation());
+    $('#son-btn').onclick = () => $('#son-in').click();
+    $('#son-in').onchange = async e => {
+      const r = await Sonidos.add([...e.target.files]); e.target.value = ''; listSon();
+      toast(r.ok.length ? `🎵 ${r.ok.length} sonido${r.ok.length > 1 ? 's' : ''} cargado${r.ok.length > 1 ? 's' : ''}${r.bad.length ? ` · ignorados: ${r.bad.join(', ')}` : ''}` : 'Ningún nombre coincide (sintonia.mp3, tiempo.mp3…)', r.ok.length ? 'ok' : 'err');
+    };
+    $('#son-clear').onclick = async () => { if (!confirm('¿Borrar los sonidos cargados en este portátil? (Los de la carpeta sonidos/ del repo no se tocan)')) return; await Sonidos.clear(); listSon(); };
+    Sonidos.loadAll().then(listSon);
+    // --- fotos de la cesta (escaparate) ---
+    const listCesta = () => { setTimeout(updSum); const it = Cesta.items(); $('#cesta-list').innerHTML = it.length ? `Cesta (${Cesta.source === 'repo' ? 'carpeta cesta/ del repo' : 'cargada en este portátil'}): <b>${it.length} producto${it.length > 1 ? 's' : ''}</b> · ${it.map(i => esc(i.name)).join(' · ')}` : 'Sin productos · el nombre de cada archivo es el nombre del producto (puedes numerarlos: «1 Jamón.jpg»)'; };
+    $('#start-cesta').addEventListener('click', e => e.stopPropagation());
+    $('#cesta-btn').onclick = () => $('#cesta-in').click();
+    $('#cesta-in').onchange = async e => { const n = await Cesta.set([...e.target.files]); e.target.value = ''; listCesta(); toast(n ? `🎁 Cesta con ${n} producto${n > 1 ? 's' : ''} ✓` : 'No había imágenes', n ? 'ok' : 'err'); };
+    $('#cesta-clear').onclick = async () => { if (!confirm('¿Borrar las fotos de la cesta cargadas en este portátil? (Las de la carpeta cesta/ del repo no se tocan)')) return; await Cesta.clear(); listCesta(); };
+    Cesta.loadAll().then(() => { listCesta(); if (S.phase === 'showcase' || S.phase === 'open') { shown = { phase: null, round: null, sc: 0 }; render(); } });
+    Fotos.loadAll().then(() => { listFotos(); if (S.phase === 'question' || S.phase === 'open') { shown = { phase: null, round: null }; render(); } });
+    // --- locución ---
+    $('#start-voz').addEventListener('click', e => e.stopPropagation());
+    const fillVoz = () => Voz.fill($('#voz-sel'));
+    if (!VOZ_ACTIVA) $('#start-voz').remove();
+    else if (!Voz.supported) $('#start-voz').innerHTML = '<span class="fl-lbl">🗣️ Este navegador no tiene voz integrada (usa Chrome o Edge)</span>';
+    else {
+      fillVoz(); Voz.onVoices(fillVoz);
+      $('#voz-rate').value = String(Voz.rate);
+      $('#voz-sel').onchange = e => { Voz.setVoice(e.target.value); Voz.speak('Hola, soy la voz del Precio Justo.'); };
+      $('#voz-rate').onchange = e => { Voz.setRate(e.target.value); Voz.speak('Así hablaré durante el juego.'); };
+      $('#voz-test').onclick = () => { if (!Voz.on) { Voz.toggle(); syncVozUI(); } Sfx.init(); Voz.speak('Ronda 1. ¿Cuánto cuesta este turrón? Y el precio justo es… 12 euros con 50. ¡Gana la ronda Mesa 3!'); };
+      $('#voz-toggle').onclick = () => { toast(Voz.toggle() ? '🗣️ Voz activada' : '🤐 Voz desactivada'); syncVozUI(); };
+      syncVozUI();
+    }
     $('#tv-start').addEventListener('click', () => {
-      Sfx.init(); Sfx.jingle(); keepAwake();
+      Sfx.init(); keepAwake();
       try { document.documentElement.requestFullscreen && document.documentElement.requestFullscreen().catch(() => {}); } catch(e){}
       $('#tv-start').classList.add('hidden');
+      if (S.phase === 'lobby') {
+        Pixel.setLobby(true);
+        // la sintonía suena en bucle en la pantalla de inicio mientras entran las mesas (se corta al lanzar la 1.ª pregunta)
+        if (!Sonidos.play('sintonia', { loop: true, vol: .7 })) Sfx.jingle();
+      } else Sfx.jingle();
     });
     document.addEventListener('keydown', e => {
       const k = e.key.toLowerCase();
       if (k === 'f') { if (document.fullscreenElement) document.exitFullscreen(); else document.documentElement.requestFullscreen().catch(() => {}); }
-      if (k === 'm') toast(Sfx.toggle() ? '🔊 Sonido activado' : '🔇 Silencio');
+      if (k === 'm') { const on = Sfx.toggle(); Sonidos.setMuted(!on); toast(on ? '🔊 Sonido activado' : '🔇 Silencio'); }
+      if (k === 'v' && VOZ_ACTIVA && !e.target.closest('select')) { toast(Voz.toggle() ? '🗣️ Voz activada' : '🤐 Voz desactivada'); syncVozUI(); }
+      if (k === 's' && confirm('¿Cambiar el código de sala? Los móviles conectados tendrán que volver a escanear el QR.')) { store.del('pj_sala'); location.href = BASE_URL; return; }
       if (k === 'p') { const el = $('#pin-peek'); el.textContent = `🔐 PIN del mando: ${PIN}`; el.classList.remove('hidden'); setTimeout(() => el.classList.add('hidden'), 4000); }
     });
     render();
+    // Aviso si hay OTRA pantalla de TV abierta en la misma sala (otra pestaña, «Restaurar páginas» de Edge, otro ordenador):
+    // dos TV se pisan el estado y el reinicio o los comandos parecen no funcionar.
+    let dupTimer;
+    const warnDup = () => {
+      let el = $('#dup-tv');
+      if (!el) { el = document.createElement('div'); el.id = 'dup-tv'; el.innerHTML = '⚠️ Hay <b>otra pantalla de TV</b> abierta con esta sala.<br>Cierra las demás pestañas o ventanas de la TV y deja solo una.'; document.body.appendChild(el); }
+      el.classList.remove('hidden'); clearTimeout(dupTimer); dupTimer = setTimeout(() => el.classList.add('hidden'), 8000);
+    };
+    handlers.state = warnDup;                                                              // con self:false, un «state» recibido solo puede venir de otra TV
+    window.addEventListener('storage', e => { if (e.key === KEY) warnDup(); });            // otra pestaña de este navegador escribiendo el estado
     Bus.start(handlers, st => {
       const c = $('#tv-conn'); c.className = 'conn ' + (st === 'SUBSCRIBED' ? 'ok' : st === 'CONNECTING' ? '' : 'bad');
       c.querySelector('span').textContent = st === 'SUBSCRIBED' ? 'Conectado' : st === 'NO_LIB' ? 'Sin conexión a Supabase' : 'Reconectando…';
@@ -1161,6 +2451,7 @@ const TV = (() => {
     });
     setInterval(tick, 100);
     setInterval(broadcast, 3000);
+    setInterval(() => { if (S.phase === 'lobby') Pixel.parade({ y: .955 }); }, 22000);   // Cestín se pasea por el inicio
   }
   return { start };
 })();
@@ -1171,15 +2462,25 @@ const TV = (() => {
 const Player = (() => {
   const dev = deviceId(), myH = hash(dev);
   let table = +store.get('pj_table') || null, st = null, pending = null, deadline = 0, view = '', bidKey = '', ackTimer = null, firstState = false;
+  // Tarjetas de mesa: ?mode=player&mesa=3 entra directamente como portavoz de la mesa 3
+  let autoMesa = +new URLSearchParams(location.search).get('mesa') || null;
 
   function show(id){ ['p-connecting','p-join','p-name','p-wait','p-bid','p-closed','p-result','p-rank'].forEach(s => $('#' + s).classList.toggle('hidden', s !== id)); view = id; }
-  const L = t => labelOf(t, st && st.names);
+  const L = t => labelOf(t, st && st.names, st && st.looks);
   const myBid = () => st && st.bids && (table in st.bids) ? st.bids[table] : null;
 
   function onState(s){
     const wasPhase = st && st.phase;
     st = s; firstState = true;
     if (s.phase === 'open') { const d = Date.now() + s.remaining; if (Math.abs(d - deadline) > 500) deadline = d; }
+    if (autoMesa && !pending) {
+      const t = autoMesa; autoMesa = null;
+      try { history.replaceState(null, '', location.pathname + '?mode=player&sala=' + SALA + (DEV ? '&dev=' + DEV : '')); } catch(e){}
+      if (t >= 1 && t <= s.tables && table !== t) {
+        if (s.claims[t] && s.claims[t] !== myH) toast(`La Mesa ${t} ya tiene portavoz`, 'err');
+        else claim(t);
+      }
+    }
     if (table && s.claims[table] !== myH && !pending) { table = null; store.del('pj_table'); toast('Tu mesa se ha liberado. Elige de nuevo.', 'err'); }
     if (wasPhase && wasPhase !== s.phase && navigator.vibrate) navigator.vibrate(s.phase === 'reveal' ? [80, 60, 80] : 60);
     render();
@@ -1190,7 +2491,10 @@ const Player = (() => {
     if (!st) return show('p-connecting');
     if (!table) return renderJoin();
     if (view === 'p-name') return;
-    const ph = st.phase;
+    const ph = st.phase, el = st.eligible;
+    if (ph === 'showcase') return renderWatch();
+    if (ph === 'verdict') { const last = (st.tries || []).slice(-1)[0]; return last && last.t === table ? renderVerdict() : renderWatch(); }
+    if (el && !el.includes(table) && ['question', 'open', 'closed', 'reveal'].includes(ph)) return renderWatch();
     if (ph === 'lobby' || ph === 'question') return renderWait();
     if (ph === 'open') return renderBid();
     if (ph === 'closed') return renderClosed();
@@ -1217,19 +2521,76 @@ const Player = (() => {
     table = p.table; store.set('pj_table', table);
     if (navigator.vibrate) navigator.vibrate(80);
     keepAwake();
-    if (t) { $('#p-name-in').value = st && st.names[table] || ''; show('p-name'); }
+    if (t) openName();
     render();
+  }
+  // Emoji y color de la mesa
+  let pickE = '', pickC = '';
+  function openName(){
+    const lk = (st && st.looks && st.looks[table]) || {};
+    const used = Object.entries((st && st.looks) || {}).filter(([t]) => +t !== table).map(([, l]) => l.c);
+    pickE = lk.e || ''; pickC = lk.c || MESA_COLORS.find(c => !used.includes(c)) || MESA_COLORS[table % MESA_COLORS.length];
+    $('#p-name-in').value = (st && st.names[table]) || '';
+    $('#p-emojis').innerHTML = MESA_EMOJIS.map(e => `<button type="button" data-e="${e}" class="${e === pickE ? 'sel' : ''}">${e}</button>`).join('');
+    $('#p-colors').innerHTML = MESA_COLORS.map(c => `<button type="button" data-c="${c}" class="${c === pickC ? 'sel' : ''}" style="background:${c}"></button>`).join('');
+    show('p-name');
   }
   function saveName(skip){
     const n = skip ? '' : cleanName($('#p-name-in').value);
-    if (!skip || (st && st.names[table])) Bus.send('rename', { table, device: dev, name: n });
+    Bus.send('rename', { table, device: dev, name: n, emoji: pickE, color: pickC });
     view = ''; render();
+  }
+  // Desempate o escaparate que juegan otras mesas (o el escaparate en pantalla)
+  function renderWatch(){
+    show('p-wait'); $('#pw-rename').classList.add('hidden');
+    const fin = st.stage === 'final', f = st.finalist, me = f === table, names = (st.eligible || []).map(L);
+    $('#pw-badge').innerHTML = `<span class="badge red">${roundLabel(st)}</span>`;
+    $('#pw-q').textContent = '';
+    if (st.phase === 'showcase') {
+      $('#pw-emoji').textContent = me ? '🤩' : '🎁';
+      $('#pw-title').textContent = me ? '¡Jugáis el escaparate final!' : '¡Mirad la pantalla!';
+      $('#pw-sub').textContent = me ? `Fijaos bien en cada producto: tendréis que decir cuánto vale la cesta. Sin pasaros… y a menos de un ${pctTxt}.` : `${L(f)} juega el escaparate final por la cesta 🎁`;
+    } else if (fin && st.phase === 'verdict' && st.finalDone) {
+      $('#pw-emoji').textContent = st.prize ? '🎁' : '😱';
+      $('#pw-title').textContent = st.prize ? `¡La cesta es para ${L(st.prize)}!` : 'Nadie se lleva la cesta';
+      $('#pw-sub').textContent = st.finalAns ? `Valía ${fmtVal(st.finalAns, st.q)}` : '';
+    } else if (fin && me && st.phase === 'verdict') {
+      $('#pw-emoji').textContent = '↪️';
+      $('#pw-title').textContent = '¡REBOTE! Os toca a vosotros';
+      $('#pw-sub').textContent = 'Preparad vuestra puja: en nada se abre. Fijaos en lo que ha dicho la mesa anterior 👀';
+    } else if (fin && st.phase === 'verdict') {
+      $('#pw-emoji').textContent = '↪️';
+      $('#pw-title').textContent = `¡Rebote! Ahora juega ${L(f)}`;
+      $('#pw-sub').textContent = 'La mesa anterior ha fallado… ¡atentos a la pantalla!';
+    } else if (fin) {
+      $('#pw-emoji').textContent = '🤞';
+      $('#pw-title').textContent = `${L(f)} está jugando el escaparate`;
+      $('#pw-sub').textContent = 'Si falla, la cesta rebota a la siguiente mesa de la clasificación… ¡atentos!';
+    } else {
+      $('#pw-emoji').textContent = '⚡';
+      $('#pw-title').textContent = 'Desempate en juego';
+      $('#pw-sub').textContent = `Están empatados en cabeza ${joinNames(names)}. Quien gane pasa a la gran final.`;
+    }
+  }
+  const joinNames = a => a.length > 1 ? a.slice(0, -1).join(', ') + ' y ' + a[a.length - 1] : (a[0] || '');
+  function renderVerdict(){
+    const isNew = view !== 'p-result';
+    show('p-result');
+    const tr = st.tries || [], last = tr[tr.length - 1]; if (!last) return;
+    const mine = last.t === table, won = st.prize === table;
+    const map = { win: ['🎁', '¡LA CESTA ES VUESTRA!'], over: ['💥', '¡Os pasasteis!'], short: ['📉', '¡Os quedasteis cortos!'], none: ['😶', 'No llegasteis a pujar'] };
+    const [e, t] = mine ? map[last.verdict] : ['👀', 'Mirad la pantalla'];
+    $('#pr-emoji').textContent = e; $('#pr-title').textContent = t; $('#pr-pts').textContent = '';
+    $('#pr-kv').innerHTML = (mine && last.v !== null ? `<span>Vuestra puja</span><b>${esc(fmtVal(last.v, st.q))}</b>` : '') +
+      (st.finalDone && st.finalAns ? `<span>Precio de la cesta</span><b>${esc(fmtVal(st.finalAns, st.q))}</b>` : '');
+    $('#pr-pos').textContent = won ? '¡Enhorabuena! 🎉' : mine && !st.finalDone ? 'La cesta rebota a la siguiente mesa…' : '';
+    if (isNew && won) fireworks(5000);
   }
   function renderWait(){
     show('p-wait');
     const q = st.phase === 'question' && st.q;
     $('#pw-emoji').textContent = q ? (q.emoji || '💰') : '🎄';
-    $('#pw-badge').innerHTML = q ? `<span class="badge red">Ronda ${st.round} de ${st.total}</span>${q.mult > 1 ? ` <span class="badge gold">⭐ x${q.mult}</span>` : ''}` : '';
+    $('#pw-badge').innerHTML = q ? `<span class="badge red">${roundLabel(st)}</span>${q.mult > 1 ? ` <span class="badge gold">⭐ x${q.mult}</span>` : ''}` : '';
     $('#pw-title').textContent = q ? '¡Atentos a la pantalla!' : (st.round ? '¡Seguimos en un momento!' : '¡Mesa lista! 🎉');
     $('#pw-q').textContent = q ? q.text : '';
     $('#pw-sub').textContent = q ? 'En nada se abren las apuestas. Id pensando la cifra 🤔' : 'Cuando el presentador abra la ronda, aquí podréis apostar.';
@@ -1240,17 +2601,48 @@ const Player = (() => {
     if (view !== 'p-bid' || bidKey !== key) {
       bidKey = key; show('p-bid');
       const q = st.q;
-      $('#pb-badge').innerHTML = `<span class="badge red">Ronda ${st.round} de ${st.total}</span>${q.mult > 1 ? ` <span class="badge gold">⭐ x${q.mult}</span>` : ''}`;
+      $('#pb-badge').innerHTML = `<span class="badge red">${roundLabel(st)}</span>${q.mult > 1 ? ` <span class="badge gold">⭐ x${q.mult}</span>` : ''}` +
+        (st.stage === 'final' ? `<p class="m-sub" style="margin-top:8px">🎯 Sin pasaros… y a menos de un ${pctTxt} del precio</p>` : '');
       $('#pb-q').textContent = (q.emoji ? q.emoji + ' ' : '') + q.text;
       $('#pb-unit').textContent = q.unit === '€' ? '€' : '';
       $('#pb-in').inputMode = q.decimals ? 'decimal' : 'numeric';
       $('#pb-in').placeholder = q.decimals ? '0,00' : '0';
       const saved = store.get('pj_bid_' + st.round);
       $('#pb-in').value = '';
-      setStatus(saved !== null && st.received.includes(table) ? `✅ Apuesta registrada: ${fmtVal(+saved, q)}` : '', 'ok');
+      setStatus(saved !== null && st.received.includes(table) ? `✅ Respuesta registrada: ${fmtBid(+saved, q)}` : '', 'ok');
       preview();
+      // Rondas especiales: sin teclado
+      const alt = q.type === 'hilo' || q.type === 'order', box = $('#pb-alt');
+      $('.bid-wrap').classList.toggle('hidden', alt); $('#pb-prev').classList.toggle('hidden', alt); $('#pb-send').classList.toggle('hidden', alt);
+      box.classList.toggle('hidden', !alt);
+      if (q.type === 'hilo') {
+        box.innerHTML = `<div class="hilo-ref-m">¿Vale MÁS o MENOS de <b>${esc(fmtVal(q.shown, q))}</b>?</div>
+          <div class="two" style="display:grid;grid-template-columns:1fr 1fr;gap:12px"><button class="btn green" data-hl="1" style="font-size:24px;padding:26px 10px">⬆ MÁS</button><button class="btn red" data-hl="0" style="font-size:24px;padding:26px 10px">⬇ MENOS</button></div>`;
+        if (saved !== null && st.received.includes(table)) $$('#pb-alt [data-hl]').forEach(b => b.classList.toggle('sel', +b.dataset.hl === +saved));
+      }
+      if (q.type === 'order') {
+        ord = saved !== null && isPerm4(saved) && st.received.includes(table) ? String(saved).split('').map(d => +d - 1) : [0, 1, 2, 3];
+        renderOrder();
+      }
     }
     if (st.received.includes(table) && !$('#pb-status').textContent) setStatus('✅ Apuesta registrada', 'ok');
+    updJoker();
+  }
+  // Comodín x2: una vez por partida (solo rondas normales)
+  function updJoker(){
+    const b = $('#pb-joker'), used = st.jokers && st.jokers[table];
+    b.classList.toggle('hidden', st.stage !== 'normal');
+    b.classList.toggle('on', used === st.round);
+    b.disabled = !!used && used !== st.round;
+    b.textContent = used === st.round ? '⚡ COMODÍN x2 ACTIVADO · toca para quitarlo'
+      : used ? `Comodín ya gastado (ronda ${used})` : '⚡ Usar comodín x2 en esta ronda (solo 1 vez)';
+  }
+  function toggleJoker(){
+    if (!st || st.phase !== 'open' || st.stage !== 'normal') return;
+    const on = !(st.jokers && st.jokers[table] === st.round);
+    if (on && !confirm('¿Usar el comodín x2 en esta ronda? Solo se puede usar una vez en toda la partida.')) return;
+    Bus.send('joker', { table, device: dev, round: st.round, on });
+    if (navigator.vibrate) navigator.vibrate(on ? [60, 40, 60] : 30);
   }
   function preview(){
     if (!st || !st.q) return;
@@ -1258,22 +2650,42 @@ const Player = (() => {
     $('#pb-prev').innerHTML = v === null ? (st.q.unit ? `En ${esc(st.q.unit === '€' ? 'euros' : st.q.unit)}` : '') : isNaN(v) ? '⚠️ Solo números' : `Vais a apostar: <b>${esc(fmtVal(v, st.q))}</b>`;
   }
   function setStatus(msg, cls){ const s = $('#pb-status'); s.textContent = msg; s.className = 'status ' + (cls || ''); }
+  // «Ordena»: lista con flechas (de más barato, arriba, a más caro, abajo)
+  let ord = [0, 1, 2, 3];
+  function renderOrder(){
+    const q = st.q;
+    $('#pb-alt').innerHTML = '<p class="m-sub">Arriba el <b>MÁS BARATO</b> · abajo el <b>MÁS CARO</b></p><div class="olist">' +
+      ord.map((i, k) => `<div class="orow"><span class="opos">${k + 1}º</span><b>${ORDER_L[i]}</b><span class="oname">${esc((q.items || [])[i] || '')}</span><button data-up="${k}" ${k === 0 ? 'disabled' : ''}>▲</button><button data-dn="${k}" ${k === 3 ? 'disabled' : ''}>▼</button></div>`).join('') +
+      '</div><button class="btn gold" id="pb-osend">ENVIAR ORDEN</button>';
+  }
+  function onAlt(e){
+    const hl = e.target.closest('[data-hl]'), up = e.target.closest('[data-up]'), dn = e.target.closest('[data-dn]');
+    if (hl) return sendValue(+hl.dataset.hl);
+    if (up || dn) { const k = +(up ? up.dataset.up : dn.dataset.dn), j = up ? k - 1 : k + 1; [ord[k], ord[j]] = [ord[j], ord[k]]; renderOrder(); if (navigator.vibrate) navigator.vibrate(15); return; }
+    if (e.target.closest('#pb-osend')) sendValue(+ord.map(i => i + 1).join(''));
+  }
   async function sendBid(){
     if (!st || st.phase !== 'open') return;
     const v = parseNum($('#pb-in').value, st.q.decimals);
     if (v === null || isNaN(v)) { setStatus('Escribe una cifra válida', 'err'); return; }
-    const btn = $('#pb-send'); btn.disabled = true; setStatus('Enviando…', 'wait');
+    sendValue(v);
+  }
+  async function sendValue(v){
+    if (!st || st.phase !== 'open') return;
+    const btns = [$('#pb-send'), ...$$('#pb-alt button')]; btns.forEach(b => b.disabled = true); setStatus('Enviando…', 'wait');
     const r = await Bus.send('bid', { table, device: dev, round: st.round, value: v });
-    if (r !== 'ok') { btn.disabled = false; setStatus('Sin conexión. Vuelve a enviar.', 'err'); return; }
+    if (r !== 'ok') { btns.forEach(b => b.disabled = false); setStatus('Sin conexión. Vuelve a enviar.', 'err'); return; }
     clearTimeout(ackTimer);
-    ackTimer = setTimeout(() => { btn.disabled = false; setStatus('La pantalla no ha confirmado. Envía otra vez.', 'err'); }, 4500);
+    ackTimer = setTimeout(() => { btns.forEach(b => b.disabled = false); setStatus('La pantalla no ha confirmado. Envía otra vez.', 'err'); }, 4500);
   }
   function onAck(p){
     if (p.device !== dev) return;
     clearTimeout(ackTimer); $('#pb-send').disabled = false;
+    if (st && st.q && st.q.type === 'order') renderOrder(); else $$('#pb-alt button').forEach(b => b.disabled = false);
     if (p.ok) {
       store.set('pj_bid_' + p.round, p.value);
-      setStatus(`✅ Apuesta registrada: ${fmtVal(p.value, st.q)} · puedes cambiarla hasta el final`, 'ok');
+      $$('#pb-alt [data-hl]').forEach(b => b.classList.toggle('sel', +b.dataset.hl === +p.value));
+      setStatus(`✅ Respuesta registrada: ${fmtBid(p.value, st.q)} · puedes cambiarla hasta el final`, 'ok');
       $('#pb-in').value = ''; preview(); $('#pb-in').blur();
       if (navigator.vibrate) navigator.vibrate([40, 40, 40]);
     } else setStatus('❌ ' + (p.reason || 'No aceptada'), 'err');
@@ -1290,7 +2702,7 @@ const Player = (() => {
   function renderClosed(){
     show('p-closed');
     const v = myBid();
-    $('#pc-msg').innerHTML = v !== null ? `Vuestra apuesta: <b style="color:#fff">${esc(fmtVal(v, st.q))}</b>` : '😬 No llegasteis a apostar en esta ronda';
+    $('#pc-msg').innerHTML = v !== null ? `Vuestra respuesta: <b style="color:#fff">${esc(fmtBid(v, st.q))}</b>` : '😬 No llegasteis a apostar en esta ronda';
   }
   function posLine(){
     const rows = standings(st), me = rows.find(r => r.t === table);
@@ -1302,8 +2714,22 @@ const Player = (() => {
     show('p-result');
     const r = st.result, v = myBid(), pts = (r.awards || {})[table] || 0;
     let e, t;
+    if (r.kind) {   // «¿Más o menos?» y «Ordena»
+      const hits = r.kind === 'order' ? (r.hits || {})[table] || 0 : 0;
+      if (v === null) { e = '😶'; t = 'Sin respuesta'; }
+      else if (r.kind === 'hilo') { e = r.winners.includes(table) ? '🏆' : '💥'; t = r.winners.includes(table) ? '¡Acertasteis!' : '¡Fallasteis!'; }
+      else { e = hits === 4 ? '🎯' : hits ? '👏' : '😅'; t = hits === 4 ? '¡ORDEN PERFECTO!' : hits ? `${hits} de 4 en su sitio` : 'Ninguno en su sitio'; }
+      $('#pr-emoji').textContent = e; $('#pr-title').textContent = t; $('#pr-pts').textContent = pts ? `+${pts}` : '';
+      $('#pr-kv').innerHTML = (r.kind === 'hilo' ? `<span>Precio real</span><b>${esc(fmtVal(r.answer, st.q))}</b><span>Era</span><b>${r.correct ? '⬆ MÁS' : '⬇ MENOS'} de ${esc(fmtVal(st.q.shown, st.q))}</b>`
+        : `<span>Orden correcto</span><b>${esc(fmtBid(r.correct, st.q))}</b>`) + (v !== null ? `<span>Vuestra respuesta</span><b>${esc(fmtBid(v, st.q))}</b>` : '');
+      $('#pr-pos').textContent = posLine();
+      if (isNew && pts) Pixel.burst(.5, .3, 50, .8);
+      return;
+    }
     if (v === null) { e = '😶'; t = 'Sin apuesta'; }
     else if (r.over.includes(table)) { e = '💥'; t = '¡Os pasasteis!'; }
+    else if (r.tie && r.winners.includes(table)) { e = r.winners.length > 1 ? '⚡' : '🚀'; t = r.winners.length > 1 ? '¡Sigue el empate!' : '¡Pasáis a la gran final!'; }
+    else if (r.tie) { e = '😅'; t = 'Os quedáis a las puertas'; }
     else if (r.winners.includes(table)) { e = r.exact ? '🎯' : '🏆'; t = r.exact ? '¡PRECIO EXACTO!' : '¡Ganáis la ronda!'; }
     else if (pts) { e = '👏'; t = '¡Buen tiro!'; }
     else { e = '😅'; t = 'Esta vez no'; }
@@ -1312,17 +2738,17 @@ const Player = (() => {
     const diff = v === null ? null : v - r.answer;
     $('#pr-kv').innerHTML = `<span>Precio justo</span><b>${esc(fmtVal(r.answer, st.q))}</b>` +
       (v !== null ? `<span>Vuestra apuesta</span><b>${esc(fmtVal(v, st.q))}</b>` + (diff ? `<span>${diff > 0 ? 'Os pasasteis por' : 'Os quedasteis a'}</span><b>${esc(fmtVal(Math.abs(diff), st.q))}</b>` : '') : '');
-    $('#pr-pos').textContent = posLine();
-    if (isNew && pts && window.confetti) confetti({ particleCount: 90, spread: 70, origin: { y: .3 } });
+    $('#pr-pos').textContent = r.practice ? '🧪 Era la ronda de práctica: no puntúa. ¡Ahora va en serio!' : posLine();
+    if (isNew && pts) Pixel.burst(.5, .3, 50, .8);
   }
   let rankKey = '';
   function renderRank(){
     show('p-rank');
     const rows = standings(st), me = rows.find(r => r.t === table), fin = st.phase === 'final';
-    const won = fin && me && me.pos === 1 && me.s > 0 && rows.filter(r => r.pos === 1).length === 1;
+    const won = fin && st.stage === 'final' && st.finalDone ? st.prize === table : false;
     const isNew = rankKey !== st.phase + st.round; rankKey = st.phase + st.round;
     $('#pk-emoji').textContent = won ? '🎁' : me && me.pos <= 3 && me.s > 0 ? medal(me.pos) : '📊';
-    $('#pk-title').textContent = won ? '¡LA CESTA ES VUESTRA!' : fin ? '¡Gran final!' : 'Clasificación';
+    $('#pk-title').textContent = won ? '¡LA CESTA ES VUESTRA!' : fin ? '¡Gran final!' : st.phase === 'awards' ? '🏅 Premios de la noche: ¡mirad la pantalla!' : 'Clasificación';
     $('#pk-pts').textContent = me ? `${fmtNum(me.s)} pts` : '';
     $('#pk-sub').textContent = me ? `Puesto ${me.pos} de ${rows.length}` : 'Mirad la pantalla';
     if (won && isNew) fireworks(4000);
@@ -1334,10 +2760,14 @@ const Player = (() => {
     $('#p-name-ok').onclick = () => saveName(false);
     $('#p-name-skip').onclick = () => saveName(true);
     $('#p-name-in').addEventListener('keydown', e => { if (e.key === 'Enter') saveName(false); });
-    $('#pw-rename').onclick = () => { $('#p-name-in').value = st.names[table] || ''; show('p-name'); };
+    $('#pw-rename').onclick = openName;
+    $('#p-emojis').addEventListener('click', e => { const b = e.target.closest('[data-e]'); if (!b) return; pickE = pickE === b.dataset.e ? '' : b.dataset.e; $$('#p-emojis button').forEach(x => x.classList.toggle('sel', x.dataset.e === pickE)); });
+    $('#p-colors').addEventListener('click', e => { const b = e.target.closest('[data-c]'); if (!b) return; pickC = b.dataset.c; $$('#p-colors button').forEach(x => x.classList.toggle('sel', x.dataset.c === pickC)); });
     $('#pb-in').addEventListener('input', preview);
     $('#pb-in').addEventListener('keydown', e => { if (e.key === 'Enter') sendBid(); });
     $('#pb-send').onclick = sendBid;
+    $('#pb-joker').onclick = toggleJoker;
+    $('#pb-alt').addEventListener('click', onAlt);
     $('#p-leave').onclick = () => { if (!confirm('¿Dejar la mesa? Otro móvil podrá cogerla.')) return; Bus.send('leave', { table, device: dev }); table = null; store.del('pj_table'); view = ''; render(); };
     show('p-connecting');
     Bus.start({ state: onState, 'claim-res': onClaimRes, 'bid-ack': onAck }, s => {
@@ -1359,13 +2789,45 @@ const Remote = (() => {
   const QKEY = 'pj_remote_questions_v1';
   let pin = store.get('pj_remote_pin') || '', st = null, lastSeen = 0, deadline = 0;
   let Q = store.json(QKEY) || JSON.parse(JSON.stringify(DEMO_QUESTIONS));
+  const XKEY = 'pj_remote_extra_v1';
+  let X = Object.assign(JSON.parse(JSON.stringify(DEMO_EXTRA)), store.json(XKEY) || {});
   const pending = new Map();
-  const saveQ = () => store.set(QKEY, JSON.stringify(Q));
-  const L = t => labelOf(t, st && st.names);
-  const PH = { lobby:'🏠 Pantalla de inicio', question:'❓ Mostrando pregunta', open:'⏱️ APUESTAS ABIERTAS', closed:'🔒 Apuestas cerradas', reveal:'💰 Precio revelado', ranking:'📊 Clasificación', final:'🏆 Gran final' };
+  const saveQ = () => { store.set(QKEY, JSON.stringify(Q)); store.set(XKEY, JSON.stringify(X)); };
+  const L = t => labelOf(t, st && st.names, st && st.looks);
+  const PH = { lobby:'🏠 Pantalla de inicio', question:'❓ Mostrando pregunta', open:'⏱️ APUESTAS ABIERTAS', closed:'🔒 Apuestas cerradas', reveal:'💰 Precio revelado', ranking:'📊 Clasificación', final:'🏆 Podio final', showcase:'🎬 Escaparate en pantalla', verdict:'⚖️ Veredicto del escaparate', awards:'🏅 Premios de la noche' };
+  const FINAL_Q = () => ({ text: X.final.text, unit: '€', decimals: 2, time: X.final.time, mult: 1, emoji: '🎁' });
+  const ansOf = () => !st ? null : st.stage === 'final' ? X.final.answer : st.stage === 'tiebreak' ? X.tie.answer : st.stage === 'practice' ? X.practice.answer : (qFor(st.round) || {}).answer;
+  const qOf = () => !st ? null : st.stage === 'final' ? FINAL_Q() : st.stage === 'tiebreak' ? X.tie : st.stage === 'practice' ? X.practice : qFor(st.round);
+  function sendPractice(){
+    const t = X.practice;
+    if (!t.text.trim() || bad(t.answer)) return toast('Revisa la pregunta de práctica (en «Rondas y precios»)', 'err');
+    cmd('practice', { q: { text: t.text, unit: t.unit, decimals: t.decimals, time: t.time, mult: 1, emoji: t.emoji } });
+  }
+  const topTie = () => st && standings(st).filter(r => r.pos === 1 && r.s > 0).length > 1;
+  const bad = v => v === null || v === undefined || isNaN(v);
+  function sendTie(){
+    const t = X.tie;
+    if (!t.text.trim()) return toast('Escribe la pregunta de desempate (en «Rondas y precios»)', 'err');
+    if (bad(t.answer)) return toast('Falta la respuesta del desempate', 'err');
+    cmd('tiebreak', { q: { text: t.text, unit: t.unit, decimals: t.decimals, time: t.time, mult: 1, emoji: t.emoji } });
+  }
+  function openFinal(){
+    if (bad(X.final.answer)) return toast('Falta el precio de la cesta (en «Rondas y precios»)', 'err');
+    cmd('finalopen', { q: FINAL_Q() });
+  }
+  function checkFinal(){
+    if (bad(X.final.answer)) return toast('Falta el precio de la cesta', 'err');
+    cmd('finalcheck', { answer: X.final.answer });
+  }
 
   async function cmd(action, extra = {}){
     if (navigator.vibrate) navigator.vibrate(25);
+    // Modo ensayo: las mesas automáticas necesitan una referencia para pujar con sentido
+    if ((action === 'open' || action === 'finalopen') && st && st.bots && st.bots.length) {
+      const q = qOf();
+      if (action !== 'finalopen' && st.stage === 'normal' && q && q.type === 'order') extra = { ...extra, hint: orderPrices(q) };
+      else { const h = action === 'finalopen' ? X.final.answer : ansOf(); if (!bad(h)) extra = { ...extra, hint: h }; }
+    }
     const id = Math.random().toString(36).slice(2);
     pending.set(id, action);
     const r = await Bus.send('cmd', { pin, id, action, ...extra });
@@ -1386,13 +2848,26 @@ const Remote = (() => {
     const q = Q[idx];
     if (!q) return toast('No hay más rondas', 'err');
     if (!q.text.trim()) return toast(`La ronda ${idx + 1} no tiene pregunta`, 'err');
-    if (q.answer === null || q.answer === undefined || isNaN(q.answer)) return toast(`Falta el precio de la ronda ${idx + 1}`, 'err');
-    cmd('question', { round: idx + 1, total: Q.length, q: { text: q.text, unit: q.unit, decimals: q.decimals, time: q.time, mult: q.mult, emoji: q.emoji } });
+    const type = q.type || 'price';
+    if (type === 'order') {
+      if (!Array.isArray(q.items) || q.items.length < 4 || q.items.some(i => !String(i.n || '').trim() || bad(i.p))) return toast(`Ronda ${idx + 1}: faltan productos o precios`, 'err');
+      if (new Set(q.items.map(i => i.p)).size < 4) return toast(`Ronda ${idx + 1}: los 4 precios deben ser distintos`, 'err');
+    } else if (bad(q.answer)) return toast(`Falta el precio de la ronda ${idx + 1}`, 'err');
+    if (type === 'hilo' && (bad(q.shown) || q.shown === q.answer)) return toast(`Ronda ${idx + 1}: falta el precio que se enseña (y no puede ser igual al real)`, 'err');
+    cmd('question', { round: idx + 1, total: Q.length, q: { text: q.text, unit: type === 'order' ? '€' : q.unit, decimals: type === 'order' ? 2 : q.decimals, time: q.time, mult: q.mult, emoji: q.emoji,
+      type, shown: type === 'hilo' ? q.shown : null, items: type === 'order' ? q.items.map(i => i.n) : null } });
   }
+  const orderPrices = q => (q && Array.isArray(q.items) ? q.items.map(i => i.p) : []);
   function reveal(){
-    const q = qFor(st.round);
-    if (!q || q.answer === null || isNaN(q.answer)) return toast('Falta el precio de esta ronda', 'err');
-    cmd('reveal', { round: st.round, answer: q.answer });
+    const q = qOf();
+    if (st.stage === 'normal' && q && q.type === 'order') {
+      const pr = orderPrices(q);
+      if (pr.length !== 4 || pr.some(bad)) return toast('Faltan precios de los productos', 'err');
+      return cmd('reveal', { round: st.round, prices: pr });
+    }
+    const a = ansOf();
+    if (bad(a)) return toast('Falta el precio de esta ronda', 'err');
+    cmd('reveal', { round: st.round, answer: a });
   }
 
   function btn(label, cls, fn){ const b = document.createElement('button'); b.className = 'btn ' + cls; b.innerHTML = label; b.onclick = () => { b.disabled = true; setTimeout(() => b.disabled = false, 900); fn(); }; return b; }
@@ -1400,33 +2875,64 @@ const Remote = (() => {
     const box = $('#r-actions'); box.innerHTML = '';
     if (!st) return;
     const idx = st.round, hasNext = idx < Q.length, isLast = idx === Q.length - 1;
-    const next = () => hasNext
+    const stage = st.stage || 'normal';
+    const showcaseBtn = () => btn('🎬 GRAN FINAL: mostrar el escaparate', 'gold', () => cmd('showcase'));
+    const tieBtn = again => btn(again ? '⚡ Sigue el empate: otra ronda rápida' : '⚡ Empate en cabeza: RONDA RÁPIDA', 'red', sendTie);
+    const ceremony = () => btn('🏆 PODIO FINAL', 'gold', () => cmd('final'));
+    const afterRounds = () => stage === 'final' ? (st.finalDone ? ceremony() : btn('🎬 Volver al escaparate', 'gold', () => cmd('showcase')))
+      : stage === 'tiebreak' ? (st.result && st.result.winners.length === 1 ? showcaseBtn() : tieBtn(true))
+      : topTie() ? tieBtn(false) : showcaseBtn();
+    const next = () => hasNext && (stage === 'normal' || stage === 'practice')
       ? btn(isLast ? `🔥 Última ronda (${idx + 1}/${Q.length})` : `➡️ Mostrar ronda ${idx + 1} de ${Q.length}`, 'gold', () => sendQuestion(idx))
-      : btn('🏆 GRAN FINAL: ¡revelar quién gana la cesta!', 'gold', () => cmd('final'));
+      : afterRounds();
     const two = (...b) => { const d = document.createElement('div'); d.className = 'two'; b.forEach(x => d.appendChild(x)); return d; };
     switch (st.phase) {
-      case 'lobby': box.appendChild(next()); break;
+      case 'lobby':
+        if (!st.round) {
+          box.appendChild(btn('🎬 INTRO DEL PROGRAMA (con sintonía)', 'teal', () => cmd('intro')));
+          box.appendChild(btn('🧪 Ronda de práctica (no puntúa)', 'ghost', sendPractice));
+        }
+        box.appendChild(next()); break;
       case 'question': box.appendChild(btn('▶️ ABRIR APUESTAS', 'green', () => cmd('open'))); break;
       case 'open': box.appendChild(two(btn('⏹ Cerrar ya', 'red', () => cmd('close')), btn('➕ 15 s', 'ghost', () => cmd('addtime')))); break;
-      case 'closed': box.appendChild(btn('💰 REVELAR PRECIO', 'gold', reveal)); box.appendChild(btn('↩️ Reabrir 15 s', 'ghost', () => cmd('open'))); break;
+      case 'closed':
+        box.appendChild(stage === 'final' ? btn(`💰 COMPROBAR PUJA de ${esc(L(st.finalist))}`, 'gold', checkFinal) : btn('💰 REVELAR PRECIO', 'gold', reveal));
+        box.appendChild(btn('↩️ Reabrir 15 s', 'ghost', () => cmd('open'))); break;
       case 'reveal':
-        box.appendChild(btn('📊 Ver clasificación', 'teal', () => cmd('ranking')));
+        if (stage === 'normal') box.appendChild(btn('📊 Ver clasificación', 'teal', () => cmd('ranking')));
         box.appendChild(next());
-        box.appendChild(btn('↩️ Deshacer revelado (precio mal puesto)', 'ghost', () => { if (confirm('¿Deshacer? Se restan los puntos de esta ronda.')) cmd('unreveal'); }));
+        box.appendChild(btn('↩️ Deshacer revelado (precio mal puesto)', 'ghost', () => { if (confirm(stage === 'normal' ? '¿Deshacer? Se restan los puntos de esta ronda.' : '¿Deshacer el revelado del desempate?')) cmd('unreveal'); }));
         break;
-      case 'ranking': box.appendChild(next()); break;
-      case 'final': box.appendChild(btn('📊 Clasificación', 'teal', () => cmd('ranking'))); break;
+      case 'ranking':
+        if (stage === 'final' && st.finalDone) box.appendChild(btn('🏅 PREMIOS DE LA NOCHE', 'gold', () => cmd('awards')));
+        box.appendChild(next()); break;
+      case 'showcase':
+        box.appendChild(btn(`▶️ ABRIR PUJA FINAL · juega ${esc(L(st.finalist))}`, 'green', openFinal));
+        box.appendChild(btn('🔁 Repetir el escaparate', 'ghost', () => cmd('showcase')));
+        break;
+      case 'verdict':
+        // Orden de la noche: escaparate → premios de coña → podio
+        if (st.finalDone) { box.appendChild(btn('🏅 PREMIOS DE LA NOCHE', 'gold', () => cmd('awards'))); box.appendChild(btn('🏆 Ir directo al podio', 'teal', () => cmd('final'))); }
+        else box.appendChild(btn(`↪️ REBOTE: abrir puja para ${esc(L(st.finalist))}`, 'gold', openFinal));
+        box.appendChild(btn('↩️ Deshacer comprobación (precio mal puesto)', 'ghost', () => { if (confirm('¿Deshacer la comprobación de esta puja?')) cmd('finaluncheck'); }));
+        break;
+      case 'awards': box.appendChild(ceremony()); break;
+      case 'final': box.appendChild(btn('📊 Clasificación', 'teal', () => cmd('ranking'))); box.appendChild(btn('🏅 Premios de la noche', 'ghost', () => cmd('awards'))); break;
     }
   }
   function renderNow(){
     if (!st) return;
-    $('#rn-phase').textContent = PH[st.phase] || st.phase;
-    $('#rn-round').textContent = st.round ? `Ronda ${st.round} de ${st.total}` : 'Sin empezar';
-    const q = st.round ? qFor(st.round) : null;
+    $('#rn-phase').textContent = (st.bots && st.bots.length ? '🤖 ENSAYO · ' : '') + (PH[st.phase] || st.phase);
+    $('#rn-round').textContent = st.round ? roundLabel(st) + (st.stage === 'final' && st.finalist ? ` · juega ${L(st.finalist)}` : '') : 'Sin empezar';
+    const q = st.round ? qOf() : null, a = st.round ? ansOf() : null;
     $('#rn-q').textContent = st.q && st.round ? (st.q.emoji || '') + ' ' + st.q.text : '';
-    $('#rn-ans').textContent = q && q.answer !== null ? fmtVal(q.answer, q) : '—';
+    $('#rn-ans').textContent = !q ? '—'
+      : st.stage === 'normal' && q.type === 'order' ? (q.items || []).map((it, i) => ({ l: ORDER_L[i], p: it.p })).sort((x, y) => x.p - y.p).map(x => `${x.l} ${fmtVal(x.p, { unit: '€', decimals: 2 })}`).join(' < ')
+      : bad(a) ? '—'
+      : st.stage === 'normal' && q.type === 'hilo' ? `${fmtVal(a, q)} → ${a > q.shown ? '⬆ MÁS' : '⬇ MENOS'}`
+      : fmtVal(a, q);
     const claimed = Object.keys(st.claims).length;
-    $('#rn-recv').textContent = `${st.received.length}/${claimed}`;
+    $('#rn-recv').textContent = `${st.received.length}/${st.eligible ? st.eligible.length : claimed}`;
     $('#r-tcount').textContent = st.tables;
     renderActions(); renderTables(); markCurrentQ();
   }
@@ -1434,7 +2940,8 @@ const Remote = (() => {
     let h = '';
     for (let t = 1; t <= st.tables; t++) {
       const c = !!st.claims[t], sc = st.scores[t] || 0, got = st.received.includes(t);
-      const bid = st.bids && (t in st.bids) ? ' · ' + fmtVal(st.bids[t], st.q) : got ? ' · ✓ apostó' : '';
+      const jk = st.jokers && st.jokers[t] ? (st.jokers[t] === st.round ? ' · ⚡x2 ahora' : ` · ⚡ usado (R${st.jokers[t]})`) : '';
+      const bid = (st.bids && (t in st.bids) ? ' · ' + fmtBid(st.bids[t], st.q) : got ? ' · ✓ apostó' : '') + jk;
       h += `<div class="trow"><div><div class="tn">${c ? '🟢' : '⚪'} ${esc(L(t))}</div><div class="ti">${fmtNum(sc)} pts${bid}</div></div>
         <div class="tb"><button data-sc="${t}" data-d="-10">−10</button><button data-sc="${t}" data-d="10">+10</button>${c ? `<button data-rel="${t}">🚪</button>` : ''}</div></div>`;
     }
@@ -1456,22 +2963,102 @@ const Remote = (() => {
         <div class="qh"><span class="n">${i + 1}</span><span>${esc(q.emoji || '')}</span><span class="sp"></span>
           <button data-mv="-1">▲</button><button data-mv="1">▼</button><button data-del>🗑</button></div>
         <div class="qgrid">
+          <label class="full">Tipo de ronda<select class="field" data-k="type">
+            <option value="price" ${!q.type || q.type === 'price' ? 'selected' : ''}>💰 Precio justo (escribir cifra)</option>
+            <option value="hilo" ${q.type === 'hilo' ? 'selected' : ''}>⬆⬇ ¿Más o menos?</option>
+            <option value="order" ${q.type === 'order' ? 'selected' : ''}>🔢 Ordena los precios (4 productos)</option></select></label>
           <label class="full">Pregunta<textarea class="field" data-k="text">${esc(q.text)}</textarea></label>
           <label>Emoji<input class="field" data-k="emoji" value="${esc(q.emoji || '')}" maxlength="8"></label>
-          <label>Unidad<input class="field" data-k="unit" value="${esc(q.unit || '')}" placeholder="€, km, folios…"></label>
-          <label>Tipo<select class="field" data-k="decimals"><option value="0" ${!q.decimals ? 'selected' : ''}>Número entero</option><option value="2" ${q.decimals ? 'selected' : ''}>Con céntimos</option></select></label>
           <label>Segundos<input class="field" data-k="time" type="number" min="5" max="300" value="${q.time}"></label>
           <label>Puntos<select class="field" data-k="mult">${[1,2,3,5].map(m => `<option value="${m}" ${q.mult == m ? 'selected' : ''}>x${m}</option>`).join('')}</select></label>
-          <label>💰 Precio justo<input class="field" data-k="answer" inputmode="decimal" value="${q.answer === null || q.answer === undefined ? '' : String(q.answer).replace('.', ',')}" placeholder="Obligatorio"></label>
-          <div class="full ansprev ${q.answer === null || isNaN(q.answer) ? 'bad' : ''}">${q.answer === null || isNaN(q.answer) ? '⚠️ Falta el precio' : '✓ Se revelará: ' + esc(fmtVal(q.answer, q))}</div>
+          ${q.type === 'order' ? (q.items || []).map((it, j) => `
+            <label>${ORDER_L[j]} · Producto<input class="field" data-k="item-n-${j}" value="${esc(it.n || '')}" placeholder="Producto ${ORDER_L[j]}"></label>
+            <label>${ORDER_L[j]} · Precio (€)<input class="field" data-k="item-p-${j}" inputmode="decimal" value="${bad(it.p) ? '' : String(it.p).replace('.', ',')}" placeholder="Obligatorio"></label>`).join('') +
+            `<div class="full ansprev ${orderPrices(q).some(bad) ? 'bad' : ''}">${orderPrices(q).some(bad) ? '⚠️ Faltan precios' : '✓ Orden correcto: ' + esc(q.items.map((it, j) => ({ l: ORDER_L[j], p: it.p })).sort((a, b) => a.p - b.p).map(x => x.l).join(' < '))}</div>`
+          : `
+          <label>Unidad<input class="field" data-k="unit" value="${esc(q.unit || '')}" placeholder="€, km, folios…"></label>
+          <label>Tipo<select class="field" data-k="decimals"><option value="0" ${!q.decimals ? 'selected' : ''}>Número entero</option><option value="2" ${q.decimals ? 'selected' : ''}>Con céntimos</option></select></label>
+          ${q.type === 'hilo' ? `<label>Precio que se enseña<input class="field" data-k="shown" inputmode="decimal" value="${bad(q.shown) ? '' : String(q.shown).replace('.', ',')}" placeholder="Obligatorio"></label>` : ''}
+          <label>💰 ${q.type === 'hilo' ? 'Precio real' : 'Precio justo'}<input class="field" data-k="answer" inputmode="decimal" value="${q.answer === null || q.answer === undefined ? '' : String(q.answer).replace('.', ',')}" placeholder="Obligatorio"></label>
+          <div class="full ansprev ${q.answer === null || isNaN(q.answer) ? 'bad' : ''}">${q.answer === null || isNaN(q.answer) ? '⚠️ Falta el precio' : '✓ Se revelará: ' + esc(fmtVal(q.answer, q)) + (q.type === 'hilo' && !bad(q.shown) ? (q.answer > q.shown ? ' (⬆ MÁS)' : q.answer < q.shown ? ' (⬇ MENOS)' : ' ⚠️ igual al enseñado') : '')}</div>`}
         </div>
       </div>`).join('');
     markCurrentQ();
   }
+  /* --- escaparate final y desempate --- */
+  function renderExtra(){
+    const f = X.final, t = X.tie, pr = X.practice, av = v => bad(v) ? '' : String(v).replace('.', ',');
+    const prev = (v, q) => `<div class="full ansprev ${bad(v) ? 'bad' : ''}">${bad(v) ? '⚠️ Falta' : '✓ ' + esc(fmtVal(v, q))}</div>`;
+    $('#r-extra').innerHTML = `
+      <div class="qitem" data-x="final">
+        <div class="qh"><span class="n">🎁</span><span>Escaparate final (la cesta)</span></div>
+        <div class="qgrid">
+          <label class="full">Pregunta<textarea class="field" data-k="text">${esc(f.text)}</textarea></label>
+          <label>Segundos<input class="field" data-k="time" type="number" min="5" max="300" value="${f.time}"></label>
+          <label>💰 Precio de la cesta (€)<input class="field" data-k="answer" inputmode="decimal" value="${av(f.answer)}" placeholder="Obligatorio"></label>
+          ${prev(f.answer, { unit: '€', decimals: 2 })}
+          <div class="full muted small">Se la lleva si no se pasa y queda a menos de un ${pctTxt} por debajo. Si falla, rebota a la siguiente mesa de la clasificación.</div>
+        </div>
+      </div>
+      <div class="qitem" data-x="tie">
+        <div class="qh"><span class="n">⚡</span><span>Ronda rápida de desempate</span></div>
+        <div class="qgrid">
+          <label class="full">Pregunta<textarea class="field" data-k="text">${esc(t.text)}</textarea></label>
+          <label>Unidad<input class="field" data-k="unit" value="${esc(t.unit || '')}"></label>
+          <label>Tipo<select class="field" data-k="decimals"><option value="0" ${!t.decimals ? 'selected' : ''}>Número entero</option><option value="2" ${t.decimals ? 'selected' : ''}>Con céntimos</option></select></label>
+          <label>Segundos<input class="field" data-k="time" type="number" min="5" max="300" value="${t.time}"></label>
+          <label>💰 Respuesta<input class="field" data-k="answer" inputmode="decimal" value="${av(t.answer)}" placeholder="Obligatorio"></label>
+          ${prev(t.answer, t)}
+        </div>
+      </div>
+      <div class="qitem" data-x="practice">
+        <div class="qh"><span class="n">🧪</span><span>Ronda de práctica (no puntúa)</span></div>
+        <div class="qgrid">
+          <label class="full">Pregunta<textarea class="field" data-k="text">${esc(pr.text)}</textarea></label>
+          <label>Unidad<input class="field" data-k="unit" value="${esc(pr.unit || '')}"></label>
+          <label>Tipo<select class="field" data-k="decimals"><option value="0" ${!pr.decimals ? 'selected' : ''}>Número entero</option><option value="2" ${pr.decimals ? 'selected' : ''}>Con céntimos</option></select></label>
+          <label>Segundos<input class="field" data-k="time" type="number" min="5" max="300" value="${pr.time}"></label>
+          <label>💰 Respuesta<input class="field" data-k="answer" inputmode="decimal" value="${av(pr.answer)}" placeholder="Obligatorio"></label>
+          ${prev(pr.answer, pr)}
+        </div>
+      </div>`;
+  }
+  function onXInput(e){
+    const el = e.target, box = el.closest('[data-x]'); if (!box || !el.dataset.k) return;
+    const o = X[box.dataset.x], k = el.dataset.k, dec = box.dataset.x === 'final' ? 2 : o.decimals;
+    if (k === 'time') o.time = clamp(+el.value || 30, 5, 300);
+    else if (k === 'decimals') o.decimals = +el.value;
+    else if (k === 'answer') { const v = parseNum(el.value, dec); o.answer = bad(v) ? null : v; }
+    else o[k] = el.value;
+    saveQ();
+    if (k === 'answer' || k === 'decimals' || k === 'unit') {
+      const p = box.querySelector('.ansprev'), q = box.dataset.x === 'final' ? { unit: '€', decimals: 2 } : o;
+      p.className = 'full ansprev ' + (bad(o.answer) ? 'bad' : ''); p.textContent = bad(o.answer) ? '⚠️ Falta' : '✓ ' + fmtVal(o.answer, q);
+    }
+    renderNow();
+  }
+
   function markCurrentQ(){ $$('.qitem').forEach(el => el.classList.toggle('cur', st && +el.dataset.i === st.round - 1)); }
   function onQInput(e){
     const el = e.target, item = el.closest('.qitem'); if (!item || !el.dataset.k) return;
     const q = Q[+item.dataset.i], k = el.dataset.k;
+    if (k === 'type') {
+      if (q.type === el.value) return;
+      q.type = el.value;
+      if (q.type === 'order' && !Array.isArray(q.items)) q.items = [0, 1, 2, 3].map(() => ({ n: '', p: null }));
+      if (q.type === 'order') { q.unit = '€'; q.decimals = 2; }
+      saveQ(); renderQ(); renderNow(); return;
+    }
+    if (k.startsWith('item-')) {
+      const [, f, j] = k.split('-'); q.items[+j] = q.items[+j] || { n: '', p: null };
+      if (f === 'n') q.items[+j].n = el.value; else { const v = parseNum(el.value, 2); q.items[+j].p = bad(v) ? null : v; }
+      saveQ();
+      const p = item.querySelector('.ansprev'), pr = orderPrices(q);
+      p.className = 'full ansprev ' + (pr.some(bad) ? 'bad' : '');
+      p.textContent = pr.some(bad) ? '⚠️ Faltan precios' : '✓ Orden correcto: ' + q.items.map((it, jj) => ({ l: ORDER_L[jj], p: it.p })).sort((a, b) => a.p - b.p).map(x => x.l).join(' < ');
+      renderNow(); return;
+    }
+    if (k === 'shown') { const v = parseNum(el.value, q.decimals); q.shown = bad(v) ? null : v; saveQ(); renderNow(); return; }
     if (k === 'decimals') q.decimals = +el.value;
     else if (k === 'time') q.time = clamp(+el.value || 30, 5, 300);
     else if (k === 'mult') q.mult = +el.value;
@@ -1509,6 +3096,8 @@ const Remote = (() => {
     $$('.r-sec [data-act]').forEach(b => b.onclick = () => cmd(b.dataset.act));
     $('#r-tminus').onclick = () => st && cmd('tables', { n: st.tables - 1 });
     $('#r-tplus').onclick = () => st && cmd('tables', { n: st.tables + 1 });
+    $('#r-bots').onclick = () => cmd('bots', { n: 6 });
+    $('#r-botsoff').onclick = () => { if (confirm('¿Quitar las mesas de ensayo? Se borran también sus puntos.')) cmd('botsoff'); };
     $('#r-tlist').addEventListener('click', e => {
       const sc = e.target.closest('[data-sc]'), rel = e.target.closest('[data-rel]');
       if (sc) cmd('score', { table: +sc.dataset.sc, delta: +sc.dataset.d });
@@ -1518,17 +3107,31 @@ const Remote = (() => {
     $('#r-qlist').addEventListener('change', onQInput);
     $('#r-qlist').addEventListener('click', onQClick);
     $('#r-qadd').onclick = () => { Q.push({ emoji:'💰', text:'', unit:'€', decimals:2, time:30, mult:1, answer:null }); saveQ(); renderQ(); renderNow(); };
-    $('#r-export').onclick = async () => { const j = JSON.stringify(Q, null, 1); $('#r-json').value = j; try { await navigator.clipboard.writeText(j); toast('Copiado. Guárdalo en tus notas 📋', 'ok'); } catch(e){ toast('Selecciona el texto y cópialo', ''); } };
+    $('#r-export').onclick = async () => { const j = JSON.stringify({ rondas: Q, final: X.final, desempate: X.tie, practica: X.practice }, null, 1); $('#r-json').value = j; try { await navigator.clipboard.writeText(j); toast('Copiado. Guárdalo en tus notas 📋', 'ok'); } catch(e){ toast('Selecciona el texto y cópialo', ''); } };
     $('#r-import').onclick = () => {
-      try { const d = JSON.parse($('#r-json').value); if (!Array.isArray(d) || !d.length) throw 0;
-        Q = d.map(q => ({ emoji: q.emoji || '💰', text: String(q.text || ''), unit: String(q.unit || ''), decimals: q.decimals ? 2 : 0, time: clamp(+q.time || 30, 5, 300), mult: +q.mult || 1, answer: q.answer === null || q.answer === '' || isNaN(+q.answer) ? null : +q.answer }));
-        saveQ(); renderQ(); renderNow(); toast(`${Q.length} rondas cargadas`, 'ok');
+      try { const d = JSON.parse($('#r-json').value), rondas = Array.isArray(d) ? d : d && d.rondas;
+        if (!Array.isArray(rondas) || !rondas.length) throw 0;
+        const num = v => v === null || v === '' || v === undefined || isNaN(+v) ? null : +v;
+        Q = rondas.map(q => {
+          const type = ['hilo', 'order'].includes(q.type) ? q.type : 'price';
+          return { type, emoji: q.emoji || '💰', text: String(q.text || ''), unit: String(q.unit || ''), decimals: q.decimals ? 2 : 0, time: clamp(+q.time || 30, 5, 300), mult: +q.mult || 1, answer: num(q.answer),
+            shown: type === 'hilo' ? num(q.shown) : null,
+            items: type === 'order' ? [0, 1, 2, 3].map(j => ({ n: String(((q.items || [])[j] || {}).n || ''), p: num(((q.items || [])[j] || {}).p) })) : undefined };
+        });
+        if (d.final) X.final = { text: String(d.final.text || DEMO_EXTRA.final.text), time: clamp(+d.final.time || 45, 5, 300), answer: num(d.final.answer) };
+        if (d.practica) { const t = d.practica; X.practice = { emoji: t.emoji || '🍇', text: String(t.text || ''), unit: String(t.unit || ''), decimals: t.decimals ? 2 : 0, time: clamp(+t.time || 25, 5, 300), answer: num(t.answer) }; }
+        if (d.desempate) { const t = d.desempate; X.tie = { emoji: t.emoji || '⚡', text: String(t.text || ''), unit: String(t.unit || ''), decimals: t.decimals ? 2 : 0, time: clamp(+t.time || 20, 5, 300), answer: num(t.answer) }; }
+        saveQ(); renderQ(); renderExtra(); renderNow(); toast(`${Q.length} rondas cargadas${d.final ? ' + escaparate' : ''}${d.desempate ? ' + desempate' : ''}`, 'ok');
       } catch(e){ toast('JSON no válido', 'err'); }
     };
-    $('#r-demo').onclick = () => { if (!confirm('¿Sustituir tus rondas por las de ejemplo?')) return; Q = JSON.parse(JSON.stringify(DEMO_QUESTIONS)); saveQ(); renderQ(); renderNow(); };
+    $('#r-demo').onclick = () => { if (!confirm('¿Sustituir tus rondas (y el escaparate y desempate) por las de ejemplo?')) return; Q = JSON.parse(JSON.stringify(DEMO_QUESTIONS)); X = JSON.parse(JSON.stringify(DEMO_EXTRA)); saveQ(); renderQ(); renderExtra(); renderNow(); };
+    $('#r-extra').addEventListener('input', onXInput);
+    $('#r-extra').addEventListener('change', onXInput);
+    renderExtra();
     $('#r-reset').onclick = () => { if (confirm('¿Reiniciar la partida? Se borran TODOS los puntos.') && confirm('¿Seguro? No se puede deshacer.')) cmd('reset'); };
     $('#r-releaseall').onclick = () => { if (confirm('¿Liberar todas las mesas? Los portavoces tendrán que volver a elegir.')) cmd('releaseAll'); };
     $('#r-changepin').onclick = showPin;
+    $('#r-changesala').onclick = () => { if (confirm('¿Cambiar el código de sala?')) { store.del('pj_sala'); location.href = BASE_URL + '?mode=remote'; } };
     renderQ();
     Bus.start({ state: onState, 'cmd-res': onRes }, s => { if (s === 'SUBSCRIBED') Bus.send('hello', {}); });
     document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') Bus.send('hello', {}); });
@@ -1538,9 +3141,23 @@ const Remote = (() => {
 })();
 
 /* ===================================================================== */
-if (MODE === 'player') Player.start();
-else if (MODE === 'remote') Remote.start();
-else TV.start();
+function showLock(){
+  $('#lock').classList.remove('hidden');
+  if (MODE !== 'player') {
+    $('#lock-form').classList.remove('hidden');
+    $('#lock-msg').textContent = MODE === 'remote' ? 'Escribe el código de sala (o escanea el QR del mando en la TV).' : 'Escribe el código de sala para abrir la pantalla.';
+    const go = () => { const c = cleanSala($('#lock-code').value); if (c.length < 6) return toast('Mínimo 6 caracteres: letras, números o guiones', 'err'); store.set('pj_sala', c); location.href = BASE_URL + (MODE === 'remote' ? '?mode=remote&sala=' : '?sala=') + c; };
+    $('#lock-ok').onclick = go;
+    $('#lock-code').addEventListener('keydown', e => { if (e.key === 'Enter') go(); });
+  }
+}
+if (!SALA) showLock();
+else {
+  document.title = 'El Precio Justo · Cena de Navidad 2026';
+  if (MODE === 'player') Player.start();
+  else if (MODE === 'remote') Remote.start();
+  else TV.start();
+}
 </script>
 </body>
 </html>
